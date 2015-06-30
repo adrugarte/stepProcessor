@@ -1,0 +1,22 @@
+﻿/*Style Sheet for bootstrap-input-select.js directive*/
+
+.selected {
+    background: #ccc;
+}
+
+
+/*Style each input dropdown how you want*/
+.selectdropdown {
+    max-height:170px;
+    overflow: auto;
+    width:100%;
+}
+
+
+.ag-inputselect.form-control {
+   border-radius:4px;
+}
+
+
+
+

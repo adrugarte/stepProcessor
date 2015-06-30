@@ -1,0 +1,59 @@
+﻿#forma .form-control{
+    display: inline-block; 
+    margin-left:4px;
+}
+
+#forma .form-group{
+    margin-bottom:5px;
+}
+
+
+.textlabelclass{
+    width: 100px;
+    margin-top:8px;
+    float:left;
+    color: #38a3e1;
+}
+
+.textfieldclass{
+}
+
+.dpfieldclass{
+    max-width:none;
+}
+
+.push100{
+    left:100px;
+
+}
+
+.radioleft{
+  padding-top: 8px;
+  margin-left: 5px;
+  border: 1px silver solid;
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+  background-color: white;
+  }
+
+.radioright{
+  padding-top: 8px;
+  padding-right:10px;
+  margin-right: 5px;
+  border: 1px #ccc solid;
+  border-radius: 0 4px 4px 0;
+  background: white;
+  border-left: 0;
+  margin-left: 0 !important;
+}
+
+.radiomiddle{
+  padding-top: 8px;
+  margin-right: 5px;
+  border: 1px #ccc solid;
+  background: white;
+  border-left: 0;
+  border-right:0;
+  margin-left: 0 !important;
+  margin-right:0 !important;
+}

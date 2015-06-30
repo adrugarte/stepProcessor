@@ -1,0 +1,30 @@
+﻿<div ng-show="action=='signup'" class="jumbotron" style="width:50%;min-width:500px;">
+    <form class="form-login" role="form">
+        <h2 class="form-login-heading" style="margin-top:0px;">Sign up</h2>
+        <input type="text" class="form-control" placeholder="Username" data-ng-model="registration.userName" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" data-ng-model="registration.password" required>
+        <input type="password" class="form-control" placeholder="Confirm Password" data-ng-model="registration.confirmPassword" required>
+        <input type="email" class="form-control" placeholder="Email" data-ng-model="registration.email" required>
+        <input type="email" class="form-control" placeholder="Confirm Email" data-ng-model="registration.confirmEmail" required>
+        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()" style="margin-bottom:5px;margin-top:10px;">Submit</button>
+        <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+            {{message}}
+        </div>
+    </form>
+</div>
+<div ng-hide="action=='signup'" class="jumbotron" style="width:50%;min-width:500px;">
+    <form class="form-login" role="form">
+        <h2 class="form-login-heading" style="margin-top:0px;">Change Password</h2>
+        <input type="text" class="form-control" placeholder="Username" data-ng-model="registration.userName" required disabled>
+        <input type="password" class="form-control" placeholder="Old Password" data-ng-model="registration.oldpassword" required autofocus>
+        <input type="password" class="form-control" placeholder="Password" data-ng-model="registration.password" required>
+        <input type="password" class="form-control" placeholder="Confirm Password" data-ng-model="registration.confirmPassword" required>
+        <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="signUp()" style="margin-bottom:5px;margin-top:10px;">Submit</button>
+        <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+            {{message}}
+        </div>
+    </form>
+</div>
+<div>
+    <a href="#/mainmenu">Back Home</a>
+</div>

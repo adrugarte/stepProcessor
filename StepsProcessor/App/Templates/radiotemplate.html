@@ -1,0 +1,12 @@
+﻿<div class="[divclass]">
+    <ng-form name="stepform">
+        <div class="[labelclass]" [labelstyle]><label>[field]:</label></div>
+        <div ng-repeat="item in [radioList]" ng-class="{'radioleft':$first,'radiomiddle':$middle,'radioright':$last}" ng-class="{}" class="[radioclass]">
+            <label style="padding-left:10px;">
+                <input type="radio" data-ng-model="[fieldngmodel]" name="[field]" id="optionsRadios{{item.id}}" value="{{item.[valuefield]}}" {{item.checked}}>
+                {{item.[showfield]}}
+            </label>
+        </div>
+        <span>{{stepform}}</span>
+    </ng-form>
+ </div>    
