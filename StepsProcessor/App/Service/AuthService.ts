@@ -158,7 +158,6 @@ module Service {
                 self.authentication.userName = "";
                 self.authentication.isAdmin = false;
 
-
             };
 
             var _refreshTokenTimer = (time: number, domain: string) => {
