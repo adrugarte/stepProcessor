@@ -70,6 +70,7 @@ module StepProcessor {
             this.app.constant("moment", moment);
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', ($scope, settingService, $rootScope) => new head.headCtrl($scope, settingService, $rootScope)]);
+            this.app.factory('ServerCall',($resource:ng.resource.IResourceService) => { return new Service.ServerCall($resource) }); 
             this.app.service('logedSites', ['$window', '$http', ($window, $http) => { return new Service.logedSites($window,$http) }]);
             this.app.service('settingService', ['$rootScope', '$window', ($rootScope, $window) => { return new Service.SettingsService($rootScope, $window) }]);
             this.app.service('authService', ['$window', '$http', '$q', '$location', 'logedSites', '$timeout', ($window, $http, $q, $location, logedSites, $timeout) => { return new Service.authService($window,$http,$q,$location,logedSites,$timeout)}]);

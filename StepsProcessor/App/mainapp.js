@@ -129,6 +129,9 @@ var StepProcessor;
             this.app.constant("moment", moment);
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', function ($scope, settingService, $rootScope) { return new head.headCtrl($scope, settingService, $rootScope); }]);
+            this.app.factory('ServerCall', function ($resource) {
+                return new Service.ServerCall($resource);
+            });
             this.app.service('logedSites', ['$window', '$http', function ($window, $http) {
                 return new Service.logedSites($window, $http);
             }]);
@@ -378,6 +381,30 @@ var Directive;
         return spDatetimePicker;
     })();
     Directive.spDatetimePicker = spDatetimePicker;
+})(Directive || (Directive = {}));
+var Directive;
+(function (Directive) {
+    var DocumentList = (function () {
+        function DocumentList(scope, ServerCall) {
+            this.templateurl = "uploadlist.html";
+            this.scope = {};
+            this.restict = 'EA';
+            this.replace = true;
+            this.controller = function () {
+                ServerCall.Document.query().$promise.then(function (response) {
+                    scope.documentList = response;
+                }, function (error) {
+                    scope.documentList = [];
+                });
+            };
+            this.link = function (scope, elm, attr) {
+                scope.remove = function (idx) {
+                };
+            };
+        }
+        return DocumentList;
+    })();
+    Directive.DocumentList = DocumentList;
 })(Directive || (Directive = {}));
 var Authentication;
 (function (Authentication) {
@@ -674,6 +701,16 @@ var Service;
     Service.logedSites = logedSites;
 })(Service || (Service = {}));
 //AppoinmentApp.service('logedSites', ['$window', '$http', '$q', '$location', site.logedSites]);
+var Service;
+(function (Service) {
+    var ServerCall = (function () {
+        function ServerCall($resource) {
+            this.Document = $resource('/api/document/:id', { id: '@id' });
+        }
+        return ServerCall;
+    })();
+    Service.ServerCall = ServerCall;
+})(Service || (Service = {}));
 var Service;
 (function (Service) {
     var SettingsService = (function () {
