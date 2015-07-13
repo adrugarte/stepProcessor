@@ -27,6 +27,7 @@ textarea {
   border: none;
   background-color:#38a3e1;
   margin-bottom:10px;
+  position:inherit;
 }
 
 .HomeTitle > a{
@@ -157,6 +158,8 @@ textarea {
 
 .options-text{
     margin-right:0;
+    color: white;
+    font-size:small; 
 }
 
 

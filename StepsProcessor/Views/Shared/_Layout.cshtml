@@ -36,7 +36,7 @@
                                 <ul class="dropdown-menu" role="menu">
                                     <li><a href="#">Permiso de trabajo</a></li>
                                     <li><a href="#">Residencia</a></li>
-                                    <li><a href="#">Ciudadania</a></li>
+                                    <li ng-class="{disabled: !authService.authentication.isAuth}"><a href="#">Ciudadania</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">Otros</a></li>
                                 </ul>
@@ -56,10 +56,10 @@
                             <div class="login-text" ng-show="!authService.authentication.isAuth">
                                 <input type="text" ng-model="logData.userName" placeholder="user" />
                                 <input type="password" ng-model="logData.password" placeholder="password" />
-                                <button class="btn-login" ng-click="login()">login</button>
+                                <button class="btn-login" ng-click="login()">Iniciar</button>
                             </div>
                             <div class="options-text navbar-right " ng-show="!authService.authentication.isAuth">
-                                <span><a href="#">Registrarse | </a><a href="#">Olvide mi contrasena</a></span>
+                                <span>Nuevo aqui?<a href="#"> Registrese</a> | <a href="#">Olvide mi contrasena</a></span>
                             </div>
                         </div>
                     </div><!-- /.navbar-collapse -->

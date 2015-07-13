@@ -47,11 +47,11 @@
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -60,6 +60,9 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.1\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin">
@@ -180,6 +183,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OnlineServiceController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
@@ -188,6 +192,7 @@
       <DependentUpon>Global-Old.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\clsUtils.cs" />
+    <Compile Include="Models\Document.cs" />
     <Compile Include="Models\onlineservice.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -197,6 +202,7 @@
     <Content Include="App\Templates\dptemplate.html" />
     <Content Include="App\Templates\onlineservices.html" />
     <Content Include="App\Templates\radiotemplate.html" />
+    <Content Include="App\Templates\uploadlist.html" />
     <Content Include="App\ThirdPartComponent\datetimepicker.js" />
     <Content Include="App\ThirdPartComponent\input_select.js" />
     <Content Include="App\View\Form.html" />
@@ -1081,11 +1087,13 @@
     <TypeScriptCompile Include="App\Controller\mainCtrl.ts" />
     <TypeScriptCompile Include="App\Directive\CommonDirectives.ts" />
     <TypeScriptCompile Include="App\Directive\datetimepicker.ts" />
+    <TypeScriptCompile Include="App\Directive\DocumentListDirective.ts" />
     <TypeScriptCompile Include="App\Directive\StepFieldGenerator.ts" />
     <TypeScriptCompile Include="App\Models\models.ts" />
     <TypeScriptCompile Include="App\Module\AuthModule.ts" />
     <TypeScriptCompile Include="App\Service\AuthService.ts" />
     <TypeScriptCompile Include="App\Service\LogedSitesService.ts" />
+    <TypeScriptCompile Include="App\Service\ServerCallService.ts" />
     <TypeScriptCompile Include="App\Service\SettingsService.ts" />
     <TypeScriptCompile Include="App\Service\SharedService.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
