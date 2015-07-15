@@ -68,5 +68,11 @@
         confirmEmail: string;
     }
 
-
+    export interface IFileToUpload {
+        File: any;
+        Decription: string;
+        Type: string;
+        Date?: string;
+        Id?: number
+    }
 }

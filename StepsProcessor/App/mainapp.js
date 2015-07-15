@@ -124,11 +124,12 @@ var StepProcessor;
             //        $templateCache.put('datetimepicker.html', response);
             //    });
             //}
-            //this.app.run(['$http', '$templateCache', loadtemplates]);
+            //// Run
             this.app.run(['$rootScope', '$location', 'authService', routechangeevent]);
             this.app.constant("moment", moment);
+            //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
-            this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', function ($scope, settingService, $rootScope) { return new head.headCtrl($scope, settingService, $rootScope); }]);
+            //// Services
             this.app.factory('ServerCall', function ($resource) {
                 return new Service.ServerCall($resource);
             });
@@ -141,6 +142,13 @@ var StepProcessor;
             this.app.service('authService', ['$window', '$http', '$q', '$location', 'logedSites', '$timeout', function ($window, $http, $q, $location, logedSites, $timeout) {
                 return new Service.authService($window, $http, $q, $location, logedSites, $timeout);
             }]);
+            this.app.service('Uploader', function ($http) {
+                return new Service.Uploader($http);
+            });
+            ///// Directives
+            this.app.directive('fileModel', function ($parse) {
+                return new Directive.fileModel($parse);
+            });
             this.app.directive('ngName', function ($interpolate) {
                 return new Directive.ngName($interpolate);
             });
@@ -153,8 +161,13 @@ var StepProcessor;
             this.app.directive('dateformatter', function ($filter) {
                 return new Directive.DateFormatter($filter);
             });
+            this.app.directive('uploadFileList', ['ServerCall', function (ServerCall) {
+                return new Directive.DocumentList(ServerCall);
+            }]);
+            ///// Controllers
+            this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', function ($scope, settingService, $rootScope) { return new head.headCtrl($scope, settingService, $rootScope); }]);
             this.app.controller('formCtrl', function ($scope, moment, template) { return new StepProcessor.formCtrl($scope, moment, template); });
-            this.app.controller('mainCtrl', function ($scope, $location, authService) { return new Controller.mainCtrl($scope, $location, authService); });
+            this.app.controller('mainCtrl', function ($scope, $location, authService, Uploader) { return new Controller.mainCtrl($scope, $location, authService, Uploader); });
         }
         return AppBuilder;
     })();
@@ -272,9 +285,10 @@ var Controller;
 var Controller;
 (function (Controller) {
     var mainCtrl = (function () {
-        function mainCtrl($scope, $location, AuthService) {
+        function mainCtrl($scope, $location, AuthService, fileUpload) {
             var self = this;
             self.scope = $scope;
+            self.scope.myFile = [];
             //self.scope.settings = SettingsService;
             self.scope.authService = AuthService;
             self.scope.logData = { password: '', userName: '' };
@@ -289,6 +303,11 @@ var Controller;
                     alert("El inicio de sesion ha fallado, las credenciales no son validas");
                 });
                 self.scope.logData = { password: "", userName: "" };
+            };
+            self.scope.upload = function () {
+                var files = self.scope.myFile;
+                var uploadUrl = 'http://www.example.com/images';
+                fileUpload.uploadFileToUrl(files, uploadUrl);
             };
         }
         return mainCtrl;
@@ -331,6 +350,27 @@ var Directive;
         return ngName;
     })();
     Directive.ngName = ngName;
+    var fileModel = (function () {
+        function fileModel($parse) {
+            this.restrict = 'A';
+            this.link = function (scope, element, attrs) {
+                var fileArray = $parse(attrs['fileModel']);
+                var modelSetter = fileArray.assign;
+                element.bind('change', function () {
+                    var files = fileArray(scope);
+                    angular.forEach(element[0].files, function (file) {
+                        var fileObj = { Id: element[0].id, File: { id: element[0].id, name: "", file: file }, Decription: "", Type: "" };
+                        files.push(fileObj);
+                    });
+                    scope.$apply(function () {
+                        modelSetter(scope, files);
+                    });
+                });
+            };
+        }
+        return fileModel;
+    })();
+    Directive.fileModel = fileModel;
 })(Directive || (Directive = {}));
 /// <reference path="../../scripts/typings/jqueryui/jqueryui.d.ts" />
 /// <reference path="../../scripts/typings/jquery.ui.datetimepicker/jquery.ui.datetimepicker.d.ts" />
@@ -385,19 +425,14 @@ var Directive;
 var Directive;
 (function (Directive) {
     var DocumentList = (function () {
-        function DocumentList(scope, ServerCall) {
-            this.templateurl = "uploadlist.html";
+        function DocumentList(ServerCall) {
+            this.templateUrl = "App/Templates/uploadlist.html";
             this.scope = {};
-            this.restict = 'EA';
+            this.restrict = 'EA';
             this.replace = true;
-            this.controller = function () {
-                ServerCall.Document.query().$promise.then(function (response) {
-                    scope.documentList = response;
-                }, function (error) {
-                    scope.documentList = [];
-                });
-            };
+            this.controller = DocumenListController;
             this.link = function (scope, elm, attr) {
+                scope.documentList = [];
                 scope.remove = function (idx) {
                 };
             };
@@ -405,6 +440,20 @@ var Directive;
         return DocumentList;
     })();
     Directive.DocumentList = DocumentList;
+    var DocumenListController = (function () {
+        function DocumenListController($element, $scope, ServerCall) {
+            this.$element = $element;
+            this.$scope = $scope;
+            ServerCall.Document.query().$promise.then(function (response) {
+                $scope.documentList = response;
+            }, function (error) {
+                $scope.documentList = [];
+            });
+        }
+        DocumenListController.$inject = ['$element', '$scope', 'ServerCall'];
+        return DocumenListController;
+    })();
+    Directive.DocumenListController = DocumenListController;
 })(Directive || (Directive = {}));
 var Authentication;
 (function (Authentication) {
@@ -778,6 +827,30 @@ var SharedService;
     })();
     SharedService.SettingsProvider = SettingsProvider;
 })(SharedService || (SharedService = {}));
+var Service;
+(function (Service) {
+    var Uploader = (function () {
+        function Uploader($http) {
+            this.uploadFileToUrl = function (files, uploadUrl) {
+                var fd = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    var file = files[i];
+                    fd.append('file', file);
+                    $http.post(uploadUrl, fd, {
+                        transformRequest: angular.identity,
+                        headers: { 'Content-Type': undefined }
+                    }).success(function (response) {
+                        alert("It worked");
+                    }).error(function () {
+                        alert("It didn't work");
+                    });
+                }
+            };
+        }
+        return Uploader;
+    })();
+    Service.Uploader = Uploader;
+})(Service || (Service = {}));
 /// <reference path="../scripts/typings/angularjs/angular.d.ts" />
 /// <reference path="app.ts" />
 new StepProcessor.AppBuilder('StepProcessorApp');

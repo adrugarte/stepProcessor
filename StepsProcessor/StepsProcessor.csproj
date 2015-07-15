@@ -1096,6 +1096,7 @@
     <TypeScriptCompile Include="App\Service\ServerCallService.ts" />
     <TypeScriptCompile Include="App\Service\SettingsService.ts" />
     <TypeScriptCompile Include="App\Service\SharedService.ts" />
+    <TypeScriptCompile Include="App\Service\UploadService.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />

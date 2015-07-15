@@ -4,14 +4,17 @@
         login: () => void;
         authService: Service.IauthService;
         logData: Models.ILoginData;
+        myFile: Models.IFileToUpload[];
+        upload: () => void;
     }
 
     export class mainCtrl{
         scope: IMainCtrlScope;
 
-        constructor($scope: IMainCtrlScope, $location:ng.ILocationService, AuthService:Service.IauthService) {
+        constructor($scope: IMainCtrlScope, $location: ng.ILocationService, AuthService: Service.IauthService, fileUpload:Service.Uploader) {
             var self = this;
             self.scope = $scope;
+            self.scope.myFile = [];
             //self.scope.settings = SettingsService;
             self.scope.authService = AuthService;
             self.scope.logData = {password:'',userName:''};    
@@ -32,6 +35,11 @@
             }
 
 
+            self.scope.upload = () => {
+                var files = self.scope.myFile;
+                var uploadUrl = 'http://www.example.com/images';
+                fileUpload.uploadFileToUrl(files, uploadUrl);
+            }
         }
 
     }

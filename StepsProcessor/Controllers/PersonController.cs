@@ -32,9 +32,8 @@ namespace StepsProcessor.Controllers
         public IHttpActionResult GetPerson(string  id)
         {
             Person person;
-            person = Session.Load<Person>(Utils.FormatPersonId(id));
+            person = Session.Load<Person>(Utils.FormatId("person",id));
             if (person == null) return NotFound();
-            
             return Ok(person);
         }
 
@@ -54,7 +53,6 @@ namespace StepsProcessor.Controllers
         }
 
         // PUT: api/Person/5
-        [Route("person/{id}")]
         public async Task<IHttpActionResult> Put(int id, [FromBody]Person person)
         {
             Session.Store(person);
@@ -63,10 +61,9 @@ namespace StepsProcessor.Controllers
         }
 
         // DELETE: api/Person/5
-        [Route("person/{id}")]
         public IHttpActionResult Delete(string id)
         {
-            var person = Session.Load<Person>(Utils.FormatPersonId(id));
+            var person = Session.Load<Person>(id);
             person.Active = false;
             Session.SaveChanges();
             return Ok();

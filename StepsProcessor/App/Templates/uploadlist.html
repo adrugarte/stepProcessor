@@ -1,7 +1,18 @@
-﻿<div class="row" ng-repeat="document in documentList">
-    <div class="col-md-2">{{document.type}}</div>
-    <div class="col-md-4">{{document.name}}</div>
-    <div class="col-md-3">{{document.notes}}</div>
-    <div class="col-md-1">{{document.date}}</div>
-    <div class="col-md-2"><a href="" ng-click="delete()"><span class="glyphicon glyphicon-remove"></span></a></div>
+﻿<div>
+    <input type="button" ng-click="Adding=true;" value="Add" />
+    <input type="button" ng-click="cancel()" value="Cancel" />
+    <input type="button" ng-click="upload()" value="Up" />
+    <div ng-show="Adding">
+        <input type="text" ng-model="file.Type" />
+        <input type="text" ng-model="file.Notes" />
+        <input type="file" file-model="UploadFile" />
+    </div>
+
+    <div class="row" ng-repeat="document in documentList">
+        <div class="col-md-2">{{document.Type}}</div>
+        <div class="col-md-4">{{document.OriginalName}}</div>
+        <div class="col-md-3">{{document.Label}}</div>
+        <div class="col-md-1">{{document.Uploaded}}</div>
+        <div class="col-md-2"><a href="" ng-click="delete()"><span class="glyphicon glyphicon-remove"></span></a></div>
+    </div>
 </div>

@@ -65,21 +65,29 @@ module StepProcessor {
             //    });
             //}
 
-            //this.app.run(['$http', '$templateCache', loadtemplates]);
+            //// Run
             this.app.run(['$rootScope', '$location','authService', routechangeevent]);
             this.app.constant("moment", moment);
+            //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
-            this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', ($scope, settingService, $rootScope) => new head.headCtrl($scope, settingService, $rootScope)]);
-            this.app.factory('ServerCall',($resource:ng.resource.IResourceService) => { return new Service.ServerCall($resource) }); 
+            //// Services
+            this.app.factory('ServerCall',($resource: ng.resource.IResourceService) => { return new Service.ServerCall($resource) }); 
             this.app.service('logedSites', ['$window', '$http', ($window, $http) => { return new Service.logedSites($window,$http) }]);
             this.app.service('settingService', ['$rootScope', '$window', ($rootScope, $window) => { return new Service.SettingsService($rootScope, $window) }]);
-            this.app.service('authService', ['$window', '$http', '$q', '$location', 'logedSites', '$timeout', ($window, $http, $q, $location, logedSites, $timeout) => { return new Service.authService($window,$http,$q,$location,logedSites,$timeout)}]);
-            this.app.directive('ngName',($interpolate:ng.IInterpolateService) => { return new Directive.ngName($interpolate); });
+            this.app.service('authService', ['$window', '$http', '$q', '$location', 'logedSites', '$timeout', ($window, $http, $q, $location, logedSites, $timeout) => { return new Service.authService($window, $http, $q, $location, logedSites, $timeout) }]);
+            this.app.service('Uploader',($http: ng.IHttpService) => { return new Service.Uploader($http) });
+            ///// Directives
+            this.app.directive('fileModel',($parse: ng.IParseService) => { return new Directive.fileModel($parse) });
+            this.app.directive('ngName',($interpolate: ng.IInterpolateService) => { return new Directive.ngName($interpolate); });
             this.app.directive('stepFieldGenerator',($compile: ng.ICompileService, $templateCache: ng.ITemplateCacheService,$parse:ng.IParseService) => { return new Directive.StepFieldGenerator($compile, $templateCache,$parse); });
             this.app.directive('spDatetimePicker',($parse: ng.IParseService) => { return new Directive.spDatetimePicker($parse); });
-            this.app.directive('dateformatter',($filter:ng.IFilterService) => { return new Directive.DateFormatter($filter); });
+            this.app.directive('dateformatter',($filter: ng.IFilterService) => { return new Directive.DateFormatter($filter); });
+            this.app.directive('uploadFileList', ['ServerCall', (ServerCall:Service.IServerCall) => { return new Directive.DocumentList(ServerCall); }]);
+
+            ///// Controllers
+            this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', ($scope, settingService, $rootScope) => new head.headCtrl($scope, settingService, $rootScope)]);
             this.app.controller('formCtrl',($scope, moment, template) => new StepProcessor.formCtrl($scope, moment, template));
-            this.app.controller('mainCtrl',($scope, $location:ng.ILocationService, authService:Service.IauthService) => new Controller.mainCtrl($scope, $location, authService));
+            this.app.controller('mainCtrl',($scope, $location: ng.ILocationService, authService: Service.IauthService, Uploader) => new Controller.mainCtrl($scope, $location, authService, Uploader));
         }
     }
 }

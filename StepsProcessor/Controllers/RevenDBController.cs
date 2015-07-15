@@ -36,8 +36,7 @@ namespace StepsProcessor.Controllers
                 docStore.RegisterListener(new UniqueConstraintsStoreListener());
                 docStore.Conventions.IdentityPartsSeparator = "-";
                 docStore.Conventions.FindTypeTagName = type => type == typeof(Person) ? "Persons" : DocumentConvention.DefaultTypeTagName(type);
-                docStore.Conventions.RegisterIdConvention<Person>((dbname, commands, person) => "person/");
-                docStore.Conventions.RegisterAsyncIdConvention<Person>((dbname, commands, person) => new CompletedTask<string>("person/"));
+                RegisterIdConventions(ref docStore);
                 return docStore;
             });
 
@@ -58,6 +57,11 @@ namespace StepsProcessor.Controllers
                 }
             }
 
+            private static void RegisterIdConventions(ref DocumentStore docStore)
+            {
+                docStore.Conventions.RegisterIdConvention<Person>((dbname, commands, person) => "person/");
+                docStore.Conventions.RegisterAsyncIdConvention<Person>((dbname, commands, person) => new CompletedTask<string>("person/"));
+            }
 
     }
 }

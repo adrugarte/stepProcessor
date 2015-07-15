@@ -8,9 +8,23 @@ namespace StepsProcessor.Helpers
 {
     public static class Utils
     {
-        public static string FormatPersonId(string Id)
+        public static string FormatId(string Object, string Id)
         {
-            return "person/" + Id;
+            return Object + "-" + Id;
         }
+
+    }
+
+    public static class Settings
+    {
+        static string _cloud;
+        static Settings()
+        {
+            _cloud = System.Configuration.ConfigurationManager.AppSettings["Cloud"];
+            if (_cloud == null) _cloud = "AmazonCloud";
+        }
+
+        public static string Cloud { get { return _cloud; } set { _cloud = "AmazonCloud"; } }
+
     }
 }

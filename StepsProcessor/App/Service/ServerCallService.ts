@@ -1,6 +1,8 @@
 ﻿module Service {
-
-    export class ServerCall {
+    export interface IServerCall {
+        Document: ng.resource.IResourceClass<any>; 
+    } 
+    export class ServerCall implements IServerCall {
         public Document: ng.resource.IResourceClass<any>;
 
         constructor($resource: ng.resource.IResourceService) {
