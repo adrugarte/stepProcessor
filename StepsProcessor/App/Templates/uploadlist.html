@@ -1,18 +1,37 @@
-﻿<div>
-    <input type="button" ng-click="Adding=true;" value="Add" />
-    <input type="button" ng-click="cancel()" value="Cancel" />
-    <input type="button" ng-click="upload()" value="Up" />
-    <div ng-show="Adding">
-        <input type="text" ng-model="file.Type" />
-        <input type="text" ng-model="file.Notes" />
-        <input type="file" file-model="UploadFile" />
+﻿<div class="document-list">
+    <input class="btn btn-default" ng-show="!Adding" type="button" ng-click="Adding=true;" value="Add" />
+    <div class="row" ng-show="Adding">
+        <!--<div class="col-md-3"><input type="file" file-model="UploadFile" /></div>-->
+        <div class="col-md-4">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <span class="btn btn-primary btn-file">
+                        Browse <input type="file">
+                    </span>
+                </span>
+                <input type="text" class="form-control" readonly />
+            </div>
+        </div>
+        <div class="col-md-8 input-group">
+            <input class=" form-control" type="text" ng-model="file.Type" placeholder="Tipo" />
+            <input class="form-control" type="text" ng-model="file.Notes" placeholder="Observaciones" />
+            <input class="btn btn-default" ng-show="Adding" type="button" ng-click="Adding=false;" value="Cancelar" />
+            <input class="btn btn-default" ng-show="Adding" type="button" ng-click="upload()" value="Guardar" />
+        </div>
     </div>
-
+    <div class="row table-header">
+        <div class="col-md-1">Tipo</div>
+        <div class="col-md-4">Archivo</div>
+        <div class="col-md-4">Comentarios</div>
+        <div class="col-md-2">Cargado</div>
+        <div class="col-md-1"></div>
+    </div>
+    <hr style="border-top-color:#e1f3fc; border-top-width:5px; border-top-style:solid;margin:0;" class="">
     <div class="row" ng-repeat="document in documentList">
-        <div class="col-md-2">{{document.Type}}</div>
+        <div class="col-md-1">{{document.Type}}</div>
         <div class="col-md-4">{{document.OriginalName}}</div>
-        <div class="col-md-3">{{document.Label}}</div>
-        <div class="col-md-1">{{document.Uploaded}}</div>
-        <div class="col-md-2"><a href="" ng-click="delete()"><span class="glyphicon glyphicon-remove"></span></a></div>
+        <div class="col-md-4">{{document.Label}}</div>
+        <div class="col-md-2">{{document.Uploaded | date: 'MM/dd/yyyy h:mma' }}</div>
+        <div class="col-md-1"><a href="" ng-click="delete()"><span class="glyphicon glyphicon-remove"></span></a></div>
     </div>
 </div>

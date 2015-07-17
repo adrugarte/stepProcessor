@@ -219,6 +219,7 @@
     <Content Include="Content\datetimepicker.css" />
     <Content Include="Content\FormGenerator.css" />
     <Content Include="Content\jquery-ui.css" />
+    <Content Include="Content\test.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
     <Content Include="Content\themes\base\autocomplete.css" />
@@ -264,6 +265,7 @@
     <Content Include="Images\liberty1.jpg" />
     <Content Include="Images\VIS_LOGO_120X120.png" />
     <Content Include="Images\VIS_LOGO_120X120_NOLETRA.png" />
+    <Content Include="main.html" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
