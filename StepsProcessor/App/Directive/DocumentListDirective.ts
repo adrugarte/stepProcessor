@@ -1,7 +1,8 @@
 ﻿module Directive {
     export interface IDocumentListDirectiveScope extends ng.IScope {
-        documentList: {}[];
+        documentList: Models.IFileToUpload[];
         remove: (idx: number) => void;
+        upload: () => void;
         UploadFile: Models.IFileToUpload;
     }
     export class DocumentList implements ng.IDirective{
@@ -17,7 +18,18 @@
 
             this.link = (scope: IDocumentListDirectiveScope, elm: ng.IAugmentedJQuery, attr: ng.IAttributes) => {
                 scope.documentList = [];
+
+                scope.upload = () => {
+                    ServerCall.Document.save(scope.UploadFile,(response) => {
+                        scope.documentList.push(response);
+                    },() => { alert("error while saving");})
+                }
+
                 scope.remove = (idx) => {
+                    ServerCall.Document.delete({ id: scope.documentList[idx].Id },
+                        (response) => {
+                            scope.documentList.slice(idx, 1);
+                        },() => { alert("error while deleting"); });
                 }
             } 
 

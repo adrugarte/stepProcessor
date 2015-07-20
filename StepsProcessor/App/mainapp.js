@@ -433,7 +433,19 @@ var Directive;
             this.controller = DocumenListController;
             this.link = function (scope, elm, attr) {
                 scope.documentList = [];
+                scope.upload = function () {
+                    ServerCall.Document.save(scope.UploadFile, function (response) {
+                        scope.documentList.push(response);
+                    }, function () {
+                        alert("error while saving");
+                    });
+                };
                 scope.remove = function (idx) {
+                    ServerCall.Document.delete({ id: scope.documentList[idx].Id }, function (response) {
+                        scope.documentList.slice(idx, 1);
+                    }, function () {
+                        alert("error while deleting");
+                    });
                 };
             };
         }

@@ -69,10 +69,13 @@
     }
 
     export interface IFileToUpload {
-        File: any;
-        Decription: string;
-        Type: string;
-        Date?: string;
         Id?: number
+        Label: any;
+        OriginalName: string;
+        Type: string;
+        Path: string;
+        Uploaded?: string;
+        Canceled?: string;
+        CustomerId: string;
     }
 }

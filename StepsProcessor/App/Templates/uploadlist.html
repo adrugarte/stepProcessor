@@ -1,12 +1,11 @@
 ﻿<div class="document-list">
-    <input class="btn btn-default" ng-show="!Adding" type="button" ng-click="Adding=true;" value="Add" />
+    <!--<input class="btn btn-default" ng-show="!Adding" type="button" ng-click="Adding=true;" value="Add" />-->
     <div class="row" ng-show="Adding">
-        <!--<div class="col-md-3"><input type="file" file-model="UploadFile" /></div>-->
         <div class="col-md-4">
             <div class="input-group">
                 <span class="input-group-btn">
                     <span class="btn btn-primary btn-file">
-                        Browse <input type="file">
+                        Browse <input type="file" ng-model="file.OriginalName">
                     </span>
                 </span>
                 <input type="text" class="form-control" readonly />
@@ -14,7 +13,7 @@
         </div>
         <div class="col-md-8 input-group">
             <input class=" form-control" type="text" ng-model="file.Type" placeholder="Tipo" />
-            <input class="form-control" type="text" ng-model="file.Notes" placeholder="Observaciones" />
+            <input class="form-control" type="text" ng-model="file.Label" placeholder="Observaciones" />
             <input class="btn btn-default" ng-show="Adding" type="button" ng-click="Adding=false;" value="Cancelar" />
             <input class="btn btn-default" ng-show="Adding" type="button" ng-click="upload()" value="Guardar" />
         </div>
