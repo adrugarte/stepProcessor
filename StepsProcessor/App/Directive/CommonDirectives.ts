@@ -41,19 +41,26 @@
 
     export class fileModel implements ng.IDirective{
         public restrict = 'A';
-        public link: (scope: ng.IScope, element, attrs: ng.IAttributes) => void;
+        public link: (scope: Directive.IDocumentListDirectiveScope , element, attrs: ng.IAttributes) => void;
         constructor($parse: ng.IParseService) {
             this.link = function (scope, element, attrs) {
-                var fileArray = $parse(attrs['fileModel']);
-                var modelSetter = fileArray.assign;
+                var fileModel = $parse(attrs['fileModel'] + ".file");
+                var modelSetter = fileModel.assign;
+
+                var fileNameModel = $parse(attrs['fileModel'] + ".OriginalName");
+                var nameSetter = fileNameModel.assign;
+
                 element.bind('change', function () {
-                    var files = fileArray(scope);
-                    angular.forEach(element[0].files, function (file) {
-                        var fileObj: Models.IFileToUpload = { Id: element[0].id, File: { id: element[0].id, name:"" , file: file }, Decription:"", Type:"" };
-                        files.push(fileObj);
-                    })
+                    //var files = fileArray(scope);
+                    var file = element[0].files[0];
+                    //angular.forEach(element[0].files, function (file) {
+                    //    var fileObj: Models.IFileToUpload = { Id: element[0].id, File: { id: element[0].id, name:"" , file: file }, Decription:"", Type:"" };
+                    //    files.push(fileObj);
+                    //})
+                    scope.Adding = true;
                     scope.$apply(function () {
-                        modelSetter(scope, files);
+                        nameSetter(scope, file.name);
+                        modelSetter(scope, file);
                     });
                 });
             }

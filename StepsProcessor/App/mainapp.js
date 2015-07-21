@@ -354,16 +354,21 @@ var Directive;
         function fileModel($parse) {
             this.restrict = 'A';
             this.link = function (scope, element, attrs) {
-                var fileArray = $parse(attrs['fileModel']);
-                var modelSetter = fileArray.assign;
+                var fileModel = $parse(attrs['fileModel'] + ".file");
+                var modelSetter = fileModel.assign;
+                var fileNameModel = $parse(attrs['fileModel'] + ".OriginalName");
+                var nameSetter = fileNameModel.assign;
                 element.bind('change', function () {
-                    var files = fileArray(scope);
-                    angular.forEach(element[0].files, function (file) {
-                        var fileObj = { Id: element[0].id, File: { id: element[0].id, name: "", file: file }, Decription: "", Type: "" };
-                        files.push(fileObj);
-                    });
+                    //var files = fileArray(scope);
+                    var file = element[0].files[0];
+                    //angular.forEach(element[0].files, function (file) {
+                    //    var fileObj: Models.IFileToUpload = { Id: element[0].id, File: { id: element[0].id, name:"" , file: file }, Decription:"", Type:"" };
+                    //    files.push(fileObj);
+                    //})
+                    scope.Adding = true;
                     scope.$apply(function () {
-                        modelSetter(scope, files);
+                        nameSetter(scope, file.name);
+                        modelSetter(scope, file);
                     });
                 });
             };
@@ -433,18 +438,25 @@ var Directive;
             this.controller = DocumenListController;
             this.link = function (scope, elm, attr) {
                 scope.documentList = [];
+                scope.Adding = false;
+                scope.documentType = [
+                    { Id: "type-1", TypeDesc: "Pasaporte" },
+                    { Id: "type-2", TypeDesc: "Social Security" },
+                    { Id: "type-3", TypeDesc: "Residencia" },
+                    { Id: "type-4", TypeDesc: "Otro" },
+                ];
                 scope.upload = function () {
-                    ServerCall.Document.save(scope.UploadFile, function (response) {
+                    ServerCall.File.save(scope.file, function (response) {
                         scope.documentList.push(response);
-                    }, function () {
-                        alert("error while saving");
+                    }, function (error) {
+                        alert("error while saving" + error);
                     });
                 };
                 scope.remove = function (idx) {
                     ServerCall.Document.delete({ id: scope.documentList[idx].Id }, function (response) {
                         scope.documentList.slice(idx, 1);
-                    }, function () {
-                        alert("error while deleting");
+                    }, function (error) {
+                        alert("error while deleting" + error);
                     });
                 };
             };
@@ -767,6 +779,7 @@ var Service;
     var ServerCall = (function () {
         function ServerCall($resource) {
             this.Document = $resource('/api/document/:id', { id: '@id' });
+            this.File = $resource('/api/file');
         }
         return ServerCall;
     })();

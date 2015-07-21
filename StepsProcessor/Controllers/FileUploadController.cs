@@ -20,7 +20,7 @@ using StepsProcessor.Helpers;
 using StepsProcessor.Controllers;
 namespace ImageWebController.Controllers
 {
-    [Authorize]
+    
     public class fileController : RavenDbController
     {
 //        private dbDataContext db = new dbDataContext();
@@ -48,26 +48,26 @@ namespace ImageWebController.Controllers
             try
             {
                 await Request.Content.ReadAsMultipartAsync(provider);
-                Document Doc = null;
-                List<Document> _fileList = new List<Document>();
-                string _url = null;
-                if (Settings.Cloud != null && Settings.Cloud == "AzureCloud")
-                {
-                    var AzConfig = Session.Load<AzureConfig>().FirstOrDefault();
-                    if (AzConfig != null) _url = AzConfig.CloudFrontUrl + "/" + AzConfig.container + "/";
-                    CloudUrl = AzConfig.EndPointProtocol + "://" + AzConfig.AzureEndPoint + "/" + AzConfig.container + "/";
-                }
-                else if (Settings.Cloud != null && Settings.Cloud == "AmazonCloud") 
-                    _url = Session.Load<AwsS3Credential>().FirstOrDefault().cloudfronturl;
-                else
-                    _url = @"C:\\Files";
+                //Document Doc = null;
+                //List<Document> _fileList = new List<Document>();
+                //string _url = null;
+                //if (Settings.Cloud != null && Settings.Cloud == "AzureCloud")
+                //{
+                //    var AzConfig = Session.Load<AzureConfig>().FirstOrDefault();
+                //    if (AzConfig != null) _url = AzConfig.CloudFrontUrl + "/" + AzConfig.container + "/";
+                //    CloudUrl = AzConfig.EndPointProtocol + "://" + AzConfig.AzureEndPoint + "/" + AzConfig.container + "/";
+                //}
+                //else if (Settings.Cloud != null && Settings.Cloud == "AmazonCloud") 
+                //    _url = Session.Load<AwsS3Credential>().FirstOrDefault().cloudfronturl;
+                //else
+                //    _url = @"C:\\Files";
 
-                if (_url == null)
-                {
-                    task = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                    task.Content = new StringContent("Error uploading files. Cloud settings are missing");
-                    return task;
-                }
+                //if (_url == null)
+                //{
+                //    task = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                //    task.Content = new StringContent("Error uploading files. Cloud settings are missing");
+                //    return task;
+                //}
                 // This illustrates how to get the file names.
                 //  Retrieven files to folder and file data
                 foreach (MultipartFileData file in provider.FileData)

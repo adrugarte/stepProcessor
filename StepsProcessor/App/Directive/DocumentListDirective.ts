@@ -3,7 +3,9 @@
         documentList: Models.IFileToUpload[];
         remove: (idx: number) => void;
         upload: () => void;
-        UploadFile: Models.IFileToUpload;
+        file: Models.IFileToUpload;
+        documentType: Models.IDocumentType[];
+        Adding: boolean;
     }
     export class DocumentList implements ng.IDirective{
         public templateUrl = "App/Templates/uploadlist.html";
@@ -18,18 +20,27 @@
 
             this.link = (scope: IDocumentListDirectiveScope, elm: ng.IAugmentedJQuery, attr: ng.IAttributes) => {
                 scope.documentList = [];
+                scope.Adding = false;
+                scope.documentType = [
+                    { Id: "type-1", TypeDesc: "Pasaporte" },
+                    { Id: "type-2", TypeDesc: "Social Security" },
+                    { Id: "type-3", TypeDesc: "Residencia" },
+                    { Id: "type-4", TypeDesc: "Otro" },
+                ]
 
                 scope.upload = () => {
-                    ServerCall.Document.save(scope.UploadFile,(response) => {
+                    ServerCall.File.save(scope.file,(response) => {
                         scope.documentList.push(response);
-                    },() => { alert("error while saving");})
+                    },(error) => {
+                            alert("error while saving" + error);
+                        })
                 }
 
                 scope.remove = (idx) => {
                     ServerCall.Document.delete({ id: scope.documentList[idx].Id },
                         (response) => {
                             scope.documentList.slice(idx, 1);
-                        },() => { alert("error while deleting"); });
+                        },(error) => { alert("error while deleting" +  error); });
                 }
             } 
 

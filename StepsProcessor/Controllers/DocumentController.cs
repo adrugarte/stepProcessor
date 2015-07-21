@@ -51,9 +51,9 @@ namespace StepsProcessor.Controllers
                 return BadRequest(ModelState);
 
             }
-            ClaimsPrincipal principal = Request.GetRequestContext().Principal as ClaimsPrincipal;
+            //ClaimsPrincipal principal = Request.GetRequestContext().Principal as ClaimsPrincipal;
             //Doc.CustomerId = principal.Identity.GetUserId();
-
+            Doc.CustomerId = "000001";
             //person.Id = string.Empty;
             //await AsyncSession.StoreAsync(person); // stores person in session, assigning it to a collection `Employees`
             Doc.Uploaded = DateTime.Now;

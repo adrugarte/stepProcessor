@@ -69,13 +69,18 @@
     }
 
     export interface IFileToUpload {
-        Id?: number
+        Id?: string;
         Label: any;
         OriginalName: string;
         Type: string;
-        Path: string;
+        Path?: string;
         Uploaded?: string;
         Canceled?: string;
-        CustomerId: string;
+        CustomerId?: string;
+    }
+
+    export interface IDocumentType {
+        Id: string;
+        TypeDesc: string;
     }
 }

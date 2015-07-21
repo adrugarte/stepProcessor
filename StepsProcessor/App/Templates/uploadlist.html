@@ -1,23 +1,26 @@
 ﻿<div class="document-list">
     <!--<input class="btn btn-default" ng-show="!Adding" type="button" ng-click="Adding=true;" value="Add" />-->
-    <div class="row" ng-show="Adding">
+    <div class="row">
         <div class="col-md-4">
             <div class="input-group">
                 <span class="input-group-btn">
                     <span class="btn btn-primary btn-file">
-                        Browse <input type="file" ng-model="file.OriginalName">
+                        Browse <input type="file" file-model="file">
                     </span>
                 </span>
-                <input type="text" class="form-control" readonly />
+                <input type="text" class="form-control" ng-model="file.OriginalName" readonly />
             </div>
         </div>
-        <div class="col-md-8 input-group">
-            <input class=" form-control" type="text" ng-model="file.Type" placeholder="Tipo" />
-            <input class="form-control" type="text" ng-model="file.Label" placeholder="Observaciones" />
-            <input class="btn btn-default" ng-show="Adding" type="button" ng-click="Adding=false;" value="Cancelar" />
-            <input class="btn btn-default" ng-show="Adding" type="button" ng-click="upload()" value="Guardar" />
+        <div class="col-md-8 input-group" ng-show="Adding">
+            <select class="form-control" ng-options="type.Id as type.TypeDesc for type in documentType" ng-model="file.Type" >
+                <option value="">--Seleccion  --</option>
+            </select>
+                <input class="form-control" type="text" ng-model="file.Label" placeholder="Observaciones" />
+                <input class="btn btn-default" type="button" ng-click="Adding=false;" value="Cancelar" />
+                <input class="btn btn-default" type="button" ng-click="upload()" value="Add" />
         </div>
     </div>
+    <hr style="border-top-color:#e1f3fc; border-top-width:5px; border-top-style:solid;margin:0;" class="">
     <div class="row table-header">
         <div class="col-md-1">Tipo</div>
         <div class="col-md-4">Archivo</div>
