@@ -15,7 +15,7 @@
         public link: ng.IDirectiveLinkFn;
         public controller;
 
-        constructor(ServerCall: Service.ServerCall) {
+        constructor(ServerCall: Service.IServerCall) {
             this.controller = DocumenListController;
 
             this.link = (scope: IDocumentListDirectiveScope, elm: ng.IAugmentedJQuery, attr: ng.IAttributes) => {
@@ -29,7 +29,11 @@
                 ]
 
                 scope.upload = () => {
-                    ServerCall.File.save(scope.file,(response) => {
+                    var fd = new FormData();
+                    angular.forEach(scope.file, function (value, key) {
+                        fd.append(key, value);
+                    })
+                    ServerCall.File.upload(fd,(response) => {
                         scope.documentList.push(response);
                     },(error) => {
                             alert("error while saving" + error);

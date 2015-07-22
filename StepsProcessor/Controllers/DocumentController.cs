@@ -43,7 +43,7 @@ namespace StepsProcessor.Controllers
             return Ok(Session.Advanced.DocumentQuery<Document>().WhereEquals(p => p.Id, id).FirstOrDefault()); ;
         }
 
-        // POST: api/OnlineService
+
         public IHttpActionResult Post(Document Doc)
         {
             if (!ModelState.IsValid)
@@ -60,6 +60,15 @@ namespace StepsProcessor.Controllers
             Session.Store(Doc);
             Session.SaveChanges();
             return Ok(Doc);
+        }
+
+        // POST: api/OnlineService
+        public Document PostDocument(Document Doc)
+        {
+            Doc.Uploaded = DateTime.Now;
+            Session.Store(Doc);
+            Session.SaveChanges();
+            return Doc;
         }
 
         // PUT: api/OnlineService/5

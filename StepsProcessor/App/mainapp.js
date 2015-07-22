@@ -446,7 +446,11 @@ var Directive;
                     { Id: "type-4", TypeDesc: "Otro" },
                 ];
                 scope.upload = function () {
-                    ServerCall.File.save(scope.file, function (response) {
+                    var fd = new FormData();
+                    angular.forEach(scope.file, function (value, key) {
+                        fd.append(key, value);
+                    });
+                    ServerCall.File.upload(fd, function (response) {
                         scope.documentList.push(response);
                     }, function (error) {
                         alert("error while saving" + error);
@@ -778,8 +782,9 @@ var Service;
 (function (Service) {
     var ServerCall = (function () {
         function ServerCall($resource) {
+            var uploadDescriptor = { method: "POST", isArray: false, transformRequest: angular.identity, headers: { 'Content-Type': undefined } };
             this.Document = $resource('/api/document/:id', { id: '@id' });
-            this.File = $resource('/api/file');
+            this.File = $resource('/api/file', {}, { upload: uploadDescriptor });
         }
         return ServerCall;
     })();

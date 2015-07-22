@@ -184,6 +184,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />
+    <Compile Include="Controllers\FileUploadController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OnlineServiceController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Global-Old.asax.cs">
       <DependentUpon>Global-Old.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\clsSetting.cs" />
     <Compile Include="Helpers\clsUtils.cs" />
     <Compile Include="Models\Document.cs" />
     <Compile Include="Models\onlineservice.cs" />

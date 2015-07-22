@@ -12,5 +12,6 @@ namespace StepsProcessor.Models
         public DateTime Uploaded { get; set; }
         public DateTime Canceled { get; set; }
         public string CustomerId { get; set; }
+        public string FileHash { get; set; }
     }
 }
