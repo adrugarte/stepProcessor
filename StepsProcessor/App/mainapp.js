@@ -448,13 +448,19 @@ var Directive;
                 scope.upload = function () {
                     var fd = new FormData();
                     angular.forEach(scope.file, function (value, key) {
-                        fd.append(key, value);
+                        if (key == "Type") {
+                            fd.append("TypeId", value["Id"]);
+                            fd.append("TypeDesc", value["TypeDesc"]);
+                        }
+                        else
+                            fd.append(key, value);
                     });
                     ServerCall.File.upload(fd, function (response) {
                         scope.documentList.push(response);
                     }, function (error) {
                         alert("error while saving" + error);
                     });
+                    scope.file = { Type: null, OriginalName: "", Label: "", file: null };
                 };
                 scope.remove = function (idx) {
                     ServerCall.Document.delete({ id: scope.documentList[idx].Id }, function (response) {

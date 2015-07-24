@@ -17,5 +17,5 @@
             this.File = <IServerCallResource<Models.IFileToUpload>> $resource('/api/file', {}, { upload: uploadDescriptor });
         }
     }
-
+    
 } 

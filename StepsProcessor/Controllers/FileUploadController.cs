@@ -78,11 +78,17 @@ namespace ImageWebController.Controllers
                     string _fileHash="";
                     Doc = new Document();
                     Doc.Path = processFile(file.LocalFileName, ref _fileHash);
+                    if (Doc.Path == null && resMessage.Length > 0)
+                    {
+                        response = Ok(new StringContent("Erro al enviar el archivo: " + '\n' + '\n' + resMessage));
+                        return response;
+                    }
                     Doc.FileHash = _fileHash;
                     Doc.Uploaded = DateTime.Now;
                     Doc.CustomerId = "0000001";
                     if (provider.FormData.AllKeys.AsParallel().Contains("OriginalName")) Doc.OriginalName = provider.FormData["OriginalName"];
-                    if (provider.FormData.AllKeys.AsParallel().Contains("Type")) Doc.Type = provider.FormData["Type"];
+                    if (provider.FormData.AllKeys.AsParallel().Contains("TypeId")) Doc.Type.Id = provider.FormData["TypeId"];
+                    if (provider.FormData.AllKeys.AsParallel().Contains("TypeDesc")) Doc.Type.TypeDesc = provider.FormData["TypeDesc"];
                     if (provider.FormData.AllKeys.AsParallel().Contains("Label")) Doc.Label = provider.FormData["Label"];
                 }
                 if (Doc != null) new DocumentController().PostDocument(Doc);
@@ -119,7 +125,7 @@ namespace ImageWebController.Controllers
             else
             {
                 var existingFileName = Session.Query<Document>().Where(d => d.FileHash == _hash && d.Canceled == null).FirstOrDefault().OriginalName;
-                //logMessage(string.Format("The file {0} already exist in the repository with name {1}", Path.GetFileName(_originalName), existingFileName));
+                logMessage(string.Format("The file {0} already exist in the repository with name {1}", Path.GetFileName(file), existingFileName));
             }
 
             return fullPath;
@@ -133,6 +139,13 @@ namespace ImageWebController.Controllers
             File.Copy(file, FilePath + Path.GetFileName(file), true);
             return FilePath + Path.GetFileName(file);
         }
+
+        private void logMessage(string text)
+        {
+            resMessage += resMessage != "" ? "" + '\n' : "";
+            resMessage += text;
+        }
+
         #endregion
 
 

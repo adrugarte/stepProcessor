@@ -72,11 +72,12 @@
         Id?: string;
         Label: any;
         OriginalName: string;
-        Type: string;
+        Type: IDocumentType;
         Path?: string;
         Uploaded?: string;
         Canceled?: string;
         CustomerId?: string;
+        file?:any
     }
 
     export interface IDocumentType {

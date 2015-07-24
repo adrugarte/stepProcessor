@@ -26,9 +26,9 @@ namespace StepsProcessor.Controllers
     public IHttpActionResult Get()
     {
         List<Document> Documents = new List<Document>();
-        Documents.Add(new Document{Id= "000001", CustomerId = "0001", Type ="Passport", Uploaded = new DateTime(2015,7,15), Label = "Pasaporte Alberto", Path = @"C:\\Files\00001.dbf", OriginalName="00001.pdf"});
-        Documents.Add(new Document{Id= "000002", CustomerId = "0001", Type ="Formulario", Uploaded = new DateTime(2015,7,15), Label = "Formualrio Alberto", Path = @"C:\\Files\00002.dbf", OriginalName="00002.pdf"});
-        Documents.Add(new Document{Id= "000003", CustomerId = "0001", Type ="Partida", Uploaded = new DateTime(2015,7,15), Label = "PArtida Alberto", Path = @"C:\\Files\00003.dbf", OriginalName="00003.pdf"});
+        Documents.Add(new Document { Id = "000001", CustomerId = "0001", Type = new DocType { Id = "type-1", TypeDesc = "Passport" }, Uploaded = new DateTime(2015, 7, 15), Label = "Pasaporte Alberto", Path = @"C:\\Files\00001.dbf", OriginalName = "00001.pdf" });
+        Documents.Add(new Document { Id = "000002", CustomerId = "0001", Type = new DocType { Id = "type-2", TypeDesc = "Formulario" }, Uploaded = new DateTime(2015, 7, 15), Label = "Formualrio Alberto", Path = @"C:\\Files\00002.dbf", OriginalName = "00002.pdf" });
+        Documents.Add(new Document { Id = "000003", CustomerId = "0001", Type = new DocType { Id = "type-3", TypeDesc = "Partida" }, Uploaded = new DateTime(2015, 7, 15), Label = "PArtida Alberto", Path = @"C:\\Files\00003.dbf", OriginalName = "00003.pdf" });
         return Ok(Documents);
     }
 

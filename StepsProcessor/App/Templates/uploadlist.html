@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="col-md-8 input-group" ng-show="Adding">
-            <select class="form-control" ng-options="type.Id as type.TypeDesc for type in documentType" ng-model="file.Type" >
+            <select class="form-control" ng-options="type as type.TypeDesc for type in documentType" ng-model="file.Type" >
                 <option value="">--Seleccion  --</option>
             </select>
                 <input class="form-control" type="text" ng-model="file.Label" placeholder="Observaciones" />
@@ -30,10 +30,10 @@
     </div>
     <hr style="border-top-color:#e1f3fc; border-top-width:5px; border-top-style:solid;margin:0;" class="">
     <div class="row" ng-repeat="document in documentList">
-        <div class="col-md-1">{{document.Type}}</div>
+        <div class="col-md-1">{{document.Type.TypeDesc}}</div>
         <div class="col-md-4">{{document.OriginalName}}</div>
         <div class="col-md-4">{{document.Label}}</div>
         <div class="col-md-2">{{document.Uploaded | date: 'MM/dd/yyyy h:mma' }}</div>
-        <div class="col-md-1"><a href="" ng-click="delete()"><span class="glyphicon glyphicon-remove"></span></a></div>
+        <div class="col-md-1"><a href="" ng-click="remove($index)"><span class="glyphicon glyphicon-remove"></span></a></div>
     </div>
 </div>

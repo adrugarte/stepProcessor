@@ -14,7 +14,7 @@ namespace StepsProcessor.Helpers
 
         private static void setFilePath(){
             if (_filePath == null) {
-                _filePath = "/Files";
+                _filePath = "Files";
             }
         }
     }
