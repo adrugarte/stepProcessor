@@ -1,0 +1,71 @@
+﻿<div bn-modals
+     ng-show="subview"
+     class="m-modals"
+     ng-switch="subview">
+
+    <!-- BEGIN: Alert Modal. -->
+    <div ng-switch-when="alert"
+         ng-controller="AlertModalViewController"
+         class="modal">
+
+        <p>
+            {{ message }}
+        </p>
+
+        <p>
+            <a ng-click="close()">Ok, I got it!</a>
+        </p>
+
+        <!-- This is to demonstrate that we can jump from one modal to another. -->
+        <p>
+            <a ng-click="jumpToConfirm()" class="jump">Jump over to the confirm modal</a>
+        </p>
+
+    </div>
+    <!-- END: Alert Modal. -->
+    <!-- BEGIN: Confirm Modal. -->
+    <div ng-switch-when="confirm"
+         ng-controller="ConfirmModalController"
+         class="modal">
+
+        <p>
+            {{ message }}
+        </p>
+
+        <p>
+            <a ng-click="confirm()">{{ confirmButton }}</a>
+            &mdash;
+            <a ng-click="deny()">{{ denyButton }}</a>
+        </p>
+
+    </div>
+    <!-- END: Confirm Modal. -->
+    <!-- BEGIN: Prompt Modal. -->
+    <form ng-switch-when="prompt"
+          ng-controller="PromptModalController"
+          ng-submit="submit()"
+          class="modal">
+
+        <p>
+            {{ message }}
+        </p>
+
+        <p ng-if="errorMessage">
+            <strong>Sorry:</strong> {{ errorMessage }}
+        </p>
+
+        <p>
+            <input type="text" ng-model="form.input" />
+        </p>
+
+        <p>
+            <a ng-click="submit()">Submit</a>
+            &mdash;
+            <a ng-click="cancel()">Cancel</a>
+        </p>
+
+    </form>
+    <!-- END: Prompt Modal. -->
+
+</div>
+

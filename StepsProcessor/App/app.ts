@@ -46,7 +46,7 @@ module StepProcessor {
                 //}).
                     otherwise({ redirectTo: '/' });
 
-                //$httpProvider.interceptors.push('AuthInterceptorService');
+                $httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
 
@@ -64,16 +64,16 @@ module StepProcessor {
             //        $templateCache.put('datetimepicker.html', response);
             //    });
             //}
-
             //// Run
             this.app.run(['$rootScope', '$location','authService', routechangeevent]);
             this.app.constant("moment", moment);
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             //// Services
+            this.app.service('AuthInterceptorService', ['$q', '$location', '$injector','settingService',($q: ng.IQService, $location: ng.ILocationService, $injector, settingService: Service.ISettingService) => { return new Service.CallBackInterceptorService($q, $location, $injector, settingService);}])
             this.app.factory('ServerCall',($resource: ng.resource.IResourceService) => { return new Service.ServerCall($resource) }); 
             this.app.service('logedSites', ['$window', '$http', ($window, $http) => { return new Service.logedSites($window,$http) }]);
-            this.app.service('settingService', ['$rootScope', '$window', ($rootScope, $window) => { return new Service.SettingsService($rootScope, $window) }]);
+            this.app.service('settingService', ['$rootScope', '$window', ($rootScope, $window) => { return new Service.settingService() }]);
             this.app.service('authService', ['$window', '$http', '$q', '$location', 'logedSites', '$timeout', ($window, $http, $q, $location, logedSites, $timeout) => { return new Service.authService($window, $http, $q, $location, logedSites, $timeout) }]);
             this.app.service('Uploader',($http: ng.IHttpService) => { return new Service.Uploader($http) });
             ///// Directives

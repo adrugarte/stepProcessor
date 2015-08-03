@@ -108,7 +108,7 @@ var StepProcessor;
                         }
                     }
                 }).when('/image', { templateUrl: '/App/View/imagetest.html' }).when('/login', { controller: 'logonCtrl', templateUrl: '/App/View/login.html' }).otherwise({ redirectTo: '/' });
-                //$httpProvider.interceptors.push('AuthInterceptorService');
+                $httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
             var routechangeevent = function ($rootScope, $location, authService) {
@@ -130,6 +130,9 @@ var StepProcessor;
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             //// Services
+            this.app.service('AuthInterceptorService', ['$q', '$location', '$injector', 'settingService', function ($q, $location, $injector, settingService) {
+                return new Service.CallBackInterceptorService($q, $location, $injector, settingService);
+            }]);
             this.app.factory('ServerCall', function ($resource) {
                 return new Service.ServerCall($resource);
             });
@@ -137,7 +140,7 @@ var StepProcessor;
                 return new Service.logedSites($window, $http);
             }]);
             this.app.service('settingService', ['$rootScope', '$window', function ($rootScope, $window) {
-                return new Service.SettingsService($rootScope, $window);
+                return new Service.settingService();
             }]);
             this.app.service('authService', ['$window', '$http', '$q', '$location', 'logedSites', '$timeout', function ($window, $http, $q, $location, logedSites, $timeout) {
                 return new Service.authService($window, $http, $q, $location, logedSites, $timeout);
@@ -309,11 +312,93 @@ var Controller;
                 var uploadUrl = 'http://www.example.com/images';
                 fileUpload.uploadFileToUrl(files, uploadUrl);
             };
+            //self.scope.alertSomething = function () {
+            //    // The .open() method returns a promise that will be either
+            //    // resolved or rejected when the modal window is closed.
+            //    var promise = modals.open("alert",
+            //        {
+            //            message: "I think you are kind of beautiful!"
+            //        },false);
+            //    promise.then(
+            //        function handleResolve(response) {
+            //            console.log("Alert resolved.");
+            //        },
+            //        function handleReject(error) {
+            //            console.warn("Alert rejected!");
+            //        }
+            //        );
+            //};
         }
         return mainCtrl;
     })();
     Controller.mainCtrl = mainCtrl;
 })(Controller || (Controller = {}));
+var Controller;
+(function (Controller) {
+    var AlertModalView = (function () {
+        function AlertModalView($scope, modals) {
+            var self = this;
+            self.scope = $scope;
+            // Setup default values using modal params.
+            self.scope.message = (modals.params().message || "Whoa!");
+            // ---
+            // PUBLIC METHODS.
+            // ---
+            // Wire the modal buttons into modal resolution actions.
+            self.scope.close = modals.resolve;
+            self.scope.jumpToConfirm = function () {
+                // We could have used the .open() method to jump from one modal
+                // to the next; however, that would have implicitly "rejected" the
+                // current modal. By using .proceedTo(), we open the next window, but
+                // defer the resolution of the current modal until the subsequent
+                // modal is resolved or rejected.
+                modals.proceedTo("confirm", {
+                    message: "I just came from Alert - doesn't that blow your mind?",
+                    confirmButton: "Eh, maybe a little",
+                    denyButton: "Oh please"
+                }).then(function handleResolve() {
+                    console.log("Piped confirm resolved.");
+                }, function handleReject() {
+                    console.warn("Piped confirm rejected.");
+                });
+            };
+        }
+        return AlertModalView;
+    })();
+    Controller.AlertModalView = AlertModalView;
+})(Controller || (Controller = {}));
+var Directive;
+(function (Directive) {
+    var bindModalView = (function () {
+        function bindModalView($rootScope, modals) {
+            this.link = function (scope, element, attrs) {
+                // I define which modal window is being rendered. By convention,
+                // the subview will be the same as the type emitted by the modals
+                // service object.
+                scope.subview = null;
+                // If the user clicks directly on the backdrop (ie, the modals
+                // container), consider that an escape out of the modal, and reject
+                // it implicitly.
+                element.on("click", function handleClickEvent(event) {
+                    if (element[0] !== event.target) {
+                        return;
+                    }
+                    scope.$apply(modals.reject);
+                });
+                // Listen for "open" events emitted by the modals service object.
+                $rootScope.$on("modals.open", function handleModalOpenEvent(event, modalType) {
+                    scope.subview = modalType;
+                });
+                // Listen for "close" events emitted by the modals service object.
+                $rootScope.$on("modals.close", function handleModalCloseEvent(event) {
+                    scope.subview = null;
+                });
+            };
+        }
+        return bindModalView;
+    })();
+    Directive.bindModalView = bindModalView;
+})(Directive || (Directive = {}));
 var Directive;
 (function (Directive) {
     var DateFormatter = (function () {
@@ -696,6 +781,58 @@ var Service;
 //AppoinmentApp.service('authService', ['$window', '$http', '$q', '$location','logedSites','$timeout', site.authService]);
 var Service;
 (function (Service) {
+    var CallBackInterceptorService = (function () {
+        function CallBackInterceptorService($q, $location, $injector, settingService) {
+            function url_domain(data) {
+                var a = document.createElement('a');
+                a.href = data;
+                return a.hostname;
+            }
+            this.request = function (config) {
+                if (config.url.match("^/token|.html"))
+                    return config; //|| config.url.match("$.html")
+                var deferred = $q.defer();
+                //console.info("Token is Refreshing.? " + IsTokenRefreshing + " | " + config.url)
+                config.headers = config.headers || {};
+                //if its an api call we check for a ApiBaseURL, it returns something only in case Api is hosted in a diferent site
+                if (config.url.match("^/api"))
+                    config.url = settingService.apiBaseUrl("") + config.url;
+                // if url starts with / then use $location.absUrl() to get domain
+                var domain = (config.url.match("^/")) ? $location.absUrl() : (config.url.match("^http") ? config.url : null);
+                // if there is a valid URL
+                if (domain)
+                    domain = url_domain(domain);
+                var logedSites = $injector.get('logedSites');
+                // Check if token exist for the domain and refresh it
+                if (domain && logedSites.contain(domain) && logedSites.authdata(domain).useRefreshToken) {
+                    var authService = $injector.get('authService');
+                    authService.refreshToken(domain).then(function () {
+                        config.headers.Authorization = 'Bearer ' + logedSites.authdata(domain).token;
+                        deferred.resolve(config);
+                    });
+                }
+                else
+                    deferred.resolve(config);
+                config.domain = domain;
+                return deferred.promise;
+            };
+            this.responseError = function (rejection) {
+                if (rejection.status === 401) {
+                    var authService = $injector.get('authService');
+                    authService.logOut("");
+                    $location.path('/login');
+                }
+                return $q.reject(rejection);
+            };
+        }
+        CallBackInterceptorService.$inject = ['$q', '$location', '$injector', 'settingService'];
+        return CallBackInterceptorService;
+    })();
+    Service.CallBackInterceptorService = CallBackInterceptorService;
+})(Service || (Service = {}));
+//AppoinmentApp.service('AuthInterceptorService', ['$q', '$location', '$injector', 'settingService', site.authInterceptorService]);
+var Service;
+(function (Service) {
     var logedSites = (function () {
         function logedSites($window, $http) {
             var _this = this;
@@ -786,6 +923,74 @@ var Service;
 //AppoinmentApp.service('logedSites', ['$window', '$http', '$q', '$location', site.logedSites]);
 var Service;
 (function (Service) {
+    var modalWindowService = (function () {
+        function modalWindowService($rootScope, $q) {
+            var _this = this;
+            var modal = { deferred: null, params: null };
+            this.open = function (type, params, pipeResponse) {
+                var previousDeferred = modal.deferred;
+                // Setup the new modal instance properties.
+                modal.deferred = $q.defer();
+                modal.params = params;
+                // We're going to pipe the new window response into the previous
+                // window's deferred value.
+                if (previousDeferred && pipeResponse) {
+                    modal.deferred.promise.then(previousDeferred.resolve, previousDeferred.reject);
+                }
+                else if (previousDeferred) {
+                    previousDeferred.reject();
+                }
+                // Since the service object doesn't (and shouldn't) have any direct
+                // reference to the DOM, we are going to use events to communicate
+                // with a directive that will help manage the DOM elements that
+                // render the modal windows.
+                // --
+                // NOTE: We could have accomplished this with a $watch() binding in
+                // the directive; but, that would have been a poor choice since it
+                // would require a chronic watching of acute application events.
+                $rootScope.$emit("modals.open", type);
+                return (modal.deferred.promise);
+            };
+            // I return the params associated with the current params.
+            this.params = function () {
+                return (modal.params || {});
+            };
+            // I open a modal window with the given type and pipe the new window's
+            // response into the current window's response without rejecting it
+            // outright.
+            // --
+            // This is just a convenience method for .open() that enables the
+            // pipeResponse flag; it helps to make the workflow more intuitive.
+            this.proceedTo = function (type, params) {
+                return (_this.open(type, params, true));
+            };
+            // I reject the current modal with the given reason.
+            this.reject = function (reason) {
+                if (!modal.deferred) {
+                    return;
+                }
+                modal.deferred.reject(reason);
+                modal.deferred = modal.params = null;
+                // Tell the modal directive to close the active modal window.
+                $rootScope.$emit("modals.close");
+            };
+            // I resolve the current modal with the given response.
+            this.resolve = function (response) {
+                if (!modal.deferred) {
+                    return;
+                }
+                modal.deferred.resolve(response);
+                modal.deferred = modal.params = null;
+                // Tell the modal directive to close the active modal window.
+                $rootScope.$emit("modals.close");
+            };
+        }
+        return modalWindowService;
+    })();
+    Service.modalWindowService = modalWindowService;
+})(Service || (Service = {}));
+var Service;
+(function (Service) {
     var ServerCall = (function () {
         function ServerCall($resource) {
             var uploadDescriptor = { method: "POST", isArray: false, transformRequest: angular.identity, headers: { 'Content-Type': undefined } };
@@ -798,30 +1003,18 @@ var Service;
 })(Service || (Service = {}));
 var Service;
 (function (Service) {
-    var SettingsService = (function () {
-        function SettingsService($scope, $windows) {
-            $windows.scopes = $windows.scopes || [];
-            $windows.scopes.push($scope);
-            if (!$windows.SettingsService) {
-                $windows.SettingsService = {
-                    contactphone: "786 413 7596"
-                };
-            }
-            this.contactphone = function () {
-                return $windows.SettingsService.contactphone;
-            };
-            this.setcontactphone = function (phone) {
-                $windows.SettingsService.contactphone = phone;
-                angular.forEach($windows.scopes, function (_scope) {
-                    if (!_scope.$$phase) {
-                        _scope.$apply();
-                    }
-                });
+    var settingService = (function () {
+        function settingService() {
+            var _apiBaseUrl = "";
+            this.apiBaseUrl = function (url) {
+                if (url)
+                    _apiBaseUrl = url;
+                return _apiBaseUrl;
             };
         }
-        return SettingsService;
+        return settingService;
     })();
-    Service.SettingsService = SettingsService;
+    Service.settingService = settingService;
 })(Service || (Service = {}));
 var SharedService;
 (function (SharedService) {

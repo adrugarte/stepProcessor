@@ -84,4 +84,11 @@
         Id: string;
         TypeDesc: string;
     }
+
+    export interface IModalViewScope extends ng.IScope {
+        message: string;
+        close: any;
+        jumpToConfirm: () => void;
+        subview:any;
+    }
 }

@@ -4,14 +4,14 @@
 module head{
     export interface IheadCtrlScope extends ng.IScope {
         template: string;
-        settings: Service.ISettingsService;
+        settings: Models.ISettingsService;
         change: () => void;
         refresh: () => void;
     }
 
     export class headCtrl{
         scope: IheadCtrlScope;
-        constructor($scope: IheadCtrlScope, SettingsService: Service.ISettingsService, $rootScope: ng.IScope) {
+        constructor($scope: IheadCtrlScope, SettingsService: Models.ISettingsService, $rootScope: ng.IScope) {
             var self = this;
             self.scope = $scope;
             self.scope.template = "App/View/head.html";

@@ -30,6 +30,7 @@ namespace ImageWebController.Controllers
         private string CloudUrl = "";
 
         // Post api/file
+        [Authorize]
         [HttpPost, Route("api/file")]
         public async Task<IHttpActionResult> UploadFile()
         {

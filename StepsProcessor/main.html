@@ -3,18 +3,56 @@
 <head>
     <title></title>
     <link href="Content/bootstrap.css" rel="stylesheet" />
-    <link href="Content/test.css" rel="stylesheet" />
+    <!--<link href="Content/test.css" rel="stylesheet" />-->
+
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+
 </head>
 <body>
-    <div class="input-group">
+    <!--<div class="input-group">
         <span class="input-group-btn">
             <span class="btn btn-default btn-file">
                 Browse <input type="file">
             </span>
         </span>
         <input type="text" class="form-control" readonly />
+        <a id="popover" href="">Show Popover</a>
+    </div>-->
+
+    <div class="bs-example">
+        <button type="button" class="btn btn-primary" data-toggle="popover" title="Popover title" data-content="Default popover">Popover</button>
+        <button type="button" class="btn btn-success" data-toggle="popover" title="Popover title" data-content="Another popover">Another popover</button>
+        <button type="button" class="btn btn-info" data-toggle="popover" title="Popover title" data-content="A larger popover to demonstrate the max-width of the Bootstrap popover.">Large popover</button>
+        <button type="button" class="btn btn-warning" data-toggle="popover" title="Popover title" data-content="The last popover!">Last popover</button>
     </div>
+
+    <div>
+        <a tabindex="0" class="" data-toggle="popover" data-trigger="hover" data-content="And here's some amazing content. It's very engaging. Right?">Dismissible popover</a>
+    </div>
+
+    <div>
+        <a id="btnpopover" href="">Dismissible popover</a>
+    </div>
+
     <script src="Scripts/jquery-2.1.3.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
+    <script>
+        $('document').ready(function () {
+            $('[data-toggle="popover"]').popover({
+                placement: 'bottom'
+            });
+
+            var options = { content: 'Helo this is a popover', placement: 'bottom'}
+            $("#btnpopover").popover(options);
+            $("#btnpopover").on("click", ShowPopOver);
+            function ShowPopOver() {
+                $("#btnpopover").popover('show');
+            };
+
+        })
+    </script>
 </body>
 </html>

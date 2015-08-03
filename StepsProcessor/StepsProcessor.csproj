@@ -202,6 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\Templates\dptemplate.html" />
+    <Content Include="App\Templates\modalView.html" />
     <Content Include="App\Templates\onlineservices.html" />
     <Content Include="App\Templates\radiotemplate.html" />
     <Content Include="App\Templates\uploadlist.html" />
@@ -1089,6 +1090,8 @@
     <TypeScriptCompile Include="App\Controller\headCtrl.ts" />
     <TypeScriptCompile Include="App\Controller\loginCtrl.ts" />
     <TypeScriptCompile Include="App\Controller\mainCtrl.ts" />
+    <TypeScriptCompile Include="App\Controller\modalViewCtrl.ts" />
+    <TypeScriptCompile Include="App\Directive\bindModalViewDirective.ts" />
     <TypeScriptCompile Include="App\Directive\CommonDirectives.ts" />
     <TypeScriptCompile Include="App\Directive\datetimepicker.ts" />
     <TypeScriptCompile Include="App\Directive\DocumentListDirective.ts" />
@@ -1096,7 +1099,9 @@
     <TypeScriptCompile Include="App\Models\models.ts" />
     <TypeScriptCompile Include="App\Module\AuthModule.ts" />
     <TypeScriptCompile Include="App\Service\AuthService.ts" />
+    <TypeScriptCompile Include="App\Service\CallbackInterceptorService.ts" />
     <TypeScriptCompile Include="App\Service\LogedSitesService.ts" />
+    <TypeScriptCompile Include="App\Service\modalwindowService.ts" />
     <TypeScriptCompile Include="App\Service\ServerCallService.ts" />
     <TypeScriptCompile Include="App\Service\SettingsService.ts" />
     <TypeScriptCompile Include="App\Service\SharedService.ts" />
