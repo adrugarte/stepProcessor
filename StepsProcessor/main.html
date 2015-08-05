@@ -23,7 +23,7 @@
     </div>-->
 
     <div class="bs-example">
-        <button type="button" class="btn btn-primary" data-toggle="popover" title="Popover title" data-content="Default popover">Popover</button>
+        <button type="button" class="btn btn-primary" data-toggle="popover" title="Popover title" data-content="Default popover" data-placement="bottom">Popover</button>
         <button type="button" class="btn btn-success" data-toggle="popover" title="Popover title" data-content="Another popover">Another popover</button>
         <button type="button" class="btn btn-info" data-toggle="popover" title="Popover title" data-content="A larger popover to demonstrate the max-width of the Bootstrap popover.">Large popover</button>
         <button type="button" class="btn btn-warning" data-toggle="popover" title="Popover title" data-content="The last popover!">Last popover</button>
@@ -39,18 +39,17 @@
 
     <script src="Scripts/jquery-2.1.3.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
+    <!--<script src="Scripts/angular.min.js"></script>-->
     <script>
         $('document').ready(function () {
-            $('[data-toggle="popover"]').popover({
-                placement: 'bottom'
-            });
+            $('[data-toggle="popover"]').popover();
 
-            var options = { content: 'Helo this is a popover', placement: 'bottom'}
-            $("#btnpopover").popover(options);
-            $("#btnpopover").on("click", ShowPopOver);
-            function ShowPopOver() {
-                $("#btnpopover").popover('show');
-            };
+            //var options = { content: 'Helo this is a popover', placement: 'bottom'}
+            //$("#btnpopover").popover(options);
+            //$("#btnpopover").on("click", ShowPopOver);
+            //function ShowPopOver() {
+            //    $("#btnpopover").popover('show');
+            //};
 
         })
     </script>

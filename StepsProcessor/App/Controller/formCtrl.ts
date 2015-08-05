@@ -1,4 +1,4 @@
-﻿module StepProcessor {
+﻿module Controller {
     export interface IformCtrlScope extends ng.IScope {
         FormFields: Array<any>;
         Genres: Array<any>;
@@ -8,7 +8,7 @@
 
     export class formCtrl {
         scope: IformCtrlScope;
-        constructor($scope: IformCtrlScope, moment: any, template) {
+        constructor($scope: IformCtrlScope, moment: any, $location: ng.ILocationService, authService: Service.IauthService, Uploader: Service.Uploader, template) {
 
             moment.locale('en');
             var self = this;

@@ -1,25 +1,19 @@
-﻿module SharedService {
+﻿module Service {
     "use strict";
-    export class AppBuilder {
-        app: ng.IModule;
-        constructor(name: string) {
-            var _contactphone = "777 777 7777";
-            var m = {
-                contactPhone: () => { return _contactphone; },
-                changePhone: (phone: string) => {
-                    _contactphone = phone;
-                }
+    export class Resolver {
+        mainCtrl:()=> any;
+        constructor($q:ng.IQService) {
+            this.mainCtrl = () => {
+                    var deferred = $q.defer<any>();
+                    $.getJSON("App/Texts/OnlineServices.json", function (jsondata) {
+                        deferred.resolve(jsondata);
+                    });
+                    return deferred.promise;
             }
-
-            this.app = angular.module(name, ["ngRoute","ngResource"]);
-            this.app.provider('$Settings',['$window','$rootScope', SettingsProvider]);
         }
     }
 
-    //interface IGreetingService {
-    //    getGreeting: () => string;
-    //}
-
+ 
 
     export class SettingsProvider implements ng.IServiceProvider {
         public $get;

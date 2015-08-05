@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/modernizr")*@
     <script src="~/Scripts/moment.js"></script>
     <script src="~/Scripts/moment-with-locales.js"></script>
-    @*<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">*@
 </head>
 <body ng-app="StepProcessorApp">
     @*<div class="navbar navbar-header navbar-fixed-top">
@@ -21,10 +20,10 @@
             </div>
         </div>*@
     <div class="container main">
-        <div class="customhead" ng-app="headApp" ng-controller="headCtrl">
+        <div class="customhead">
             <div ng-include="template"></div>
         </div>
-        <div ng-controller="mainCtrl">
+        <div>
             <nav class="navbar navbar-default mnubar">
                 <div class="container-fluid">
                     <!-- Collect the nav links, forms, and other content for toggling -->

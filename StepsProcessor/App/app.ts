@@ -23,41 +23,48 @@ module StepProcessor {
                     $templateCache.put("datetimepicker.html", templates[0].data);
                     $templateCache.put("radio.html", templates[1].data);
                     call.resolve();
-                });
+                }, function () { call.reject(); });
                 return call.promise;
+            }
 
+            var mainRoute: ng.route.IRoute = {
+                controller: 'mainCtrl',
+                templateUrl: '/App/View/index.html',
+                resolve: {
+                    'content': function (Resolver:Service.Resolver) {return Resolver.mainCtrl();}
+                }
+            }
+
+            var formRoute: ng.route.IRoute = {
+                controller: 'formCtrl',
+                templateUrl: '/App/View/Form.html',
+                resolve: {
+                    "template": function ($q: ng.IQService, $http: ng.IHttpService, $templateCache: ng.ITemplateCacheService) {
+                        return loadtemplates($q, $http, $templateCache);
+                    }
+                }
             }
 
             var config = ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider) => {
-                $routeProvider.when('/', { controller: 'mainCtrl', templateUrl: '/App/View/index.html' }).
-                    when('/form', {
-                    controller: 'formCtrl',
-                    templateUrl: '/App/View/Form.html',
-                    resolve: {
-                        "template": function ($q: ng.IQService, $http: ng.IHttpService, $templateCache: ng.ITemplateCacheService) {
-                            return loadtemplates($q,$http,$templateCache);
-                        }
-                    }
-                    }).
+                $routeProvider.
+                    when('/', mainRoute).
+                    when('/form', formRoute).
                     when('/image', { templateUrl: '/App/View/imagetest.html' }).
                     when('/login', {controller:'logonCtrl', templateUrl: '/App/View/login.html' }).
-                //    when('/mainmenu', { templateUrl: '/App/Views/mainmenu.html' }).
-                //    when('/main/:Action', {controller: 'ImageCtrl', templateUrl: '/App/Views/contentlist.html', reloadOnSearch: false
-                //}).
                     otherwise({ redirectTo: '/' });
 
                 $httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
 
-            var routechangeevent = ($rootScope: ng.IScope, $location: ng.ILocationService, authService: Service.IauthService) => {
-                $rootScope.$on('$routeChangeStart',(event, next, current) => {
-                    if (authService.requireLogin(next.$$route.originalPath) && authService.authentication.isAuth !== true) {
-                        event.preventDefault();
-                        alert("Please login before continue");
-                    }
-                });
-            };
+            //var routechangeevent = ($rootScope: ng.IScope, $location: ng.ILocationService, authService: Service.IauthService) => {
+            //    $rootScope.$on('$routeChangeStart',(event, next, current) => {
+            //        if (authService.requireLogin(next.$$route.originalPath) && authService.authentication.isAuth !== true) {
+            //            event.preventDefault();
+            //            alert("Please login before continue");
+            //        }
+            //    });
+            //};
 
             //var loadtemplates = ($http: ng.IHttpService, $templateCache:ng.ITemplateCacheService) => {
             //    $http.get('App/templates/templates.html').success(function (response:any) {
@@ -65,11 +72,12 @@ module StepProcessor {
             //    });
             //}
             //// Run
-            this.app.run(['$rootScope', '$location','authService', routechangeevent]);
+            //this.app.run(['$rootScope', '$location','authService', routechangeevent]);
             this.app.constant("moment", moment);
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             //// Services
+            this.app.service('Resolver', ['$q', ($q: ng.IQService) => { return new Service.Resolver($q); }])
             this.app.service('AuthInterceptorService', ['$q', '$location', '$injector','settingService',($q: ng.IQService, $location: ng.ILocationService, $injector, settingService: Service.ISettingService) => { return new Service.CallBackInterceptorService($q, $location, $injector, settingService);}])
             this.app.factory('ServerCall',($resource: ng.resource.IResourceService) => { return new Service.ServerCall($resource) }); 
             this.app.service('logedSites', ['$window', '$http', ($window, $http) => { return new Service.logedSites($window,$http) }]);
@@ -77,6 +85,7 @@ module StepProcessor {
             this.app.service('authService', ['$window', '$http', '$q', '$location', 'logedSites', '$timeout', ($window, $http, $q, $location, logedSites, $timeout) => { return new Service.authService($window, $http, $q, $location, logedSites, $timeout) }]);
             this.app.service('Uploader',($http: ng.IHttpService) => { return new Service.Uploader($http) });
             ///// Directives
+            this.app.directive('bsInit',($parse:ng.IParseService) => { return new Directive.bsInit($parse); });
             this.app.directive('fileModel',($parse: ng.IParseService) => { return new Directive.fileModel($parse) });
             this.app.directive('ngName',($interpolate: ng.IInterpolateService) => { return new Directive.ngName($interpolate); });
             this.app.directive('stepFieldGenerator',($compile: ng.ICompileService, $templateCache: ng.ITemplateCacheService,$parse:ng.IParseService) => { return new Directive.StepFieldGenerator($compile, $templateCache,$parse); });
@@ -86,8 +95,8 @@ module StepProcessor {
 
             ///// Controllers
             this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', ($scope, settingService, $rootScope) => new head.headCtrl($scope, settingService, $rootScope)]);
-            this.app.controller('formCtrl',($scope, moment, template) => new StepProcessor.formCtrl($scope, moment, template));
-            this.app.controller('mainCtrl',($scope, $location: ng.ILocationService, authService: Service.IauthService, Uploader) => new Controller.mainCtrl($scope, $location, authService, Uploader));
+            this.app.controller('formCtrl',($scope, moment, $location: ng.ILocationService, authService: Service.IauthService, Uploader: Service.Uploader, template) => new Controller.formCtrl($scope, moment, $location, authService, Uploader, template));
+            this.app.controller('mainCtrl',($scope:Controller.IMainCtrlScope, $location: ng.ILocationService, authService: Service.IauthService, Uploader:Service.Uploader, content) => new Controller.mainCtrl($scope, $location, authService, Uploader, content));
         }
     }
 }

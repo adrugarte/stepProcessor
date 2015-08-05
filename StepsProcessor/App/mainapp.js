@@ -95,41 +95,56 @@ var StepProcessor;
                     $templateCache.put("datetimepicker.html", templates[0].data);
                     $templateCache.put("radio.html", templates[1].data);
                     call.resolve();
+                }, function () {
+                    call.reject();
                 });
                 return call.promise;
             };
-            var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', { controller: 'mainCtrl', templateUrl: '/App/View/index.html' }).when('/form', {
-                    controller: 'formCtrl',
-                    templateUrl: '/App/View/Form.html',
-                    resolve: {
-                        "template": function ($q, $http, $templateCache) {
-                            return loadtemplates($q, $http, $templateCache);
-                        }
+            var mainRoute = {
+                controller: 'mainCtrl',
+                templateUrl: '/App/View/index.html',
+                resolve: {
+                    'content': function (Resolver) {
+                        return Resolver.mainCtrl();
                     }
-                }).when('/image', { templateUrl: '/App/View/imagetest.html' }).when('/login', { controller: 'logonCtrl', templateUrl: '/App/View/login.html' }).otherwise({ redirectTo: '/' });
+                }
+            };
+            var formRoute = {
+                controller: 'formCtrl',
+                templateUrl: '/App/View/Form.html',
+                resolve: {
+                    "template": function ($q, $http, $templateCache) {
+                        return loadtemplates($q, $http, $templateCache);
+                    }
+                }
+            };
+            var config = function ($routeProvider, $locationProvider, $httpProvider) {
+                $routeProvider.when('/', mainRoute).when('/form', formRoute).when('/image', { templateUrl: '/App/View/imagetest.html' }).when('/login', { controller: 'logonCtrl', templateUrl: '/App/View/login.html' }).otherwise({ redirectTo: '/' });
                 $httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
-            var routechangeevent = function ($rootScope, $location, authService) {
-                $rootScope.$on('$routeChangeStart', function (event, next, current) {
-                    if (authService.requireLogin(next.$$route.originalPath) && authService.authentication.isAuth !== true) {
-                        event.preventDefault();
-                        alert("Please login before continue");
-                    }
-                });
-            };
+            //var routechangeevent = ($rootScope: ng.IScope, $location: ng.ILocationService, authService: Service.IauthService) => {
+            //    $rootScope.$on('$routeChangeStart',(event, next, current) => {
+            //        if (authService.requireLogin(next.$$route.originalPath) && authService.authentication.isAuth !== true) {
+            //            event.preventDefault();
+            //            alert("Please login before continue");
+            //        }
+            //    });
+            //};
             //var loadtemplates = ($http: ng.IHttpService, $templateCache:ng.ITemplateCacheService) => {
             //    $http.get('App/templates/templates.html').success(function (response:any) {
             //        $templateCache.put('datetimepicker.html', response);
             //    });
             //}
             //// Run
-            this.app.run(['$rootScope', '$location', 'authService', routechangeevent]);
+            //this.app.run(['$rootScope', '$location','authService', routechangeevent]);
             this.app.constant("moment", moment);
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             //// Services
+            this.app.service('Resolver', ['$q', function ($q) {
+                return new Service.Resolver($q);
+            }]);
             this.app.service('AuthInterceptorService', ['$q', '$location', '$injector', 'settingService', function ($q, $location, $injector, settingService) {
                 return new Service.CallBackInterceptorService($q, $location, $injector, settingService);
             }]);
@@ -149,6 +164,9 @@ var StepProcessor;
                 return new Service.Uploader($http);
             });
             ///// Directives
+            this.app.directive('bsInit', function ($parse) {
+                return new Directive.bsInit($parse);
+            });
             this.app.directive('fileModel', function ($parse) {
                 return new Directive.fileModel($parse);
             });
@@ -169,8 +187,8 @@ var StepProcessor;
             }]);
             ///// Controllers
             this.app.controller('headCtrl', ['$scope', 'settingService', '$rootScope', function ($scope, settingService, $rootScope) { return new head.headCtrl($scope, settingService, $rootScope); }]);
-            this.app.controller('formCtrl', function ($scope, moment, template) { return new StepProcessor.formCtrl($scope, moment, template); });
-            this.app.controller('mainCtrl', function ($scope, $location, authService, Uploader) { return new Controller.mainCtrl($scope, $location, authService, Uploader); });
+            this.app.controller('formCtrl', function ($scope, moment, $location, authService, Uploader, template) { return new Controller.formCtrl($scope, moment, $location, authService, Uploader, template); });
+            this.app.controller('mainCtrl', function ($scope, $location, authService, Uploader, content) { return new Controller.mainCtrl($scope, $location, authService, Uploader, content); });
         }
         return AppBuilder;
     })();
@@ -204,10 +222,10 @@ var StepProcessor;
 //        }
 //    }
 //}
-var StepProcessor;
-(function (StepProcessor) {
+var Controller;
+(function (Controller) {
     var formCtrl = (function () {
-        function formCtrl($scope, moment, template) {
+        function formCtrl($scope, moment, $location, authService, Uploader, template) {
             moment.locale('en');
             var self = this;
             self.scope = $scope;
@@ -237,8 +255,8 @@ var StepProcessor;
         }
         return formCtrl;
     })();
-    StepProcessor.formCtrl = formCtrl;
-})(StepProcessor || (StepProcessor = {}));
+    Controller.formCtrl = formCtrl;
+})(Controller || (Controller = {}));
 var head;
 (function (head) {
     var headCtrl = (function () {
@@ -288,30 +306,33 @@ var Controller;
 var Controller;
 (function (Controller) {
     var mainCtrl = (function () {
-        function mainCtrl($scope, $location, AuthService, fileUpload) {
+        function mainCtrl($scope, $location, authService, Uploader, Popovercontent) {
             var self = this;
             self.scope = $scope;
             self.scope.myFile = [];
+            self.scope.popover = {};
             //self.scope.settings = SettingsService;
-            self.scope.authService = AuthService;
+            self.scope.authService = authService;
             self.scope.logData = { password: '', userName: '' };
             self.scope.authService.authentication.userName;
+            self.scope.popover["OnlineServices"] = { placement: "bottom", trigger: "hover" };
+            self.scope.popover["OnlineServices"]["content"] = Popovercontent['content'];
             self.scope.login = function () {
-                AuthService.login($scope.logData).then(function (response) {
-                    if (AuthService.authentication.redirectTo.length > 0)
-                        $location.path(AuthService.authentication.redirectTo);
+                authService.login($scope.logData).then(function (response) {
+                    if (authService.authentication.redirectTo.length > 0)
+                        $location.path(authService.authentication.redirectTo);
                     //console.log("Redirection from: " + authService.authentication.redirectTo);
-                    AuthService.authentication.redirectTo = "";
+                    authService.authentication.redirectTo = "";
                 }, function (err) {
                     alert("El inicio de sesion ha fallado, las credenciales no son validas");
                 });
                 self.scope.logData = { password: "", userName: "" };
             };
-            self.scope.upload = function () {
-                var files = self.scope.myFile;
-                var uploadUrl = 'http://www.example.com/images';
-                fileUpload.uploadFileToUrl(files, uploadUrl);
-            };
+            //self.scope.upload = () => {
+            //    var files = self.scope.myFile;
+            //    var uploadUrl = 'http://www.example.com/images';
+            //    fileUpload.uploadFileToUrl(files, uploadUrl);
+            //}
             //self.scope.alertSomething = function () {
             //    // The .open() method returns a promise that will be either
             //    // resolved or rejected when the modal window is closed.
@@ -461,6 +482,19 @@ var Directive;
         return fileModel;
     })();
     Directive.fileModel = fileModel;
+    var bsInit = (function () {
+        function bsInit($parse) {
+            this.link = function (scope, element, attrs) {
+                var options = {};
+                var bsInit = attrs['bsInit'];
+                if (bsInit)
+                    options = $parse(bsInit)(scope);
+                element.popover(options);
+            };
+        }
+        return bsInit;
+    })();
+    Directive.bsInit = bsInit;
 })(Directive || (Directive = {}));
 /// <reference path="../../scripts/typings/jqueryui/jqueryui.d.ts" />
 /// <reference path="../../scripts/typings/jquery.ui.datetimepicker/jquery.ui.datetimepicker.d.ts" />
@@ -1016,29 +1050,22 @@ var Service;
     })();
     Service.settingService = settingService;
 })(Service || (Service = {}));
-var SharedService;
-(function (SharedService) {
+var Service;
+(function (Service) {
     "use strict";
-    var AppBuilder = (function () {
-        function AppBuilder(name) {
-            var _contactphone = "777 777 7777";
-            var m = {
-                contactPhone: function () {
-                    return _contactphone;
-                },
-                changePhone: function (phone) {
-                    _contactphone = phone;
-                }
+    var Resolver = (function () {
+        function Resolver($q) {
+            this.mainCtrl = function () {
+                var deferred = $q.defer();
+                $.getJSON("App/Texts/OnlineServices.json", function (jsondata) {
+                    deferred.resolve(jsondata);
+                });
+                return deferred.promise;
             };
-            this.app = angular.module(name, ["ngRoute", "ngResource"]);
-            this.app.provider('$Settings', ['$window', '$rootScope', SettingsProvider]);
         }
-        return AppBuilder;
+        return Resolver;
     })();
-    SharedService.AppBuilder = AppBuilder;
-    //interface IGreetingService {
-    //    getGreeting: () => string;
-    //}
+    Service.Resolver = Resolver;
     var SettingsProvider = (function () {
         function SettingsProvider() {
             var _contactphone = "777 777 7777";
@@ -1054,8 +1081,8 @@ var SharedService;
         }
         return SettingsProvider;
     })();
-    SharedService.SettingsProvider = SettingsProvider;
-})(SharedService || (SharedService = {}));
+    Service.SettingsProvider = SettingsProvider;
+})(Service || (Service = {}));
 var Service;
 (function (Service) {
     var Uploader = (function () {

@@ -66,4 +66,18 @@
             }
         }
     }
+
+    export class bsInit implements ng.IDirective {
+        public link: (scope: ng.IScope, element, attrs: ng.IAttributes) => void;
+        constructor($parse: ng.IParseService) {
+            this.link = function (scope: ng.IScope, element, attrs: ng.IAttributes) {
+                var options = {};
+                var bsInit = attrs['bsInit'];
+                if (bsInit) options= $parse(bsInit)(scope);
+                element.popover(options);
+            }
+        }
+    }
+
+
 } 
