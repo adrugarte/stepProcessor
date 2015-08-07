@@ -29,7 +29,7 @@ namespace StepsProcessor.Controllers
             {
                 var docStore = new DocumentStore
                 {
-                    ConnectionStringName = "RavenServer",
+                    ConnectionStringName = "RavenHQ",
                 };
 
                 docStore.Initialize();
