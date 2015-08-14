@@ -4,14 +4,16 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+//using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using Dade.Security.Models;
 using Dade_ContentSecurity.Helpers;
+using Dade_ContentSecurity.Models;
 using Newtonsoft.Json;
+//using RavenDB.AspNet.Identity;
 
 namespace Dade_ContentSecurity.Providers
 {
@@ -89,7 +91,7 @@ namespace Dade_ContentSecurity.Providers
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
             IEnumerable<Role> roles;
-            IdentityUser user;
+            ApplicationUser user;
             using (AuthRepository _repo = new AuthRepository())
             {
                 user = await _repo.FindUser(context.UserName, context.Password);
@@ -101,7 +103,7 @@ namespace Dade_ContentSecurity.Providers
                 }
 
                 //User roles
-                roles = _repo.GetRoles(user.Id);
+                roles = (IEnumerable<Role>)_repo.GetRoles(user.Id);
             }
 
             //if (roles != null) setJson(roles);
@@ -113,10 +115,10 @@ namespace Dade_ContentSecurity.Providers
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
 
             //Add user roles as Identity claim
-            foreach (var role in user.Roles)
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Role, role.RoleId));
-            };
+            //foreach (Role role in user.Roles)
+            //{
+            //    identity.AddClaim(new Claim(ClaimTypes.Role, role.id));
+            //};
 
 
             string jsonroles = JsonConvert.SerializeObject(roles, Formatting.None);
@@ -146,7 +148,7 @@ namespace Dade_ContentSecurity.Providers
 
             using (AuthRepository _repo = new AuthRepository())
             {
-                roles = _repo.GetRoles(context.Ticket.Properties.Dictionary["userId"]);
+                roles = (IEnumerable<Role>)_repo.GetRoles(context.Ticket.Properties.Dictionary["userId"]);
             }
 
             // Change auth ticket for refresh token requests

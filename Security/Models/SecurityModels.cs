@@ -9,13 +9,20 @@ namespace Dade.Security.Models
     public class User
     {
         [Display(Order = -1)]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         public virtual string UserName { get; set; }
 
         public virtual string Password { get; set; }
 
         public virtual string ConfirmPassword { get; set; }
+    }
+
+
+    public class UserRoles
+    {
+        public string UserId { get; set; }
+        public List<Role> Roles {get; set;}
     }
 
 
@@ -54,6 +61,9 @@ namespace Dade.Security.Models
         [Display(Name = "Confirm Email")]
         [Compare("email", ErrorMessage = "The email and confirmation email do not match.")]
         public string Confirmemail { get; set; }
+
+        public string phone { get; set; }
+        public string phoneType { get; set; }
 
         public IEnumerable<Role> Roles { get; set; }
     }

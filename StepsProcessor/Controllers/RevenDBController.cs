@@ -17,7 +17,7 @@ namespace StepsProcessor.Controllers
 {
     public class RavenDbController : ApiController
     {
-        private IDocumentSession _session;
+            private IDocumentSession _session;
             public static IDocumentStore DocStore
             {
                 get { return LazyDocStore.Value; }
@@ -29,7 +29,7 @@ namespace StepsProcessor.Controllers
             {
                 var docStore = new DocumentStore
                 {
-                    ConnectionStringName = "RavenHQ",
+                    ConnectionStringName = "RavenServer",
                 };
 
                 docStore.Initialize();
