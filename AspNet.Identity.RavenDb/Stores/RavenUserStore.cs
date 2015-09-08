@@ -435,7 +435,7 @@ namespace AspNet.Identity.RavenDB.Stores
                 throw new InvalidOperationException("Cannot set the confirmation status of the phone number because user doesn't have a phone number.");
             }
 
-            RavenUserPhoneNumber userPhoneNumber = await GetUserPhoneNumberAsync(user.Email).ConfigureAwait(false);
+            RavenUserPhoneNumber userPhoneNumber = await GetUserPhoneNumberAsync(user.PhoneNumber).ConfigureAwait(false);
             if (userPhoneNumber == null)
             {
                 throw new InvalidOperationException("Cannot set the confirmation status of the phone number because user doesn't have a phone number as RavenUserPhoneNumber document.");

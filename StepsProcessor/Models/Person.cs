@@ -11,6 +11,7 @@ namespace StepsProcessor.Models
         public Person()
         {
             this.CreateTime = DateTime.Now;
+            this.ModifiedTime = this.CreateTime;
             this.Active = true;
         }
         public string LastName { get; set; }
@@ -28,7 +29,6 @@ namespace StepsProcessor.Models
         public ContactUse Use { get; set; }
         public ContactType Type { get; set; }
         public bool Prefered { get; set; }
-        [UniqueConstraint]
         public string value { get; set; }
         public string Comment { get; set; }
     }
@@ -40,11 +40,11 @@ namespace StepsProcessor.Models
             this.CreateTime = DateTime.Now;
             this.Active = true;
         }
-
-        public Int32 City { get; set; }
-        public Int16 State { get; set; }
+        public AddressType Type { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
+        public Int32 City { get; set; }
+        public Int16 State { get; set; }
         public string ZipCode { get; set; }
     }
 
@@ -62,6 +62,10 @@ namespace StepsProcessor.Models
         female=2
     }
 
+    public enum AddressType : byte { 
+        Home =1,
+        Work =2
+       }
     public enum ContactUse : byte
     {
         Private = 1,
@@ -82,6 +86,8 @@ namespace StepsProcessor.Models
         public string Id { get; set; }
         public DateTime CreateTime { get; set; }
         public string CreateUser { get; set; }
+        public DateTime ModifiedTime { get; set; }
+        public string Modifieduser { get; set; }
         public bool Active { get; set;}
     }
 }
