@@ -44,7 +44,15 @@ var Controller;
         function customer(scope, Callback) {
             var self = this;
             self.scope = scope;
+            self.scope.person = {};
             self.scope.personQuery = {};
+            self.scope.saveCustomer = function () {
+                Callback.Person.save(self.scope.person, function (Response) {
+                    alert('Datos guardados');
+                }, function (Error) {
+                    alert('Han ocurrido errores al guardar los datos');
+                });
+            };
             self.scope.getCustomerList = function () {
                 Callback.Person.query({ query: self.scope.personQuery, top: 50, offset: 0 }).$promise.then(function (response) {
                     self.scope.customerList = response;
