@@ -84,6 +84,7 @@ var Service;
         function ServerCall($resource) {
             var uploadDescriptor = { method: "POST", isArray: false, transformRequest: angular.identity, headers: { 'Content-Type': undefined } };
             this.Person = $resource('/api/person/:id', { id: '@id' });
+            this.Account = $resource('/api/account/:id', { id: '@id' });
         }
         return ServerCall;
     })();
