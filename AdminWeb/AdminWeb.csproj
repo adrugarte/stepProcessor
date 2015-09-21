@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App\View\customerList.html" />
+    <Content Include="App\View\CustomerView.html" />
     <Content Include="App\View\main.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -987,6 +988,7 @@
     <TypeScriptCompile Include="App\Controller\mainCtrl.ts" />
     <TypeScriptCompile Include="App\Model\Models.ts" />
     <TypeScriptCompile Include="App\Service\CallbackService.ts" />
+    <TypeScriptCompile Include="App\Service\UtilsService.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-animate.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-cookies.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular-mocks.d.ts" />

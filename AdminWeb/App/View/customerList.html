@@ -1,4 +1,5 @@
-﻿<div>
+﻿<div><a href="/customer/new">Nuevo Cliente</a></div>
+<div>
     <div class="row" ng-repeat="customer in customerList">
         <div class="col-md-1"><a href="/customer/edit/{{customer.Id}}">Edit</a></div>
         <div class="col-md-3">{{customer.LastName + customer.Name}}</div>

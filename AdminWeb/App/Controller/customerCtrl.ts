@@ -3,18 +3,20 @@
         customerList: Array<Models.IPerson>;
         person: Models.IPerson;
         personQuery: any;
+        CustomerSources: Array<string>;
         getCustomerList: () => void;
         saveCustomer: () => void;
     }
 
     export class customer {
         scope: IcustomerScope;
-        constructor(scope: IcustomerScope, Callback: Service.IServerCall) {
+        constructor(scope: IcustomerScope, Callback: Service.IServerCall, Utils:Service.Utils, $routeParams:ng.route.IRouteParamsService) {
             var self = this;
+            var action = $routeParams["action"];
             self.scope = scope;
             self.scope.person = <Models.IPerson>{};
             self.scope.personQuery = {};
-
+            self.scope.CustomerSources = Utils.Sources;
             self.scope.saveCustomer = () => {
                 Callback.Person.save(self.scope.person,
                     (Response) => {
@@ -35,7 +37,7 @@
                     });
             }
 
-            self.scope.getCustomerList();
+            if (action == "Lista") self.scope.getCustomerList();
         }
     }
 }  
