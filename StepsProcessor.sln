@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StepsProcessor", "StepsProcessor\StepsProcessor.csproj", "{2FEFA77A-6B91-4F17-84F1-D5286A146451}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoModel", "BravoModel\BravoModel.csproj", "{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoRepository", "BravoRepository\BravoRepository.csproj", "{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoTemp", "BravoTemp\BravoTemp.csproj", "{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
