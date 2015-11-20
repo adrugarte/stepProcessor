@@ -1,0 +1,63 @@
+﻿[
+    {
+        "title": "Solicitud de pasaporte por primera vez",
+        "header": "Este trámite sólo se realiza a tráves de las agencias que tienen contrato con nuestro consulado, por lo que le pedimos que escojan las agencias más cercana a su domicilio. Este trámite es para aquellas personas que no tiene pasaporte anterior o el mismo se le extravío o fue objeto de un robo, usted debe presentar  los documentos siguientes:",
+        "details": [
+            "Original y una copia de la planilla de solicitud de pasaporte, no olvide completar todos sus acápites. Si solicita la habilitación debe señalarlo en la parte indicada en la planilla",
+            "2 fotografías de 2 pulgadas por 2 pulgadas tomadas de frente, utilice ropa elegante y que contraste con le fondo (evite ropa blanca con fondo blanco), sin nada en el cabello y sin espejuelos, pegadas en cada una de las planillas.",
+            "Certificación de nacimiento original",
+            "Original de su carné de identidad o licencia de conducción cubana si lo tiene o fotocopia de documento de los Estados Unidos que tenga su fotografía (Pasaporte, Licencia de conduccion o  ID).",
+        ],
+        "price": "",
+        "footer": "",
+        "order": 1
+    },
+
+    {
+        "title": "Renovación de pasaportes",
+        "header": "Si usted tiene pasaporte vencido (ó tres meses antes de la fecha de expiración del pasaporte) debe presentar  los documentos siguientes:",
+        "details": [
+            "Pasaporte de color azul vencido.",
+            "Original y una copia de la planilla de solicitud de pasaporte, no olvide completar todos sus acápites. Si solicita la habilitación debe señalarlo en la parte indicada en la planilla",
+            "2 fotografías de 2 pulgadas por 2 pulgadas tomadas de frente, utilice ropa elegante y que contraste con le fondo (evite ropa blanca con fondo blanco), sin nada en el cabello y sin espejuelos, pegadas en cada una de las planillas.",
+            "Si el pasaporte vencido es de corlor GRIS o anterior al año 2000, debe enviar una Certificación de nacimiento original"
+        ],
+        "price": "",
+        "footer": "",
+        "order": 1
+    },
+    {
+        "title": "PRÓRROGAS DE PASAPORTES",
+        "header": "Las prórrogas de Pasaportes se efectúan cada dos años y para tener derecho a la segunda tiene que haberse realizado la primera. Lasprorrogas tienen vencimiento según la fecha de confección del pasaporte y no en el momento que usted la realiza. A partir de la fecha en que se confecciona el pasaporte (fecha de expedición), el pasaporte tiene una vigencia de 6 años y necesita dos prórrogas para estar válido. Te ilustramos como calcular el momento en que debes de hacer las prórrogas para lograr que su pasaporte sea VÁLIDO Y VIGENTE, Porejemplo si su pasaporte fue expedido en julio del 2009, teniendo en cuentala vigencia de 6 años, este caducará en julio del 2015, dos años después de su confección debes comenzar a prorrogarlo, es decir en el año 2011, en ese momento pagarías la primera prórroga (en la pegatina que se te estampará en el pasaporte verás que caducará en julio del 2013 (2012-2013), así que la segunda prórroga deberás pagarla tres meses antes (mayo 2013) y está última pegatina tendrá la fecha de vencimiento del pasaporte julio del 2015 (2014-2015). Ahora, les pedimos, vea la fecha de expedición de su pasaporte, realice estos cálculos y envíe su solicitud. Para solicitar el servicio usted debe enviar los siguientes documentos:",
+        "details": [
+            "Planilla de solicitud de pasaporte. Si solicita la habilitación debe señalarlo en la parte indicada en la planilla. ",
+            "Una fotografía de 2 pulgadas por 2 pulgadas tomadas de frente, vestido apropiadamente y sin espejuelos oscuros, pegada en la planilla. ",
+            "Pasaporte original."
+        ],
+        "price": "",
+        "footer": "",
+        "order": 1
+    },
+    {
+        "title": "Prórroga de Estancia del Permiso de Viaje al Exterior (PVE)",
+        "header": "Todo ciudadano cubano que salio de Cuba en el año 2012, para cualquier país, con una pegatina en el pasaporte \"Permiso de Viaje al Exterior por 30 días prorrogables\", para no convertirse en emigrados y poder acogerse a la nueva medida migratoria de permanecer dos años, deben:",
+        "details": [
+            "Enviar original y una copia de la planilla de solicitud, no olvide completar todos sus acápites.",
+            "El costo por mes de extension es de $150.00 US"
+        ],
+        "price": "",
+        "footer": "",
+        "order": 1
+    }
+
+]
+
+ //   {
+ //       "title": "",
+ //       "header": "",
+ //       "details": [],
+ //       "price": "",
+ //       "footer": "",
+ //       "order": 1
+ //   }
+

@@ -1,0 +1,28 @@
+﻿<div class="contact">
+    <div>
+        <label class="editor-label">Name:</label>
+        <input class="form-control" type="text" ng-model="contact.name" />
+    </div>
+    <div>
+        <label class="editor-label">Email:</label>
+        <span><input class="form-control" type="email" ng-model="contact.email" /><a href="">?</a></span>
+    </div>
+
+    <div>
+        <label class="editor-label">Telefono:</label>
+        <input class="form-control" type="text" ng-model="contact.phone" />
+        <span><a href="">?</a></span>
+    </div>
+    <div>
+        <label class="editor-label">Consulta:</label>
+        <input class="form-control" type="text" ng-model="contact.comments" />
+    </div>
+    <div>
+        <button class="btn-default btn-group-sm"  ng-click="SubmitQuote()">Enviar</button>
+    </div>
+
+    <div class="success" ng-show="contact.successmsg.length">
+        <p>{{contact.successmsg}}</p>
+    </div>
+
+</div>
