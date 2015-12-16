@@ -23,9 +23,9 @@ namespace BravoRepository
 
     public class PersonCls : RavenDbController
     {
-        public IEnumerable<Person> GetList()
+        public IQueryable<Person> GetList()
         {
-            return Session.Advanced.DocumentQuery<Person>().WhereEquals(p => p.Active, true);
+            return Session.Advanced.DocumentQuery<Person>().AsQueryable<Person>();//.WhereEquals(p => p.Active, true).AsQueryable<Person>();
         }
 
         public Person Get(string PersonId)

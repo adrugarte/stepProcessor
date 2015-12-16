@@ -22,7 +22,7 @@ namespace AdminWeb.Controllers
         // GET: api/Person
         public IHttpActionResult Get(PersonCriteria query, int top, int offset=0 )
         {
-            IEnumerable<Person> PersonLisT = Repo.person.GetList();
+            IQueryable<Person> PersonLisT = Repo.person.GetList();
             if (query != null)
             {
                 if (query.Address != null) PersonLisT = PersonLisT.Where(p => p.Addresses.Any(a => a.Address1.Contains(query.Address) || a.Address2.Contains(query.Address)));
@@ -32,7 +32,7 @@ namespace AdminWeb.Controllers
             }
             if (offset > 0) PersonLisT = PersonLisT.Skip(offset);
             if (top > 0) PersonLisT = PersonLisT.Take(top);
-            return Ok(PersonLisT);
+            return Ok(PersonLisT.ToList());
         }
 
         // GET: api/Person/5

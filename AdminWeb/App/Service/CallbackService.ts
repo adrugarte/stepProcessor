@@ -1,4 +1,4 @@
-﻿module Service {
+﻿module Resource {
     export interface IServerCall {
         Person: ng.resource.IResourceClass<any>;
         Account: ng.resource.IResourceClass<any>;

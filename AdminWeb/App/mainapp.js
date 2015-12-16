@@ -7,37 +7,50 @@ var Admin;
                 "ngRoute",
                 "ngResource"
             ]);
+            //var mainRoute: ng.route.IRoute = {
+            //    controller: 'mainCtrl',
+            //    templateUrl: '/App/View/customerList.html',
+            //    resolve: {
+            //        'persons': (Resolver: Resolver.CtrlResolver) => { return Resolver.mainCtrl(); }
+            //    }
+            //}
             var mainRoute = {
                 controller: 'mainCtrl',
-                templateUrl: '/App/View/main.html'
+                templateUrl: '/App/View/customerList.html'
             };
             var customerRoute = {
                 controller: 'customerCtrl',
-                templateUrl: '/App/View/customerList.html'
+                templateUrl: '/App/View/customerview.html'
             };
             var newcustomerRoute = {
                 controller: 'customerCtrl',
                 templateUrl: '/App/View/customerList.html'
             };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:action', customerRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             //// Services
-            this.app.service('Callback', function ($resource) {
-                return new Service.ServerCall($resource);
-            });
-            this.app.service('Utils', function () {
+            this.app.service('Callback', ['$resource', function ($resource) {
+                return new Resource.ServerCall($resource);
+            }]);
+            this.app.service('Utils', [function () {
                 return new Service.Utils();
-            });
+            }]);
+            this.app.service('Resolver', ['$q', 'Callback', function ($q, Callback) {
+                return new Resolver.CtrlResolver($q, Callback);
+            }]);
             ///// Directives
             //this.app.directive('uploadFileList', ['ServerCall', (ServerCall: Service.IServerCall) => { return new Directive.DocumentList(ServerCall); }]);
+            this.app.directive('mbDatePicker', ['$parse', function ($parse) {
+                return new Directive.spDatetimePicker($parse);
+            }]);
             ///// Controllers
             this.app.controller('customerCtrl', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); });
-            this.app.controller('mainCtrl', function ($scope) { return new Controller.main($scope); });
+            this.app.controller('mainCtrl', function ($scope, Callback, Utils) { return new Controller.main($scope, Callback, Utils); });
         }
         return AppBuilder;
     })();
@@ -50,11 +63,22 @@ var Controller;
     var customer = (function () {
         function customer(scope, Callback, Utils, $routeParams) {
             var self = this;
-            var action = $routeParams["action"];
+            var CustomerId = $routeParams["id"];
             self.scope = scope;
             self.scope.person = {};
+            self.scope.person.Phone = {};
+            self.scope.person.Celular = {};
             self.scope.personQuery = {};
             self.scope.CustomerSources = Utils.Sources;
+            self.scope.person.Phone.Type = 'phone';
+            self.scope.person.Phone.Use = 1; //private
+            self.scope.person.Celular.Type = 'celular';
+            self.scope.person.Celular.Use = 1; //private
+            var getCustomer = function () {
+                Callback.Person.get({ id: CustomerId }, function (person) {
+                    self.scope.person = person;
+                });
+            };
             self.scope.saveCustomer = function () {
                 Callback.Person.save(self.scope.person, function (Response) {
                     alert('Datos guardados');
@@ -62,15 +86,8 @@ var Controller;
                     alert('Han ocurrido errores al guardar los datos');
                 });
             };
-            self.scope.getCustomerList = function () {
-                Callback.Person.query({ query: self.scope.personQuery, top: 50, offset: 0 }).$promise.then(function (response) {
-                    self.scope.customerList = response;
-                }, function (error) {
-                    alert("Error:Somenthing went wrong");
-                });
-            };
-            if (action == "Lista")
-                self.scope.getCustomerList();
+            if (CustomerId > 0)
+                getCustomer();
         }
         return customer;
     })();
@@ -79,17 +96,73 @@ var Controller;
 var Controller;
 (function (Controller) {
     var main = (function () {
-        function main(scope) {
+        function main(scope, Callback, Utils) {
             var self = this;
             self.scope = scope;
-            self.scope.texto = "Hello People";
+            self.scope.personQuery = {};
+            //self.scope.customerList = resolver['persons'];
+            self.scope.getCustomerList = function () {
+                Callback.Person.query({ query: self.scope.personQuery, top: 50, offset: 0 }).$promise.then(function (response) {
+                    self.scope.customerList = response;
+                }, function (error) {
+                    alert("Error:Somenthing went wrong");
+                });
+            };
+            scope.getCustomerList();
         }
         return main;
     })();
     Controller.main = main;
 })(Controller || (Controller = {}));
-var Service;
-(function (Service) {
+var Directive;
+(function (Directive) {
+    var spDatetimePicker = (function () {
+        function spDatetimePicker($parse) {
+            this.restrict = "E";
+            this.replace = true;
+            this.transclude = false;
+            this.compile = function (element, attrs) {
+                var modelAccessor = $parse(attrs.ngModel);
+                var newElem = angular.element("<input class='form-control' id ='dtpck' type='text'></input>");
+                element.replaceWith(newElem);
+                return function (scope, element, attrs) {
+                    var processChange = function () {
+                        var date = new Date(element.datepicker("getDate").toString());
+                        scope.$apply(function (scope) {
+                            // Change bound variable
+                            modelAccessor.assign(scope, date);
+                        });
+                    };
+                    var dtOptions = {};
+                    if (attrs.dtOptions)
+                        dtOptions = attrs.dtOptions;
+                    dtOptions.dateFormat = 'mm/dd/yy';
+                    dtOptions.onClose = processChange;
+                    dtOptions.onSelect = processChange;
+                    dtOptions.changeMonth = true;
+                    dtOptions.changeYear = true;
+                    dtOptions.showButtonPanel = true;
+                    dtOptions.currentText = "Today";
+                    if (attrs["minDay"])
+                        dtOptions.minDate = true;
+                    dtOptions.showAnim = "slide";
+                    element.datepicker(dtOptions);
+                    //scope.$watch(attrs.ngModel, function (newval, Oldval) {
+                    //    alert("has changed" + newval + Oldval);
+                    //})
+                    scope.$watch(modelAccessor, function (val) {
+                        var date = new Date(val);
+                        element.datepicker("setDate", date);
+                    });
+                };
+            };
+        }
+        return spDatetimePicker;
+    })();
+    Directive.spDatetimePicker = spDatetimePicker;
+})(Directive || (Directive = {}));
+var Resource;
+(function (Resource) {
     var ServerCall = (function () {
         function ServerCall($resource) {
             var uploadDescriptor = { method: "POST", isArray: false, transformRequest: angular.identity, headers: { 'Content-Type': undefined } };
@@ -98,8 +171,27 @@ var Service;
         }
         return ServerCall;
     })();
-    Service.ServerCall = ServerCall;
-})(Service || (Service = {}));
+    Resource.ServerCall = ServerCall;
+})(Resource || (Resource = {}));
+var Resolver;
+(function (Resolver) {
+    "use strict";
+    var CtrlResolver = (function () {
+        function CtrlResolver($q, ServerCall) {
+            this.mainCtrl = function () {
+                var deferred = $q.defer();
+                ServerCall.Person.query({ query: null, offset: 0, top: 25 }, function (persons) {
+                    deferred.resolve(persons);
+                }, function () {
+                    deferred.reject();
+                });
+                return deferred.promise;
+            };
+        }
+        return CtrlResolver;
+    })();
+    Resolver.CtrlResolver = CtrlResolver;
+})(Resolver || (Resolver = {}));
 var Service;
 (function (Service) {
     var Utils = (function () {

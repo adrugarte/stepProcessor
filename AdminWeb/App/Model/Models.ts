@@ -5,8 +5,10 @@
         MiddleName: string;
         BirthDate: any;
         Gender: number;
-        Contacts: Array<Contact>;
-        Addresses: Array<Address>;
+        Address: Address;
+        Phone: Contact;
+        Celular: Contact;
+        //Addresses: Array<Address>;
     }
 
     export interface Contact {

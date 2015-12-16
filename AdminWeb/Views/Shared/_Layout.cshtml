@@ -26,7 +26,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Customer <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/customer">List</a></li>
-                            <li><a href="#">New</a></li>
+                            <li><a href="/customer/0">New</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -35,12 +35,11 @@
     </div>
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
     </div>
-
+    <div>
+        <hr />
+        <p>&copy; MartellBravo - @DateTime.Now.Year </p>
+    </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/bootstrap")
