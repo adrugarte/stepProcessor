@@ -8,11 +8,12 @@
         Address: Address;
         Phone: Contact;
         Celular: Contact;
+        Email: Contact;
         //Addresses: Array<Address>;
     }
 
     export interface Contact {
-        Use: number;
+        Use: string;
         Type: any;
         Prefered: boolean;
         Value: string;

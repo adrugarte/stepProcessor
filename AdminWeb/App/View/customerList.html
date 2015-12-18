@@ -2,10 +2,11 @@
 <div>
     <div class="row" ng-repeat="customer in customerList">
         <div class="col-md-1"><a href="/customer/edit/{{customer.Id}}">Edit</a></div>
-        <div class="col-md-3">{{customer.LastName + customer.Name}}</div>
-        <div class="col-md-3">{{customer.AddressLine1 + customer.AddresLine2}}</div>
-        <div class="col-md-2">{{customer.City}}</div>
-        <div class="col-md-1">{{customer.State}}</div>
-        <div class="col-md-1">{{customer.Zip}}</div>
+        <div class="col-md-4">{{customer.lastName + ", " + customer.firstName}}</div>
+        <div class="col-md-3">{{customer.address.address1 + customer.address.addres2}}</div>
+        <div class="col-md-1">{{customer.address.city + ", " + customer.address.state}}</div>
+        <div class="col-md-1">{{customer.address.zip}}</div>
+        <div class="col-md-1">{{customer.phone.value}}</div>
+        <div class="col-md-1">{{customer.celular.value}}</div>
     </div>
 </div>

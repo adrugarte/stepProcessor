@@ -18,16 +18,20 @@ namespace BravoModel
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public DateTime BirthDate { get; set; }
-        public Gender Gender { get; set; }
-        public IEnumerable<Work> Works { get; set; }
-        public IEnumerable<Contact> Contacts { get; set; }
-        public IEnumerable<Address> Addresses { get; set; }
+        public Gender? Gender { get; set; }
+        public Contact Phone { get; set; }
+        public Contact Celular { get; set; }
+        public Address Address { get; set; }
+        public Contact Email { get; set; }
+        //public IEnumerable<Work> Works { get; set; }
+        //public IEnumerable<Contact> Contacts { get; set; }
+        //public IEnumerable<Address> Addresses { get; set; }
     }
 
     public class Contact
     {
-        public ContactUse Use { get; set; }
-        public ContactType Type { get; set; }
+        public ContactUse? Use { get; set; }
+        public ContactType? Type { get; set; }
         public bool Prefered { get; set; }
         public string value { get; set; }
         public string Comment { get; set; }
@@ -40,11 +44,11 @@ namespace BravoModel
             this.CreateTime = DateTime.Now;
             this.Active = true;
         }
-        public AddressType Type { get; set; }
+        public AddressType? Type { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
-        public Int32 City { get; set; }
-        public Int16 State { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
         public string ZipCode { get; set; }
     }
 

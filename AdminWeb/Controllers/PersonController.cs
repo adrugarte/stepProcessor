@@ -25,9 +25,9 @@ namespace AdminWeb.Controllers
             IQueryable<Person> PersonLisT = Repo.person.GetList();
             if (query != null)
             {
-                if (query.Address != null) PersonLisT = PersonLisT.Where(p => p.Addresses.Any(a => a.Address1.Contains(query.Address) || a.Address2.Contains(query.Address)));
+                //if (query.Address != null) PersonLisT = PersonLisT.Where(p => p.Addresses.Any(a => a.Address1.Contains(query.Address) || a.Address2.Contains(query.Address)));
                 if (query.Name != null) PersonLisT = PersonLisT.Where(p => p.FirstName == query.Name ||  p.LastName == query.Name);
-                if (query.Email != null) PersonLisT = PersonLisT.Where(p => p.Contacts.Any(e => e.Type == ContactType.email && e.value == query.Email));
+                //if (query.Email != null) PersonLisT = PersonLisT.Where(p => p.Contacts.Any(e => e.Type == ContactType.email && e.value == query.Email));
                 if (query.BirhDate != null) PersonLisT = PersonLisT.Where(p => p.BirthDate == query.BirhDate);
             }
             if (offset > 0) PersonLisT = PersonLisT.Skip(offset);

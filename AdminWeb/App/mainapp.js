@@ -66,14 +66,19 @@ var Controller;
             var CustomerId = $routeParams["id"];
             self.scope = scope;
             self.scope.person = {};
+            self.scope.person.Address = {};
             self.scope.person.Phone = {};
             self.scope.person.Celular = {};
+            self.scope.person.Email = {};
             self.scope.personQuery = {};
             self.scope.CustomerSources = Utils.Sources;
-            self.scope.person.Phone.Type = 'phone';
-            self.scope.person.Phone.Use = 1; //private
-            self.scope.person.Celular.Type = 'celular';
-            self.scope.person.Celular.Use = 1; //private
+            self.scope.person.Address.Type = "Home";
+            self.scope.person.Phone.Type = 'Phone';
+            self.scope.person.Phone.Use = 'Private'; //private
+            self.scope.person.Celular.Type = 'Cellular';
+            self.scope.person.Celular.Use = 'Private'; //private
+            self.scope.person.Email.Type = 'email';
+            self.scope.person.Email.Use = 'Private'; //private
             var getCustomer = function () {
                 Callback.Person.get({ id: CustomerId }, function (person) {
                     self.scope.person = person;
@@ -143,8 +148,12 @@ var Directive;
                     dtOptions.changeYear = true;
                     dtOptions.showButtonPanel = true;
                     dtOptions.currentText = "Today";
-                    if (attrs["minDay"])
-                        dtOptions.minDate = true;
+                    if (attrs["minDate"])
+                        dtOptions.minDate = attrs["minDate"];
+                    if (attrs["maxDate"])
+                        dtOptions.maxDate = attrs["maxDate"];
+                    if (attrs["yearRange"])
+                        dtOptions.yearRange = attrs["yearRange"];
                     dtOptions.showAnim = "slide";
                     element.datepicker(dtOptions);
                     //scope.$watch(attrs.ngModel, function (newval, Oldval) {
@@ -196,7 +205,7 @@ var Service;
 (function (Service) {
     var Utils = (function () {
         function Utils() {
-            var _sources = ['Flyer', 'Clarin', 'Facebook', 'Volantes ', 'Otros'];
+            var _sources = ['Flyer', 'Clarin', 'Facebook', 'Volantes ', 'Referido', 'Otros'];
             this.Sources = _sources;
         }
         return Utils;

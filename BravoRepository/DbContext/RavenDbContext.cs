@@ -34,8 +34,8 @@ namespace BravoRepository.Controllers
 
             docStore.Initialize();
             //docStore.RegisterListener(new UniqueConstraintsStoreListener());
-            docStore.Conventions.IdentityPartsSeparator = "-";
-            //docStore.Conventions.FindTypeTagName = type => type == typeof(Person) ? "Customer" : DocumentConvention.DefaultTypeTagName(type);
+            //docStore.Conventions.IdentityPartsSeparator = "-";
+            docStore.Conventions.FindTypeTagName = type => type == typeof(Person) ? "Persons" : DocumentConvention.DefaultTypeTagName(type);
             RegisterIdConventions(ref docStore);
             return docStore;
         });
@@ -61,8 +61,8 @@ namespace BravoRepository.Controllers
 
         private static void RegisterIdConventions(ref DocumentStore docStore)
         {
-            docStore.Conventions.RegisterIdConvention<Person>((dbname, commands, person) => "Person/");
-            docStore.Conventions.RegisterAsyncIdConvention<Person>((dbname, commands, person) => new CompletedTask<string>("Person/"));
+            docStore.Conventions.RegisterIdConvention<Person>((dbname, commands, person) => string.Empty);
+            docStore.Conventions.RegisterAsyncIdConvention<Person>((dbname, commands, person) => new CompletedTask<string>(string.Empty));
         }
 
     }

@@ -35,8 +35,11 @@
                         dtOptions.changeYear = true;
                         dtOptions.showButtonPanel = true;
                         dtOptions.currentText = "Today";
-                        if (attrs["minDay"]) dtOptions.minDate = true;
+                        if (attrs["minDate"]) dtOptions.minDate = attrs["minDate"];
+                        if (attrs["maxDate"]) dtOptions.maxDate = attrs["maxDate"];
+                        if (attrs["yearRange"]) dtOptions.yearRange = attrs["yearRange"];
                         dtOptions.showAnim = "slide";
+
 
                         element.datepicker(dtOptions);
 
