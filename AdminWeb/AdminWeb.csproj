@@ -46,6 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\BravoRepository\bin\Debug\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Raven.Abstractions">
       <HintPath>..\packages\RavenDB.Client.3.0.3785\lib\net45\Raven.Abstractions.dll</HintPath>
@@ -1008,6 +1011,7 @@
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\Controller\customerCtrl.ts" />
     <TypeScriptCompile Include="App\Controller\mainCtrl.ts" />
+    <TypeScriptCompile Include="App\Directive\customerListDirective.ts" />
     <TypeScriptCompile Include="App\Directive\mbDatePicker.ts" />
     <TypeScriptCompile Include="App\Model\Models.ts" />
     <TypeScriptCompile Include="App\Service\CallbackService.ts" />

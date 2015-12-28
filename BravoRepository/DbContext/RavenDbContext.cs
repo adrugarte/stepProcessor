@@ -11,7 +11,7 @@ using System.Threading;
 using Raven.Abstractions.Util;
 //using Raven.Client.UniqueConstraints;
 using System;
-using BravoModel;
+using BravoModel.Model;
 
 namespace BravoRepository.Controllers
 {

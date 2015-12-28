@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BravoRepository.Controllers;
-using BravoModel;
+using BravoModel.Model;
 namespace BravoRepository
 {
     public class Repository
@@ -12,16 +12,16 @@ namespace BravoRepository
         public Repository()
         {
 
-            person = new PersonCls();
+            person = new RavenPersonCls();
 
         }
 
-        public PersonCls person { get;private set; }
+        public RavenPersonCls person { get;private set; }
 
 
     }
 
-    public class PersonCls : RavenDbController
+    public class RavenPersonCls : RavenDbController
     {
         public IQueryable<Person> GetList()
         {
@@ -36,6 +36,7 @@ namespace BravoRepository
         public Person Update(string PersonId, Person person)
         {
             Session.Store(person);
+
             Session.SaveChanges();
             return person;
         }

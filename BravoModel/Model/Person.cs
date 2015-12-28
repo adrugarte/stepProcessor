@@ -3,97 +3,64 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BravoModel
+namespace BravoModel.Model
 {
-    public class Person : BaseEntity
+    public class BasePerson : BaseEntity
     {
-        public Person()
+        
+        public BasePerson()
         {
             this.CreateTime = DateTime.Now;
             this.ModifiedTime = this.CreateTime;
             this.Active = true;
         }
-        public string LastName { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public DateTime BirthDate { get; set; }
-        public Gender? Gender { get; set; }
-        public Contact Phone { get; set; }
-        public Contact Celular { get; set; }
-        public Address Address { get; set; }
-        public Contact Email { get; set; }
+        
+        public virtual string LastName { get; set; }
+        public virtual string FirstName { get; set; }
+        public virtual string MiddleName { get; set; }
+        public virtual DateTime BirthDate { get; set; }
+        public virtual Gender Gender { get; set; }
+        public virtual string Email { get; set; }
+        public virtual string Source { get; set; }
+
         //public IEnumerable<Work> Works { get; set; }
         //public IEnumerable<Contact> Contacts { get; set; }
         //public IEnumerable<Address> Addresses { get; set; }
     }
 
-    public class Contact
-    {
-        public ContactUse? Use { get; set; }
-        public ContactType? Type { get; set; }
-        public bool Prefered { get; set; }
-        public string value { get; set; }
-        public string Comment { get; set; }
-    }
 
-    public class Address : BaseEntity
+    [Table("People")]
+    public class Person : BasePerson
     {
-        public Address()
+        public Person():base()
         {
-            this.CreateTime = DateTime.Now;
-            this.Active = true;
         }
-        public AddressType? Type { get; set; }
-        public string Address1 { get; set; }
-        public string Address2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string ZipCode { get; set; }
+        [StringLength(500)]
+        public override string LastName { get; set; }
+        [StringLength(250)]
+        public override string FirstName { get; set; }
+        [StringLength(250)]
+        public override string MiddleName { get; set; }
+        public override DateTime BirthDate { get; set; }
+        public override Gender Gender { get; set; }
+        [StringLength(500)]
+        public override string Email { get; set; }
+        [StringLength(250)]
+        public override string Source { get; set; }
+
+        public List<Contact> Contacts { get; set; }
+        public List<Address> Addresses { get; set; }
+        //public IEnumerable<Work> Works { get; set; }
+        //public IEnumerable<Contact> Contacts { get; set; }
+        //public IEnumerable<Address> Addresses { get; set; }
     }
 
-    public class Work
-    {
-        public string name { get; set; }
-        public string number { get; set; }
-
-    }
 
 
-    public enum Gender : byte
-    {
-        male = 1,
-        female = 2
-    }
 
-    public enum AddressType : byte
-    {
-        Home = 1,
-        Work = 2
-    }
-    public enum ContactUse : byte
-    {
-        Private = 1,
-        Work = 2,
-        Home = 3,
-        Other = 4
-    }
 
-    public enum ContactType : byte
-    {
-        Phone = 1,
-        Cellular = 2,
-        email = 3,
-        Fax = 4
-    }
-
-    public class BaseEntity
-    {
-        public string Id { get; set; }
-        public DateTime CreateTime { get; set; }
-        public string CreateUser { get; set; }
-        public DateTime ModifiedTime { get; set; }
-        public string Modifieduser { get; set; }
-        public bool Active { get; set; }
-    }
+  
 }

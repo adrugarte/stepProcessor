@@ -1,12 +1,42 @@
-﻿<div><a href="/customer/new">Nuevo Cliente</a></div>
-<div>
-    <div class="row" ng-repeat="customer in customerList">
-        <div class="col-md-1"><a href="/customer/edit/{{customer.Id}}">Edit</a></div>
-        <div class="col-md-4">{{customer.lastName + ", " + customer.firstName}}</div>
-        <div class="col-md-3">{{customer.address.address1 + customer.address.addres2}}</div>
-        <div class="col-md-1">{{customer.address.city + ", " + customer.address.state}}</div>
-        <div class="col-md-1">{{customer.address.zip}}</div>
-        <div class="col-md-1">{{customer.phone.value}}</div>
-        <div class="col-md-1">{{customer.celular.value}}</div>
+﻿<div>
+    <div class="customerlist-search row">
+        <div class="col-md-6">
+            <span class="list-title">Customer List</span>
+        </div>
+        <div class="input-group" style="max-width:300px;float:right">
+            <input type="text" class="form-control" aria-label="..." ng-model="personQuery" placeholder="Search for...">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-primary" ng-click="search();" ><span class="glyphicon glyphicon-search" ></span></button>
+            </div>
+        </div>
+    </div>
+    <div class="table table-condensed">
+        <div class="row table-header">
+            <div class="col-md-1"></div>
+            <div class="col-md-3">Name</div>
+            <div class="col-md-2">Email</div>
+            <div class="col-md-3">
+                <div class="col-md-6">Phone</div>
+                <div class="col-md-6">Cellular</div>
+            </div>
+            <div class="col-md-3">Address</div>
+        </div>
+        <div class="row customer-line" ng-repeat="customer in customerList">
+            <div class="col-md-1"><a href="/customer/{{customer.id}}">Edit</a></div>
+            <div class="col-md-3">{{customer.lastName + ", " + customer.firstName}}</div>
+            <div class="col-md-2">{{customer.email.value}}</div>
+            <div class="col-md-3">
+                <div class="col-md-6">{{customer.phone.value}}</div>
+                <div class="col-md-6">{{customer.celular.value}}</div>
+            </div>
+            <div class="col-md-3">{{customer.address.address1 + " " + customer.address.addres2 + " " + customer.address.city + " " + customer.address.state + " " + customer.address.zip}}</div>
+        </div>
+        <div ng-show="limit<productCounter" id="row pagingDiv" style="margin:10px 0 10px -15px;">
+            <ul class="pagination pagination-sm" style="margin:0;">
+                <li class=""><a href="" ng-click="prev()">«</a></li>
+                <li><a href="">{{(page*top)+1}}-{{(page*top)+limit}} of {{productCounter}}</a></li>
+                <li class=""><a href="" ng-click="next()">»</a></li> <!--ng-click="next()"-->
+            </ul>
+        </div>
     </div>
 </div>

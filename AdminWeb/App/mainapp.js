@@ -7,16 +7,9 @@ var Admin;
                 "ngRoute",
                 "ngResource"
             ]);
-            //var mainRoute: ng.route.IRoute = {
-            //    controller: 'mainCtrl',
-            //    templateUrl: '/App/View/customerList.html',
-            //    resolve: {
-            //        'persons': (Resolver: Resolver.CtrlResolver) => { return Resolver.mainCtrl(); }
-            //    }
-            //}
             var mainRoute = {
                 controller: 'mainCtrl',
-                templateUrl: '/App/View/customerList.html'
+                templateUrl: '/App/View/main.html'
             };
             var customerRoute = {
                 controller: 'customerCtrl',
@@ -48,9 +41,12 @@ var Admin;
             this.app.directive('mbDatePicker', ['$parse', function ($parse) {
                 return new Directive.spDatetimePicker($parse);
             }]);
+            this.app.directive('customerList', ['Callback', '$location', function (Callback, $location) {
+                return new Directive.customerList(Callback, $location);
+            }]);
             ///// Controllers
             this.app.controller('customerCtrl', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); });
-            this.app.controller('mainCtrl', function ($scope, Callback, Utils) { return new Controller.main($scope, Callback, Utils); });
+            this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
         }
         return AppBuilder;
     })();
@@ -63,35 +59,83 @@ var Controller;
     var customer = (function () {
         function customer(scope, Callback, Utils, $routeParams) {
             var self = this;
-            var CustomerId = $routeParams["id"];
+            var CustomerId = parseInt($routeParams["id"]);
             self.scope = scope;
             self.scope.person = {};
-            self.scope.person.Address = {};
-            self.scope.person.Phone = {};
-            self.scope.person.Celular = {};
-            self.scope.person.Email = {};
+            self.scope.person.addresses = [];
+            self.scope.person.contacts = [];
+            self.scope.address = {};
+            self.scope.phone = {};
+            self.scope.celular = {};
+            self.scope.email = {};
             self.scope.personQuery = {};
-            self.scope.CustomerSources = Utils.Sources;
-            self.scope.person.Address.Type = "Home";
-            self.scope.person.Phone.Type = 'Phone';
-            self.scope.person.Phone.Use = 'Private'; //private
-            self.scope.person.Celular.Type = 'Cellular';
-            self.scope.person.Celular.Use = 'Private'; //private
-            self.scope.person.Email.Type = 'email';
-            self.scope.person.Email.Use = 'Private'; //private
+            self.scope.customerSources = Utils.Sources;
             var getCustomer = function () {
-                Callback.Person.get({ id: CustomerId }, function (person) {
-                    self.scope.person = person;
+                Callback.Person.get({ id: CustomerId }, function (response) {
+                    self.scope.person = response.person;
+                    if (self.scope.person.addresses)
+                        self.scope.address = self.scope.person.addresses[0];
+                    if (self.scope.person.contacts) {
+                        self.scope.phone = getContact("Phone");
+                        self.scope.celular = getContact("Cellular");
+                        self.scope.email = getContact("Email");
+                    }
                 });
+            };
+            var setContacts = function () {
+                if (self.scope.address.address1 || self.scope.address.address2 || self.scope.address.city || self.scope.address.zipCode) {
+                    self.scope.address.type = "Home";
+                    if (!self.scope.person.addresses)
+                        self.scope.person.addresses = [];
+                    self.scope.person.addresses.push(self.scope.address);
+                }
+                if (self.scope.phone.value) {
+                    self.scope.phone.type = 'Phone';
+                    self.scope.phone.use = 'Private'; //private
+                    if (!self.scope.person.contacts)
+                        self.scope.person.contacts = [];
+                    self.scope.person.contacts.push(self.scope.phone);
+                }
+                if (self.scope.celular.value) {
+                    self.scope.celular.type = 'Cellular';
+                    self.scope.celular.use = 'Private'; //private
+                    if (!self.scope.person.contacts)
+                        self.scope.person.contacts = [];
+                    self.scope.person.contacts.push(self.scope.celular);
+                }
+                if (self.scope.email.value) {
+                    self.scope.email.type = 'Email';
+                    self.scope.email.use = 'Private'; //private
+                    if (!self.scope.person.contacts)
+                        self.scope.person.contacts = [];
+                    self.scope.person.contacts.push(self.scope.email);
+                }
+            };
+            var getContact = function (type) {
+                var i;
+                for (i = 0; i < self.scope.person.contacts.length; i++) {
+                    if (self.scope.person.contacts[i].type = 'phone')
+                        return self.scope.person.contacts[i];
+                }
             };
             self.scope.saveCustomer = function () {
-                Callback.Person.save(self.scope.person, function (Response) {
-                    alert('Datos guardados');
-                }, function (Error) {
-                    alert('Han ocurrido errores al guardar los datos');
-                });
+                setContacts();
+                if (self.scope.person.id) {
+                    Callback.Person.update(self.scope.person, function (Response) {
+                        alert('Datos guardados');
+                    }, function (Error) {
+                        alert('Han ocurrido errores al guardar los datos');
+                    });
+                }
+                else {
+                    Callback.Person.save(self.scope.person, function (Response) {
+                        alert('Datos guardados');
+                    }, function (Error) {
+                        alert('Han ocurrido errores al guardar los datos');
+                    });
+                }
             };
-            if (CustomerId > 0)
+            if (CustomerId != 0)
                 getCustomer();
         }
         return customer;
@@ -101,24 +145,81 @@ var Controller;
 var Controller;
 (function (Controller) {
     var main = (function () {
-        function main(scope, Callback, Utils) {
-            var self = this;
-            self.scope = scope;
-            self.scope.personQuery = {};
-            //self.scope.customerList = resolver['persons'];
-            self.scope.getCustomerList = function () {
-                Callback.Person.query({ query: self.scope.personQuery, top: 50, offset: 0 }).$promise.then(function (response) {
-                    self.scope.customerList = response;
-                }, function (error) {
-                    alert("Error:Somenthing went wrong");
-                });
-            };
-            scope.getCustomerList();
+        function main(scope, Callback, Utils, $routeParams) {
+            scope.currentListPage = $routeParams["page"] ? $routeParams["page"] : 0;
+            scope.query = $routeParams["query"] ? $routeParams["query"] : "";
+            //self.scope.personQuery = {};
+            ////self.scope.customerList = resolver['persons'];
+            //self.scope.getCustomerList = () => {
+            //    Callback.Person.query({ query: self.scope.personQuery, top: 50, offset: 0 }).$promise.
+            //        then((response) => {
+            //        self.scope.customerList = response;
+            //    },
+            //        (error) => {
+            //            alert("Error:Somenthing went wrong");
+            //        });
+            //}
+            //scope.getCustomerList();
         }
         return main;
     })();
     Controller.main = main;
 })(Controller || (Controller = {}));
+var Directive;
+(function (Directive) {
+    var customerList = (function () {
+        function customerList(Callback, $location) {
+            var _this = this;
+            this.replace = true;
+            this.scope = { page: '@' };
+            this.templateUrl = "App/view/customerList.html";
+            this.controller = customerListController;
+            this.link = function (scope, elm, attr) {
+                var self = _this;
+                //self.scope = scope;
+                scope.personQuery = "";
+                var getCustomerList = function () {
+                    Callback.Person.get({ query: scope.personQuery, top: scope.top, offset: (scope.page * scope.top) }).$promise.then(function (response) {
+                        scope.productCounter = response.counter;
+                        scope.customerList = response.persons;
+                        scope.limit = ((scope.page * scope.top) + scope.top) > response.counter ? response.counter - (scope.page * scope.top) : scope.top;
+                    });
+                };
+                scope.search = function () {
+                    getCustomerList();
+                    //$location.search("query", !scope.personQuery ? "" : scope.personQuery);
+                    //$location.search("page", scope.page);
+                };
+                scope.next = function () {
+                    if ((scope.page * scope.top) + scope.top < scope.productCounter) {
+                        scope.page = scope.page + 1; //parseInt(scope.query.top);
+                        getCustomerList();
+                    }
+                };
+                scope.prev = function () {
+                    if (scope.page > 0) {
+                        scope.page = scope.page - 1; //parseInt(scope.query.top);
+                        getCustomerList();
+                    }
+                };
+                scope.search();
+            };
+        }
+        return customerList;
+    })();
+    Directive.customerList = customerList;
+    var customerListController = (function () {
+        function customerListController($element, $scope, ServerCall) {
+            this.$element = $element;
+            this.$scope = $scope;
+            $scope.page = parseInt($scope.page.toString());
+            $scope.top = 6;
+        }
+        customerListController.$inject = ['$element', '$scope', 'Callback'];
+        return customerListController;
+    })();
+    Directive.customerListController = customerListController;
+})(Directive || (Directive = {}));
 var Directive;
 (function (Directive) {
     var spDatetimePicker = (function () {
@@ -174,8 +275,8 @@ var Resource;
 (function (Resource) {
     var ServerCall = (function () {
         function ServerCall($resource) {
-            var uploadDescriptor = { method: "POST", isArray: false, transformRequest: angular.identity, headers: { 'Content-Type': undefined } };
-            this.Person = $resource('/api/person/:id', { id: '@id' });
+            var updateDescriptor = { method: "PUT" };
+            this.Person = $resource('/api/person/:id', { id: '@id' }, { update: updateDescriptor });
             this.Account = $resource('/api/account/:id', { id: '@id' });
         }
         return ServerCall;

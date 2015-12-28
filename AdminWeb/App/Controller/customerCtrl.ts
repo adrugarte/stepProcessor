@@ -2,8 +2,12 @@
     export interface IcustomerScope extends ng.IScope {
         customerList: Array<Models.IPerson>;
         person: Models.IPerson;
+        address: Models.Address
+        phone: Models.Contact;
+        celular: Models.Contact;
+        email: Models.Contact;
         personQuery: any;
-        CustomerSources: Array<string>;
+        customerSources: Array<string>;
         getCustomerList: () => void;
         saveCustomer: () => void;
     }
@@ -12,45 +16,89 @@
         scope: IcustomerScope;
         constructor(scope: IcustomerScope, Callback: Resource.IServerCall, Utils:Service.Utils, $routeParams:ng.route.IRouteParamsService) {
             var self = this;
-            var CustomerId = $routeParams["id"];
+            var CustomerId = parseInt($routeParams["id"]);
             self.scope = scope;
             self.scope.person = <Models.IPerson>{};
-            self.scope.person.Address = <Models.Address>{};
-            self.scope.person.Phone = <Models.Contact>{};
-            self.scope.person.Celular = <Models.Contact>{};
-            self.scope.person.Email = <Models.Contact>{};
+            self.scope.person.addresses = [];
+            self.scope.person.contacts = [];
+
+            self.scope.address = <Models.Address>{};
+            self.scope.phone = <Models.Contact>{};
+            self.scope.celular = <Models.Contact>{};
+            self.scope.email = <Models.Contact>{};
             self.scope.personQuery = {};
-            self.scope.CustomerSources = Utils.Sources;
+            self.scope.customerSources = Utils.Sources;
 
-            self.scope.person.Address.Type = "Home";
-
-            self.scope.person.Phone.Type = 'Phone';
-            self.scope.person.Phone.Use = 'Private';  //private
-
-            self.scope.person.Celular.Type = 'Cellular';
-            self.scope.person.Celular.Use = 'Private';  //private
-
-            self.scope.person.Email.Type = 'email';
-            self.scope.person.Email.Use = 'Private';  //private
 
             var getCustomer = () => {
-                Callback.Person.get({ id: CustomerId },(person:Models.IPerson) => {
-                    self.scope.person = person;
+                Callback.Person.get({ id: CustomerId },(response) => {
+                    self.scope.person = response.person;
+                    if (self.scope.person.addresses) self.scope.address = self.scope.person.addresses[0];
+                    if (self.scope.person.contacts) {
+                        self.scope.phone = getContact("Phone");
+                        self.scope.celular = getContact("Cellular");
+                        self.scope.email = getContact("Email");
+                    }
                 });
             }
 
-            self.scope.saveCustomer = () => {
+            var setContacts = () => {
+                if (self.scope.address.address1 || self.scope.address.address2 || self.scope.address.city || self.scope.address.zipCode) {
+                    self.scope.address.type = "Home";
+                    if (!self.scope.person.addresses) self.scope.person.addresses = [];
+                    self.scope.person.addresses.push(self.scope.address);
+                }
 
-                Callback.Person.save(self.scope.person,
-                    (Response) => {
-                        alert('Datos guardados');
-                    },
-                    (Error) => {
-                        alert('Han ocurrido errores al guardar los datos');
-                    });
+
+                if (self.scope.phone.value) {
+                    self.scope.phone.type = 'Phone';
+                    self.scope.phone.use = 'Private';  //private
+                    if (!self.scope.person.contacts) self.scope.person.contacts = [];
+                    self.scope.person.contacts.push(self.scope.phone);
+                }
+                if (self.scope.celular.value) {
+                    self.scope.celular.type = 'Cellular';
+                    self.scope.celular.use = 'Private';  //private
+                    if (!self.scope.person.contacts) self.scope.person.contacts = [];
+                    self.scope.person.contacts.push(self.scope.celular);
+                }
+                if (self.scope.email.value) {
+                    self.scope.email.type = 'Email';
+                    self.scope.email.use = 'Private';  //private
+                    if (!self.scope.person.contacts) self.scope.person.contacts = [];
+                    self.scope.person.contacts.push(self.scope.email);
+                }
             }
 
-            if (CustomerId > 0) getCustomer();
+            var getContact = (type: string): Models.Contact => {
+                var i;
+                for (i = 0; i < self.scope.person.contacts.length; i++) {
+                    if (self.scope.person.contacts[i].type = 'phone') return self.scope.person.contacts[i];
+                }
+            }
+
+            self.scope.saveCustomer = () => {
+                setContacts();
+                if (self.scope.person.id) {
+                    Callback.Person.update(self.scope.person,
+                        (Response) => {
+                            alert('Datos guardados');
+                        },
+                        (Error) => {
+                            alert('Han ocurrido errores al guardar los datos');
+                        });
+                } else {
+                    Callback.Person.save(self.scope.person,
+                        (Response) => {
+                            alert('Datos guardados');
+                        },
+                        (Error) => {
+                            alert('Han ocurrido errores al guardar los datos');
+                        });
+                }
+            }
+
+            if (CustomerId != 0) getCustomer();
         }
     }
 }  

@@ -43,13 +43,14 @@ input[type="checkbox"].input-validation-error {
 
 
 .custom-navbar{
-    background-color:#5c9aef;
+    background-color:#f5f5f5;
 
 
 }
 
 .custom-navbar a{
-    color:#ffffff;
+    color:#5c9aef;
+    font-weight:bold;
 
 
 }
@@ -57,4 +58,35 @@ input[type="checkbox"].input-validation-error {
 .footer{
     text-align:center;
     color:#4cb8fe;
+}
+
+.table-header{
+    color:#ffffff;
+    font-weight:bold;
+    border:1px solid #4cb8fe;
+    margin-top: 10px;
+    background-color:#5c9aef;
+}
+
+.brand{
+    font-size:large;
+    color:#433ce5;
+    font-weight:bold;
+}
+.customerlist-search{
+    min-height:30px;
+    margin-top:10px;
+}
+
+.customer-line{
+    background-color:#f9f9f9;
+    border-bottom:1px solid #ffffff;
+
+}
+
+
+.list-title{
+    font-family: "RobotoCondensed", Arial, sans-serif, helvetica;
+    color: #1F77B5;
+    font-size:18px;
 }

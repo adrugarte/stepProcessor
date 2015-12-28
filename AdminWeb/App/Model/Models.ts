@@ -1,32 +1,31 @@
 ﻿declare module Models {
     export interface IPerson {
-        LastName: string;
-        FirstName: string;
-        MiddleName: string;
-        BirthDate: any;
-        Gender: number;
-        Address: Address;
-        Phone: Contact;
-        Celular: Contact;
-        Email: Contact;
-        //Addresses: Array<Address>;
+        id: string;
+        lastName: string;
+        firstName: string;
+        middleName: string;
+        birthDate: any;
+        gender: any;
+        contacts: Array<Contact>;
+        email: string;
+        addresses: Array<Address>;
     }
 
     export interface Contact {
-        Use: string;
-        Type: any;
-        Prefered: boolean;
-        Value: string;
-        Comment: string;
+        use: string;
+        type: any;
+        prefered: boolean;
+        value: string;
+        comment: string;
     }
 
     export interface Address{
-        Type: any;
-        Address1: string;
-        Address2: string;
-        City: string;
-        State: string;
-        ZipCode: string;
+        type: any;
+        address1: string;
+        address2: string;
+        city: string;
+        state: string;
+        zipCode: string;
     }
 
 

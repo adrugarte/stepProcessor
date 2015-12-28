@@ -8,18 +8,10 @@
                 "ngRoute",
                 "ngResource"]);
 
-            //var mainRoute: ng.route.IRoute = {
-            //    controller: 'mainCtrl',
-            //    templateUrl: '/App/View/customerList.html',
-            //    resolve: {
-            //        'persons': (Resolver: Resolver.CtrlResolver) => { return Resolver.mainCtrl(); }
-            //    }
-            //}
-
 
             var mainRoute: ng.route.IRoute = {
                 controller: 'mainCtrl',
-                templateUrl: '/App/View/customerList.html'
+                templateUrl: '/App/View/main.html'
             }
 
             var customerRoute: ng.route.IRoute = {
@@ -51,11 +43,11 @@
             ///// Directives
             //this.app.directive('uploadFileList', ['ServerCall', (ServerCall: Service.IServerCall) => { return new Directive.DocumentList(ServerCall); }]);
             this.app.directive('mbDatePicker', ['$parse', ($parse: ng.IParseService) => { return new Directive.spDatetimePicker($parse); }]);
-
+            this.app.directive('customerList', ['Callback', '$location', (Callback: Resource.IServerCall, $location: ng.ILocationService) => { return new Directive.customerList(Callback, $location); }]);
 
             ///// Controllers
             this.app.controller('customerCtrl',($scope, Callback: Resource.IServerCall, Utils, $routeParams) => new Controller.customer($scope, Callback, Utils, $routeParams));
-            this.app.controller('mainCtrl',($scope: Controller.ImainScope,Callback:Resource.IServerCall,Utils:Service.Utils) => new Controller.main($scope,Callback,Utils));
+            this.app.controller('mainCtrl', ['$scope', 'Callback','Utils','$routeParams',($scope: Controller.ImainScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.main($scope, Callback, Utils, $routeParams)]);
         }
     }
 }
