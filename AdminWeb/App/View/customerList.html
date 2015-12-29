@@ -23,13 +23,13 @@
         </div>
         <div class="row customer-line" ng-repeat="customer in customerList">
             <div class="col-md-1"><a href="/customer/{{customer.id}}">Edit</a></div>
-            <div class="col-md-3">{{customer.lastName + ", " + customer.firstName}}</div>
-            <div class="col-md-2">{{customer.email.value}}</div>
+            <div class="col-md-3">{{customer.name}}</div>
+            <div class="col-md-2">{{customer.email}}</div>
             <div class="col-md-3">
-                <div class="col-md-6">{{customer.phone.value}}</div>
-                <div class="col-md-6">{{customer.celular.value}}</div>
+                <div class="col-md-6">{{customer.phone}}</div>
+                <div class="col-md-6">{{customer.celular}}</div>
             </div>
-            <div class="col-md-3">{{customer.address.address1 + " " + customer.address.addres2 + " " + customer.address.city + " " + customer.address.state + " " + customer.address.zip}}</div>
+            <div class="col-md-3">{{customer.address}}</div>
         </div>
         <div ng-show="limit<productCounter" id="row pagingDiv" style="margin:10px 0 10px -15px;">
             <ul class="pagination pagination-sm" style="margin:0;">

@@ -35,7 +35,11 @@ namespace BravoRepository
 
         public Person Get(int PersonId)
         {
-            return _dbCtx.Persons.Find(PersonId);
+            //var person = _dbCtx.Persons.Find(PersonId);
+            //person.Addresses = _dbCtx.Addresses.Where(a => a.personId == PersonId).ToList();
+            //person.Contacts = _dbCtx.Contacts.Where(c => c.personId == PersonId).To;
+
+            return _dbCtx.Persons.Include("Addresses").Include("Contacts").FirstOrDefault(p=>p.Id==PersonId);
         }
 
         public Person Update(int PersonId, Person person)
@@ -47,13 +51,14 @@ namespace BravoRepository
                     if (ct.Id == 0) _dbCtx.Contacts.Add(ct); else _dbCtx.Entry(ct).State = System.Data.Entity.EntityState.Modified;
                 }
             }
-            //if (person.Addresses != null) { 
-            //    foreach (Address ad in person.Addresses)
-            //    {
-            //        ad.personId = PersonId;
-            //        if (ad.Id == 0) _dbCtx.Entry(ad).State = System.Data.Entity.EntityState.Added; _dbCtx.Entry(ad).State = System.Data.Entity.EntityState.Modified;
-            //    }
-            //}
+            if (person.Addresses != null)
+            {
+                foreach (Address ad in person.Addresses)
+                {
+                    ad.personId = PersonId;
+                    if (ad.Id == 0) _dbCtx.Addresses.Add(ad); else _dbCtx.Entry(ad).State = System.Data.Entity.EntityState.Modified;
+                }
+            }
             _dbCtx.Entry(person).State = System.Data.Entity.EntityState.Modified;
             _dbCtx.SaveChanges();
             return person;

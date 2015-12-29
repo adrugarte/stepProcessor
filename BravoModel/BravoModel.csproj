@@ -50,7 +50,6 @@
     <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\Common.cs" />
     <Compile Include="Model\Contact.cs" />
-    <Compile Include="Model\House.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

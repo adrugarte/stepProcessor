@@ -30,7 +30,7 @@ namespace BravoModel.Model
         public string ZipCode { get; set; }
 
         public int personId { get; set; }
-        [ForeignKey("personId")]
-        public Person person { get; set; }
+        //[ForeignKey("personId")]
+        //public Person person { get; set; }
     }
 }

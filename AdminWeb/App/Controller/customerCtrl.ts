@@ -35,9 +35,9 @@
                     self.scope.person = response.person;
                     if (self.scope.person.addresses) self.scope.address = self.scope.person.addresses[0];
                     if (self.scope.person.contacts) {
-                        self.scope.phone = getContact("Phone");
-                        self.scope.celular = getContact("Cellular");
-                        self.scope.email = getContact("Email");
+                        self.scope.phone = getContact("phone");
+                        self.scope.celular = getContact("cellular");
+                        self.scope.email = getContact("email");
                     }
                 });
             }
@@ -70,10 +70,10 @@
                 }
             }
 
-            var getContact = (type: string): Models.Contact => {
+            var getContact = (contacttype: string): Models.Contact => {
                 var i;
                 for (i = 0; i < self.scope.person.contacts.length; i++) {
-                    if (self.scope.person.contacts[i].type = 'phone') return self.scope.person.contacts[i];
+                    if (self.scope.person.contacts[i].type == contacttype) return self.scope.person.contacts[i];
                 }
             }
 

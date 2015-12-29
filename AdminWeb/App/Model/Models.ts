@@ -11,6 +11,17 @@
         addresses: Array<Address>;
     }
 
+    export interface IPersonList {
+        id: string;
+        Name: string;
+        birthDate: any;
+        gender: any;
+        phone: string;
+        celular: string;
+        email: string;
+        address: string;
+    }
+
     export interface Contact {
         use: string;
         type: any;

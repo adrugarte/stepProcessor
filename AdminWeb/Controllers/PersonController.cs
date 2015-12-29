@@ -57,7 +57,18 @@ namespace AdminWeb.Controllers
             }
             if (offset > 0) PersonLisT = PersonLisT.Skip(offset);
             if (top > 0) PersonLisT = PersonLisT.Take(top);
-            return Ok(new { counter = _counter, Persons = PersonLisT.ToList() });
+
+            var persons = PersonLisT.Select(p => 
+                new { 
+                    Id = p.Id,
+                    Name = p.LastName + ", " + p.FirstName, 
+                    Address = p.Addresses.Where(c=>c.Type==AddressType.Home).Select(c => c.Address1 + c.Address2 + c.City + c.State + c.ZipCode).FirstOrDefault() ,
+                    Phone = p.Contacts.Where(c=>c.Type== ContactType.Phone).Select(c=>c.value).FirstOrDefault(),
+                    Celular = p.Contacts.Where(c => c.Type == ContactType.Cellular).Select(c => c.value).FirstOrDefault(),
+                    Email = p.Contacts.Where(c => c.Type == ContactType.email).Select(c => c.value).FirstOrDefault(),
+                });
+
+            return Ok(new { counter = _counter, Persons = persons.ToList() });
         }
 
 
