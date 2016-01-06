@@ -22,12 +22,12 @@
             <div class="col-md-3">Address</div>
         </div>
         <div class="row customer-line" ng-repeat="customer in customerList">
-            <div class="col-md-1"><a href="/customer/{{customer.id}}">Edit</a></div>
+            <div class="col-md-1"><a href="/customer/{{customer.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></div>
             <div class="col-md-3">{{customer.name}}</div>
             <div class="col-md-2">{{customer.email}}</div>
             <div class="col-md-3">
-                <div class="col-md-6">{{customer.phone}}</div>
-                <div class="col-md-6">{{customer.celular}}</div>
+                <div class="col-md-6">{{customer.phone|phonenumber}}</div>
+                <div class="col-md-6">{{customer.celular|phonenumber}}</div>
             </div>
             <div class="col-md-3">{{customer.address}}</div>
         </div>

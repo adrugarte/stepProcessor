@@ -999,6 +999,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\version.json" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
+    <Content Include="Scripts\jquery.numeric.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1011,8 +1012,10 @@
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\Controller\customerCtrl.ts" />
     <TypeScriptCompile Include="App\Controller\mainCtrl.ts" />
+    <TypeScriptCompile Include="App\Directive\commonDirective.ts" />
     <TypeScriptCompile Include="App\Directive\customerListDirective.ts" />
     <TypeScriptCompile Include="App\Directive\mbDatePicker.ts" />
+    <TypeScriptCompile Include="App\Filter\phoneFilter.ts" />
     <TypeScriptCompile Include="App\Model\Models.ts" />
     <TypeScriptCompile Include="App\Service\CallbackService.ts" />
     <TypeScriptCompile Include="App\Service\ResolverService.ts" />

@@ -26,6 +26,10 @@ var Admin;
             };
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
+            ///Filter
+            this.app.filter('phonenumber', [function () {
+                return (new Filters.forPhone()).filter;
+            }]);
             //// Services
             this.app.service('Callback', ['$resource', function ($resource) {
                 return new Resource.ServerCall($resource);
@@ -44,6 +48,10 @@ var Admin;
             this.app.directive('customerList', ['Callback', '$location', function (Callback, $location) {
                 return new Directive.customerList(Callback, $location);
             }]);
+            this.app.directive('phoneNumber', ['$filter', '$browser', function ($filter, $browser) {
+                return new Directive.phoneInput($filter, $browser);
+            }]);
+            //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
             this.app.controller('customerCtrl', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); });
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
@@ -76,14 +84,16 @@ var Controller;
                     if (self.scope.person.addresses)
                         self.scope.address = self.scope.person.addresses[0];
                     if (self.scope.person.contacts) {
-                        self.scope.phone = getContact("phone");
-                        self.scope.celular = getContact("cellular");
-                        self.scope.email = getContact("email");
+                        self.scope.phone = getContact("1");
+                        self.scope.celular = getContact("2");
+                        self.scope.email = getContact("3");
                     }
                 });
             };
             var setContacts = function () {
-                if (self.scope.address.address1 || self.scope.address.address2 || self.scope.address.city || self.scope.address.zipCode) {
+                self.scope.person.addresses = [];
+                self.scope.person.contacts = [];
+                if (self.scope.address && (self.scope.address.address1 || self.scope.address.address2 || self.scope.address.city || self.scope.address.zipCode)) {
                     self.scope.address.type = "Home";
                     if (!self.scope.person.addresses)
                         self.scope.person.addresses = [];
@@ -117,6 +127,7 @@ var Controller;
                     if (self.scope.person.contacts[i].type == contacttype)
                         return self.scope.person.contacts[i];
                 }
+                return {};
             };
             self.scope.saveCustomer = function () {
                 setContacts();
@@ -165,6 +176,52 @@ var Controller;
     })();
     Controller.main = main;
 })(Controller || (Controller = {}));
+var Directive;
+(function (Directive) {
+    var OnlyNumber = (function () {
+        function OnlyNumber() {
+            this.link = function (scope, elm, attr) {
+                $(elm).numeric();
+            };
+        }
+        return OnlyNumber;
+    })();
+    Directive.OnlyNumber = OnlyNumber;
+    var phoneInput = (function () {
+        function phoneInput($filter, $browser) {
+            this.require = 'ngModel';
+            this.link = function ($scope, $element, $attrs, ngModelCtrl) {
+                var listener = function () {
+                    var value = $element.val().replace(/[^0-9]/g, '');
+                    $element.val($filter('phonenumber')(value, false));
+                };
+                // This runs when we update the text field
+                ngModelCtrl.$parsers.push(function (viewValue) {
+                    return viewValue.replace(/[^0-9]/g, '').slice(0, 10);
+                });
+                // This runs when the model gets updated on the scope directly and keeps our view in sync
+                ngModelCtrl.$render = function () {
+                    $element.val($filter('phonenumber')(ngModelCtrl.$viewValue, false));
+                };
+                $element.bind('change', listener);
+                $element.bind('keydown', function (event) {
+                    var key = event.keyCode;
+                    // If the keys include the CTRL, SHIFT, ALT, or META keys, or the arrow keys, do nothing.
+                    // This lets us support copy and paste too
+                    if (key == 91 || (15 < key && key < 19) || (37 <= key && key <= 40)) {
+                        return;
+                    }
+                    $browser.defer(listener); // Have to do this or changes don't get picked up properly
+                });
+                $element.bind('paste cut', function () {
+                    $browser.defer(listener);
+                });
+            };
+        }
+        return phoneInput;
+    })();
+    Directive.phoneInput = phoneInput;
+})(Directive || (Directive = {}));
 var Directive;
 (function (Directive) {
     var customerList = (function () {
@@ -271,6 +328,74 @@ var Directive;
     })();
     Directive.spDatetimePicker = spDatetimePicker;
 })(Directive || (Directive = {}));
+var Filters;
+(function (Filters) {
+    var forPhone = (function () {
+        function forPhone() {
+            this.filter = function (phone) {
+                ///*
+                //@param {Number | String } number - Number that will be formatted as telephone number
+                //Returns formatted number: (###) ###-####
+                //if number.length < 4: ###
+                //    umber.length < 7: (###) ###
+                //Does not handle country codes that are not '1' (USA)
+                ////*/
+                //if (!phone) { return ''; }
+                //phone = String(phone);
+                //// Will return formattedNumber. 
+                //// If phonenumber isn't longer than an area code, just show number
+                //var formattedNumber = phone;
+                //// if the first character is '1', strip it out and add it back
+                //var c = (phone[0] == '1') ? '1 ' : '';
+                //phone = phone[0] == '1' ? phone.slice(1) : phone;
+                //// # (###) ###-#### as c (area) front-end
+                //var area = phone.substring(0, 3);
+                //var front = phone.substring(3, 6);
+                //var end = phone.substring(6, 10);
+                //if (front) {
+                //    formattedNumber = (c + "(" + area + ") " + front);
+                //}
+                //if (end) {
+                //    formattedNumber += ("-" + end);
+                //}
+                ////console.log(formattedNumber);
+                //return formattedNumber;
+                if (!phone) {
+                    return '';
+                }
+                var value = phone.toString().trim().replace(/^\+/, '');
+                if (value.match(/[^0-9]/)) {
+                    return phone;
+                }
+                var country, city, number;
+                switch (value.length) {
+                    case 1:
+                    case 2:
+                    case 3:
+                        city = value;
+                        break;
+                    default:
+                        city = value.slice(0, 3);
+                        number = value.slice(3);
+                }
+                if (number) {
+                    if (number.length > 3) {
+                        number = number.slice(0, 3) + '-' + number.slice(3, 7);
+                    }
+                    else {
+                        number = number;
+                    }
+                    return ("(" + city + ") " + number).trim();
+                }
+                else {
+                    return "(" + city;
+                }
+            };
+        }
+        return forPhone;
+    })();
+    Filters.forPhone = forPhone;
+})(Filters || (Filters = {}));
 var Resource;
 (function (Resource) {
     var ServerCall = (function () {

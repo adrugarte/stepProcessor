@@ -22,6 +22,8 @@ namespace BravoModel.Model
         public virtual string FirstName { get; set; }
         public virtual string MiddleName { get; set; }
         public virtual DateTime BirthDate { get; set; }
+        public virtual string BirthCity { get; set; }
+        public virtual string BirthCountry { get; set; }
         public virtual Gender Gender { get; set; }
         public virtual string Email { get; set; }
         public virtual string Source { get; set; }

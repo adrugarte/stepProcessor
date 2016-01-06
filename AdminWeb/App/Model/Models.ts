@@ -5,6 +5,8 @@
         firstName: string;
         middleName: string;
         birthDate: any;
+        birthCity: any;
+        birthCountry: any;
         gender: any;
         contacts: Array<Contact>;
         email: string;
@@ -38,6 +40,5 @@
         state: string;
         zipCode: string;
     }
-
-
+  
 }

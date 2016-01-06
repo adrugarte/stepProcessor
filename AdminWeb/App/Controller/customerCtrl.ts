@@ -35,15 +35,18 @@
                     self.scope.person = response.person;
                     if (self.scope.person.addresses) self.scope.address = self.scope.person.addresses[0];
                     if (self.scope.person.contacts) {
-                        self.scope.phone = getContact("phone");
-                        self.scope.celular = getContact("cellular");
-                        self.scope.email = getContact("email");
+                        self.scope.phone = getContact("1");
+                        self.scope.celular = getContact("2");
+                        self.scope.email = getContact("3");
                     }
                 });
             }
 
             var setContacts = () => {
-                if (self.scope.address.address1 || self.scope.address.address2 || self.scope.address.city || self.scope.address.zipCode) {
+                self.scope.person.addresses = []; 
+                self.scope.person.contacts = []; 
+
+                if (self.scope.address && (self.scope.address.address1 || self.scope.address.address2 || self.scope.address.city || self.scope.address.zipCode)) {
                     self.scope.address.type = "Home";
                     if (!self.scope.person.addresses) self.scope.person.addresses = [];
                     self.scope.person.addresses.push(self.scope.address);
@@ -75,6 +78,8 @@
                 for (i = 0; i < self.scope.person.contacts.length; i++) {
                     if (self.scope.person.contacts[i].type == contacttype) return self.scope.person.contacts[i];
                 }
+
+                return <Models.Contact>{};
             }
 
             self.scope.saveCustomer = () => {

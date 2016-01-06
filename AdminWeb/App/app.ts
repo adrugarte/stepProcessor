@@ -35,6 +35,10 @@
 
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
+
+            ///Filter
+            this.app.filter('phonenumber', [() => { return (new Filters.forPhone()).filter;}]);
+            
             //// Services
             this.app.service('Callback', ['$resource',($resource: ng.resource.IResourceService) => { return new Resource.ServerCall($resource); }]);
             this.app.service('Utils',[() => { return new Service.Utils(); }]);
@@ -44,6 +48,8 @@
             //this.app.directive('uploadFileList', ['ServerCall', (ServerCall: Service.IServerCall) => { return new Directive.DocumentList(ServerCall); }]);
             this.app.directive('mbDatePicker', ['$parse', ($parse: ng.IParseService) => { return new Directive.spDatetimePicker($parse); }]);
             this.app.directive('customerList', ['Callback', '$location', (Callback: Resource.IServerCall, $location: ng.ILocationService) => { return new Directive.customerList(Callback, $location); }]);
+            this.app.directive('phoneNumber', ['$filter','$browser',($filter:ng.IFilterService,$browser:ng.IBrowserService) => { return new Directive.phoneInput($filter,$browser); }]);
+            //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
 
             ///// Controllers
             this.app.controller('customerCtrl',($scope, Callback: Resource.IServerCall, Utils, $routeParams) => new Controller.customer($scope, Callback, Utils, $routeParams));

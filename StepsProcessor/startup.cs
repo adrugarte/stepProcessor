@@ -26,7 +26,6 @@ namespace StepsProcessor
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
         }
 
         public void ConfigureOAuth(IAppBuilder app)
