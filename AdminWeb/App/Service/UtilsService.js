@@ -4,6 +4,7 @@ var Service;
         function Utils() {
             var _sources = ['Flyer', 'Clarin', 'Facebook', 'Volantes ', 'Referido', 'Otros'];
             this.Sources = _sources;
+            this.virtualpath = $("#virtualpath").attr("href");
         }
         return Utils;
     })();

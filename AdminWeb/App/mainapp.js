@@ -270,7 +270,7 @@ var Directive;
             this.$element = $element;
             this.$scope = $scope;
             $scope.page = parseInt($scope.page.toString());
-            $scope.top = 6;
+            $scope.top = 20;
         }
         customerListController.$inject = ['$element', '$scope', 'Callback'];
         return customerListController;
