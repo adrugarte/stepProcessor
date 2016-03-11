@@ -40,5 +40,18 @@
         state: string;
         zipCode: string;
     }
+
+    export interface PersonService {
+        Id: number;
+        ServiceDesc: string;
+        Form: string;
+        Price: number;
+        PaidAmount: number;
+        Created: any;
+        Finished: any
+        UserCreated: string;
+        PersonId: number;
+        ServiceId: number;
+    }
   
 }

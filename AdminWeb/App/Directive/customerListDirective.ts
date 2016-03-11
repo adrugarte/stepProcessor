@@ -7,6 +7,7 @@
         limit: number;
         maxlimit: number;
         productCounter: number;
+        showServices: (idx: number, event: any) => void;
         search: () => void;
         next: () => void;
         prev: () => void;
@@ -18,13 +19,14 @@
         public scope = {page:'@'};
         public templateUrl = "App/view/customerList.html";
         public controller;
-        constructor(Callback: Resource.IServerCall, $location: ng.ILocationService) {
+        constructor(Callback: Resource.IServerCall, $compile: ng.ICompileService) {
             this.controller = customerListController;
 
             this.link = (scope: IcustomerListScope, elm: ng.IAugmentedJQuery, attr: ng.IAttributes) => {
                 var self = this;
                 //self.scope = scope;
                 scope.personQuery = ""
+
 
                 var getCustomerList = () => {
                     Callback.Person.get({ query: scope.personQuery, top: scope.top, offset: (scope.page*scope.top)}).$promise.
@@ -40,6 +42,21 @@
                     //$location.search("page", scope.page);
                 }
 
+
+                scope.showServices = (idx: number, event:any) => {
+                    var element = angular.element(event.target).closest("div.customer-line");
+                    if (!(element.attr("shown") == "true")) {
+                        var PersonId = scope.customerList[idx].id;
+                        var content = "<div>" + "<person-service-list person-id ='" + PersonId + "'/>" + "</div>";
+                        element.after($compile(content)(scope));
+                        
+                    }
+                    else { element.next().remove(); }
+
+                    element.attr("shown", element.attr("shown") == "true" ? "false" : "true");
+
+                }
+
                 scope.next = function () {
                     if ((scope.page * scope.top) + scope.top < scope.productCounter) {
                         scope.page = scope.page + 1; //parseInt(scope.query.top);
@@ -52,12 +69,12 @@
                         getCustomerList();
                     }
                 };
+
                 scope.search();
             }
 
         }
     }
-
 
     export class customerListController {
         static $inject = ['$element', '$scope', 'Callback'];

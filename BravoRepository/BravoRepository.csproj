@@ -76,11 +76,34 @@
   <ItemGroup>
     <Compile Include="DbContext\RavenDbContext.cs" />
     <Compile Include="DbContext\SpSqlDbContext.cs" />
+    <Compile Include="Migrations\201601192048424_InitialCreate.cs" />
+    <Compile Include="Migrations\201601192048424_InitialCreate.Designer.cs">
+      <DependentUpon>201601192048424_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603082021454_FirstMigration.cs" />
+    <Compile Include="Migrations\201603082021454_FirstMigration.Designer.cs">
+      <DependentUpon>201603082021454_FirstMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201603091913486_SecondMigration.cs" />
+    <Compile Include="Migrations\201603091913486_SecondMigration.Designer.cs">
+      <DependentUpon>201603091913486_SecondMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\SqlRepositor.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201601192048424_InitialCreate.resx">
+      <DependentUpon>201601192048424_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603082021454_FirstMigration.resx">
+      <DependentUpon>201603082021454_FirstMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603091913486_SecondMigration.resx">
+      <DependentUpon>201603091913486_SecondMigration.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />

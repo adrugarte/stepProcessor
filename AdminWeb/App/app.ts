@@ -47,8 +47,9 @@
             ///// Directives
             //this.app.directive('uploadFileList', ['ServerCall', (ServerCall: Service.IServerCall) => { return new Directive.DocumentList(ServerCall); }]);
             this.app.directive('mbDatePicker', ['$parse', ($parse: ng.IParseService) => { return new Directive.spDatetimePicker($parse); }]);
-            this.app.directive('customerList', ['Callback', '$location', (Callback: Resource.IServerCall, $location: ng.ILocationService) => { return new Directive.customerList(Callback, $location); }]);
-            this.app.directive('phoneNumber', ['$filter','$browser',($filter:ng.IFilterService,$browser:ng.IBrowserService) => { return new Directive.phoneInput($filter,$browser); }]);
+            this.app.directive('customerList', ['Callback', '$compile', (Callback: Resource.IServerCall, $compile: ng.ICompileService) => { return new Directive.customerList(Callback, $compile); }]);
+            this.app.directive('phoneNumber', ['$filter', '$browser', ($filter: ng.IFilterService, $browser: ng.IBrowserService) => { return new Directive.phoneInput($filter, $browser); }]);
+            this.app.directive('personServiceList', ['Callback','$window', (Callback: Resource.IServerCall,window:ng.IWindowService) => { return new Directive.personServiceList(Callback,window); }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
 
             ///// Controllers

@@ -51,6 +51,7 @@
     <Compile Include="Model\Common.cs" />
     <Compile Include="Model\Contact.cs" />
     <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Service.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

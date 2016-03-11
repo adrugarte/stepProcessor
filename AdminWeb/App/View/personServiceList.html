@@ -1,0 +1,50 @@
+﻿<div>
+    <div  class="table table-bordered" style="overflow:auto;">
+        <div class="col-md-12" style="background-color:#dbdbdb;min-height:20px;color:#5c9aef;">
+            <div class="col-md-1"></div>
+            <div class="col-md-3">Service</div>
+            <div class="col-md-1">Price</div>
+            <div class="col-md-2">Forms</div>
+            <div class="col-md-1">Paid</div>
+            <div class="col-md-2">Created</div>
+            <div class="col-md-2">Finished</div>
+        </div>
+        <div ng-repeat="pService in personServiceList">
+            <div ng-hide="editing" class="col-md-12" style="background-color:antiquewhite;margin-bottom:1px;">
+                <div class="col-md-1">
+                    <a href="" ng-click="editing=true;"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                    <a href="" ng-click="Delete($index);"><span class=" glyphicon glyphicon-trash" aria-hidden="true"></span></a>
+                </div>
+                <div class="col-md-3">{{pService.serviceDesc}}</div>
+                <div class="col-md-1">{{pService.price| currency:"$":2}}</div>
+                <div class="col-md-2">{{pService.form}}</div>
+                <div class="col-md-1">{{pService.paidAmount| currency:"$":2}}</div>
+                <div class="col-md-2">{{pService.created | date:'MM/dd/yyyy h:mma'}}</div>
+                <div class="col-md-2">{{pService.finished| date:'MM/dd/yyyy h:mma'}}</div>
+            </div>
+            <div ng-show="editing" class="col-md-12">
+                <div class=" col-md-1">
+                    <a href="" ng-click="Save($index);editing=false;"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span></a>
+                    <a href="" ng-click="editing=false;"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                </div>
+                <div class="col-md-3">{{pService.serviceDesc}}</div>
+                <div class="col-md-1"><input class="pservice-edit form-control" type="text" ng-model="pService.price" /></div>
+                <div class="col-md-2">{{pService.form}}</div>
+                <div class="col-md-1"><input class="pservice-edit form-control" type="text" ng-model="pService.paidAmount" /></div>
+                <div class="col-md-2">{{pService.created | date:'MM/dd/yyyy h:mma'}}</div>
+                <div class="col-md-2">{{pService.finished| date:'MM/dd/yyyy h:mma'}}</div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-1">
+                <a href="" ng-click="Add();"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span></a>
+            </div>
+            <div class="col-md-3"><select class="pservice-edit form-control" ng-model="newservice.Id" ng-change="setPrice()" ng-options=" s.id as s.serviceDesc for s in services" /></div>
+            <div class="col-md-1"><input class="pservice-edit form-control" type="text" ng-model="newservice.Price" /></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-1"><input class="pservice-edit form-control" type="text" ng-model="newservice.Paid" /></div>
+            <div class="col-md-2"></div>
+            <div class="col-md-2"></div>
+        </div>
+</div>
+

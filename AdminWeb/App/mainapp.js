@@ -45,11 +45,14 @@ var Admin;
             this.app.directive('mbDatePicker', ['$parse', function ($parse) {
                 return new Directive.spDatetimePicker($parse);
             }]);
-            this.app.directive('customerList', ['Callback', '$location', function (Callback, $location) {
-                return new Directive.customerList(Callback, $location);
+            this.app.directive('customerList', ['Callback', '$compile', function (Callback, $compile) {
+                return new Directive.customerList(Callback, $compile);
             }]);
             this.app.directive('phoneNumber', ['$filter', '$browser', function ($filter, $browser) {
                 return new Directive.phoneInput($filter, $browser);
+            }]);
+            this.app.directive('personServiceList', ['Callback', '$window', function (Callback, window) {
+                return new Directive.personServiceList(Callback, window);
             }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
@@ -225,7 +228,7 @@ var Directive;
 var Directive;
 (function (Directive) {
     var customerList = (function () {
-        function customerList(Callback, $location) {
+        function customerList(Callback, $compile) {
             var _this = this;
             this.replace = true;
             this.scope = { page: '@' };
@@ -246,6 +249,18 @@ var Directive;
                     getCustomerList();
                     //$location.search("query", !scope.personQuery ? "" : scope.personQuery);
                     //$location.search("page", scope.page);
+                };
+                scope.showServices = function (idx, event) {
+                    var element = angular.element(event.target).closest("div.customer-line");
+                    if (!(element.attr("shown") == "true")) {
+                        var PersonId = scope.customerList[idx].id;
+                        var content = "<div>" + "<person-service-list person-id ='" + PersonId + "'/>" + "</div>";
+                        element.after($compile(content)(scope));
+                    }
+                    else {
+                        element.next().remove();
+                    }
+                    element.attr("shown", element.attr("shown") == "true" ? "false" : "true");
                 };
                 scope.next = function () {
                     if ((scope.page * scope.top) + scope.top < scope.productCounter) {
@@ -328,6 +343,84 @@ var Directive;
     })();
     Directive.spDatetimePicker = spDatetimePicker;
 })(Directive || (Directive = {}));
+var Directive;
+(function (Directive) {
+    var personServiceList = (function () {
+        function personServiceList(Callback, window) {
+            var _this = this;
+            this.replace = true;
+            this.scope = { personId: '@' };
+            this.templateUrl = "App/view/personServiceList.html";
+            this.link = function (scope, elm, attr) {
+                var self = _this;
+                scope.personServiceList = [];
+                //self.scope = scope;
+                scope.services = Callback.Service.query();
+                var getServicePrice = function (id) {
+                    var price = 0;
+                    for (var i = 0; i < scope.services.length; ++i) {
+                        if (scope.services[i]['id'] == id)
+                            price = scope.services[i]['price'];
+                    }
+                    return price;
+                };
+                var getService = function (id) {
+                    for (var i = 0; i < scope.services.length; ++i) {
+                        if (scope.services[i]['id'] == id)
+                            return scope.services[i];
+                    }
+                    return null;
+                };
+                scope.Delete = function (idx) {
+                    if (window.confirm("Are you sure to delete this service?")) {
+                        Callback.PersonService.delete({ id: scope.personServiceList[idx]['id'] }).$promise.then(function (response) {
+                            scope.personServiceList.splice(idx, 1);
+                        });
+                    }
+                };
+                scope.Add = function () {
+                    var pservice = {};
+                    var service = getService(scope.newservice['Id']);
+                    pservice.ServiceDesc = service.serviceDesc;
+                    pservice.Price = service.price;
+                    pservice.Form = service.form;
+                    pservice.PersonId = scope.personId;
+                    pservice.PaidAmount = scope.newservice['Paid'];
+                    pservice.ServiceId = service.id;
+                    Callback.PersonService.save(pservice).$promise.then(function (response) {
+                        scope.personServiceList.push(response);
+                        scope.newservice = {};
+                    });
+                };
+                scope.setPrice = function () {
+                    scope.newservice['Price'] = getService(scope.newservice['Id']).price;
+                };
+                scope.Save = function (idx) {
+                    scope.personServiceList[idx];
+                    Callback.PersonService.save(scope.personServiceList[idx]).$promise.then(function () {
+                        scope.editing = false;
+                    });
+                };
+                var getPersonServiceList = function () {
+                    if (!scope.personId)
+                        scope.personId = -1;
+                    Callback.PersonService.query({ PersonId: scope.personId }).$promise.then(function (response) {
+                        scope.personServiceList = response;
+                    });
+                };
+                scope.search = function () {
+                    getPersonServiceList();
+                };
+                scope.search = function () {
+                    getPersonServiceList();
+                };
+                scope.search();
+            };
+        }
+        return personServiceList;
+    })();
+    Directive.personServiceList = personServiceList;
+})(Directive || (Directive = {}));
 var Filters;
 (function (Filters) {
     var forPhone = (function () {
@@ -403,6 +496,8 @@ var Resource;
             var updateDescriptor = { method: "PUT" };
             this.Person = $resource('/api/person/:id', { id: '@id' }, { update: updateDescriptor });
             this.Account = $resource('/api/account/:id', { id: '@id' });
+            this.PersonService = $resource('/api/personservices/:id', { id: '@id' });
+            this.Service = $resource('/api/services/:id', { id: '@id' });
         }
         return ServerCall;
     })();

@@ -22,6 +22,8 @@ namespace BravoRepository.DbContext
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<Contact> Contacts { get; set; }
+        public virtual DbSet<Service> Services { get; set; }
+        public virtual DbSet<PersonService> PersonServices { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

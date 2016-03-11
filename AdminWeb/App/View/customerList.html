@@ -21,8 +21,11 @@
             </div>
             <div class="col-md-3">Address</div>
         </div>
-        <div class="row customer-line" ng-repeat="customer in customerList">
-            <div class="col-md-1"><a href="customer/{{customer.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></div>
+        <div class="row customer-line" shown="false" ng-repeat="customer in customerList">
+            <div class="col-md-1">
+                <a href="customer/{{customer.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <a href="" ng-click="showServices($index,$event)"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
+            </div>
             <div class="col-md-3">{{customer.name}}</div>
             <div class="col-md-2">{{customer.email}}</div>
             <div class="col-md-3">

@@ -90,3 +90,8 @@ input[type="checkbox"].input-validation-error {
     color: #1F77B5;
     font-size:18px;
 }
+
+.pservice-edit.form-control{
+    height:auto;
+    padding:2px 6px;
+}
