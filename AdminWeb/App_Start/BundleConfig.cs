@@ -28,8 +28,8 @@ namespace AdminWeb
                     "~/Scripts/angular-resource.js",
                     "~/Scripts/angular-route.js"));
 
-            //bundles.Add(new ScriptBundle("~/bundles/mainapp").Include(
-            //"~/App/mainapp.js"));
+            bundles.Add(new ScriptBundle("~/bundles/mainapp").Include(
+            "~/App/mainapp.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

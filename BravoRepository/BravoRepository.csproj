@@ -88,6 +88,10 @@
     <Compile Include="Migrations\201603091913486_SecondMigration.Designer.cs">
       <DependentUpon>201603091913486_SecondMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201603291853274_NullableCustBirthDate.cs" />
+    <Compile Include="Migrations\201603291853274_NullableCustBirthDate.Designer.cs">
+      <DependentUpon>201603291853274_NullableCustBirthDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Repository.cs" />
@@ -102,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603091913486_SecondMigration.resx">
       <DependentUpon>201603091913486_SecondMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201603291853274_NullableCustBirthDate.resx">
+      <DependentUpon>201603291853274_NullableCustBirthDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

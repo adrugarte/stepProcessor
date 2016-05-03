@@ -5,6 +5,8 @@ var Resource;
             var updateDescriptor = { method: "PUT" };
             this.Person = $resource('/api/person/:id', { id: '@id' }, { update: updateDescriptor });
             this.Account = $resource('/api/account/:id', { id: '@id' });
+            this.PersonService = $resource('/api/personservices/:id', { id: '@id' });
+            this.Service = $resource('/api/services/:id', { id: '@id' });
         }
         return ServerCall;
     })();

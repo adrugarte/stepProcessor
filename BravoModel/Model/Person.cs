@@ -21,7 +21,7 @@ namespace BravoModel.Model
         public virtual string LastName { get; set; }
         public virtual string FirstName { get; set; }
         public virtual string MiddleName { get; set; }
-        public virtual DateTime BirthDate { get; set; }
+        public virtual DateTime? BirthDate { get; set; }
         public virtual string BirthCity { get; set; }
         public virtual string BirthCountry { get; set; }
         public virtual Gender Gender { get; set; }
@@ -46,7 +46,7 @@ namespace BravoModel.Model
         public override string FirstName { get; set; }
         [StringLength(250)]
         public override string MiddleName { get; set; }
-        public override DateTime BirthDate { get; set; }
+        public override DateTime? BirthDate { get; set; }
         public override Gender Gender { get; set; }
         [StringLength(500)]
         public override string Email { get; set; }

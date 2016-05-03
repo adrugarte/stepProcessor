@@ -19,8 +19,12 @@ var Admin;
                 controller: 'customerCtrl',
                 templateUrl: '/App/View/customerList.html'
             };
+            var servicesRoute = {
+                controller: 'servicesCtrl',
+                templateUrl: '/App/View/services.html'
+            };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/services', servicesRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -56,7 +60,7 @@ var Admin;
             }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
-            this.app.controller('customerCtrl', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); });
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); }]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
         }
         return AppBuilder;
@@ -285,7 +289,7 @@ var Directive;
             this.$element = $element;
             this.$scope = $scope;
             $scope.page = parseInt($scope.page.toString());
-            $scope.top = 20;
+            $scope.top = 10;
         }
         customerListController.$inject = ['$element', '$scope', 'Callback'];
         return customerListController;
@@ -305,6 +309,8 @@ var Directive;
                 element.replaceWith(newElem);
                 return function (scope, element, attrs) {
                     var processChange = function () {
+                        if (!element.datepicker("getDate"))
+                            return;
                         var date = new Date(element.datepicker("getDate").toString());
                         scope.$apply(function (scope) {
                             // Change bound variable
@@ -333,6 +339,8 @@ var Directive;
                     //    alert("has changed" + newval + Oldval);
                     //})
                     scope.$watch(modelAccessor, function (val) {
+                        if (!val)
+                            return;
                         var date = new Date(val);
                         element.datepicker("setDate", date);
                     });
@@ -351,7 +359,7 @@ var Directive;
             this.replace = true;
             this.scope = { personId: '@' };
             this.templateUrl = "App/view/personServiceList.html";
-            this.link = function (scope, elm, attr) {
+            this.link = function (scope, elm) {
                 var self = _this;
                 scope.personServiceList = [];
                 //self.scope = scope;
@@ -378,15 +386,26 @@ var Directive;
                         });
                     }
                 };
+                //scope.Cancel = (idx) => {
+                //    scope.personServiceList[idx].$rollbackViewValue();
+                //}
+                scope.Close = function (idx) {
+                    if (window.confirm("Are you sure to close the service " + scope.personServiceList[idx].serviceDesc + "?")) {
+                        scope.personServiceList[idx].finished = new Date().toLocaleString();
+                        Callback.PersonService.save(scope.personServiceList[idx]);
+                    }
+                };
                 scope.Add = function () {
+                    if (!scope.newservice || !scope.newservice['Id'])
+                        return;
                     var pservice = {};
                     var service = getService(scope.newservice['Id']);
-                    pservice.ServiceDesc = service.serviceDesc;
-                    pservice.Price = service.price;
-                    pservice.Form = service.form;
-                    pservice.PersonId = scope.personId;
+                    pservice.serviceDesc = service.serviceDesc;
+                    pservice.price = scope.newservice['Price'] != null ? scope.newservice['Price'] : service.price;
+                    pservice.form = service.form;
+                    pservice.personId = scope.personId;
                     pservice.PaidAmount = scope.newservice['Paid'];
-                    pservice.ServiceId = service.id;
+                    pservice.serviceId = service.id;
                     Callback.PersonService.save(pservice).$promise.then(function (response) {
                         scope.personServiceList.push(response);
                         scope.newservice = {};

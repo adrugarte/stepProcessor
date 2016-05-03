@@ -22,10 +22,17 @@
                 controller: 'customerCtrl',
                 templateUrl: '/App/View/customerList.html'
             }
+
+            var servicesRoute: ng.route.IRoute = {
+                controller: 'servicesCtrl',
+                templateUrl: '/App/View/services.html'
+            }
+
             var config = ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider) => {
                 $routeProvider.
                     when('/', mainRoute).
                     when('/customer/:id', customerRoute).
+                    when('/services', servicesRoute).
                     otherwise({ redirectTo: '/' });
 
                 //$httpProvider.interceptors.push('AuthInterceptorService');
@@ -53,7 +60,7 @@
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
 
             ///// Controllers
-            this.app.controller('customerCtrl',($scope, Callback: Resource.IServerCall, Utils, $routeParams) => new Controller.customer($scope, Callback, Utils, $routeParams));
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams',($scope, Callback: Resource.IServerCall, Utils, $routeParams) => new Controller.customer($scope, Callback, Utils, $routeParams)]);
             this.app.controller('mainCtrl', ['$scope', 'Callback','Utils','$routeParams',($scope: Controller.ImainScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.main($scope, Callback, Utils, $routeParams)]);
         }
     }

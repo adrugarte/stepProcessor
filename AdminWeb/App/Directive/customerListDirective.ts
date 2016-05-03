@@ -80,7 +80,7 @@
         static $inject = ['$element', '$scope', 'Callback'];
         constructor(public $element: JQuery, public $scope: IcustomerListScope, ServerCall: Resource.IServerCall) {
             $scope.page = parseInt($scope.page.toString());
-            $scope.top = 20;
+            $scope.top = 10;
         }
     }
 }

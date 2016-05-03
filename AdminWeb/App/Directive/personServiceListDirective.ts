@@ -9,6 +9,8 @@
         Save: (idx: number) => void;
         search: () => void;
         Add: () => void;
+        Close: (idx: number) => void;
+        Cancel: (idx: number) => void;
         setPrice: () => void;
     }
 
@@ -19,7 +21,7 @@
         public templateUrl = "App/view/personServiceList.html";
         constructor(Callback: Resource.IServerCall, window:ng.IWindowService) {
 
-            this.link = (scope: IpersonServiceListScope, elm: ng.IAugmentedJQuery, attr: ng.IAttributes) => {
+            this.link = (scope: IpersonServiceListScope, elm: ng.IAugmentedJQuery) => {
                 var self = this;
                 scope.personServiceList = [];
                 //self.scope = scope;
@@ -48,15 +50,28 @@
                     }
                 };
 
+                //scope.Cancel = (idx) => {
+                //    scope.personServiceList[idx].$rollbackViewValue();
+
+                //}
+
+                scope.Close = (idx: number) => {
+                    if (window.confirm("Are you sure to close the service " + scope.personServiceList[idx].serviceDesc + "?")) {
+                        scope.personServiceList[idx].finished = new Date().toLocaleString();
+                        Callback.PersonService.save(scope.personServiceList[idx]);
+                    }
+                }
+
                 scope.Add = () => {
+                    if (!scope.newservice || !scope.newservice['Id']) return;
                     var pservice: Models.PersonService = <Models.PersonService>{};
                     var service = getService(scope.newservice['Id']);
-                    pservice.ServiceDesc = service.serviceDesc;
-                    pservice.Price = service.price;
-                    pservice.Form = service.form;
-                    pservice.PersonId = scope.personId;
+                    pservice.serviceDesc = service.serviceDesc;
+                    pservice.price = scope.newservice['Price'] != null ? scope.newservice['Price']:service.price;
+                    pservice.form = service.form;
+                    pservice.personId = scope.personId;
                     pservice.PaidAmount = scope.newservice['Paid'];
-                    pservice.ServiceId = service.id;
+                    pservice.serviceId = service.id;
                     Callback.PersonService.save(pservice).$promise.then(function (response) {
                         scope.personServiceList.push(response);
                         scope.newservice = {};

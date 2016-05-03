@@ -3,36 +3,39 @@
         <div class="col-md-6">
             <span class="list-title">Customer List</span>
         </div>
-        <div class="input-group" style="max-width:300px;float:right">
+
+        
+        <div class="input-group" style="max-width:400px;float:right">
             <input type="text" class="form-control" aria-label="..." ng-model="personQuery" placeholder="Search for...">
             <div class="input-group-btn">
                 <button type="button" class="btn btn-primary" ng-click="search();" ><span class="glyphicon glyphicon-search" ></span></button>
             </div>
+            <input id="top" type="text" class="form-control" aria-label="..." ng-model="limit" style="margin-left:15px;width:50px;">
         </div>
     </div>
     <div class="table table-condensed">
         <div class="row table-header">
-            <div class="col-md-1"></div>
+            <div class="col-md-1"><a href="customer/0" title="Add new customer..." ><span class="glyphicon  glyphicon-plus" aria-hidden="true" /><span class="glyphicon  glyphicon-user" aria-hidden="true"/></a></div>
             <div class="col-md-3">Name</div>
             <div class="col-md-2">Email</div>
-            <div class="col-md-3">
-                <div class="col-md-6">Phone</div>
+            <div class="col-md-2">
+                <!--<div class="col-md-6">Phone</div>-->
                 <div class="col-md-6">Cellular</div>
             </div>
-            <div class="col-md-3">Address</div>
+            <div class="col-md-4">Address</div>
         </div>
         <div class="row customer-line" shown="false" ng-repeat="customer in customerList">
             <div class="col-md-1">
-                <a href="customer/{{customer.id}}"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-                <a href="" ng-click="showServices($index,$event)"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
+                <a href="customer/{{customer.id}}" title="Edit customer"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <a href="" ng-click="showServices($index,$event)" title="Show services"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span></a>
             </div>
             <div class="col-md-3">{{customer.name}}</div>
             <div class="col-md-2">{{customer.email}}</div>
-            <div class="col-md-3">
-                <div class="col-md-6">{{customer.phone|phonenumber}}</div>
-                <div class="col-md-6">{{customer.celular|phonenumber}}</div>
+            <div class="col-md-2">
+                <!--<div class="col-md-6">{{customer.phone|phonenumber}}</div>-->
+                <div class="col-md-12">{{customer.celular|phonenumber}}</div>
             </div>
-            <div class="col-md-3">{{customer.address}}</div>
+            <div class="col-md-4">{{customer.address}}</div>
         </div>
         <div ng-show="limit<productCounter" id="row pagingDiv" style="margin:10px 0 10px -15px;">
             <ul class="pagination pagination-sm" style="margin:0;">

@@ -18,6 +18,7 @@
 
                     return (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: IdatetimepckerAttributes) => {
                         var processChange = function () {
+                            if (!element.datepicker("getDate")) return;
                             var date = new Date(element.datepicker("getDate").toString());
 
                             scope.$apply(function (scope) {
@@ -48,6 +49,7 @@
                         //})
 
                         scope.$watch(modelAccessor, function (val) {
+                            if (!val) return;
                             var date = new Date(val);
                             element.datepicker("setDate", date);
                         });

@@ -42,16 +42,16 @@
     }
 
     export interface PersonService {
-        Id: number;
-        ServiceDesc: string;
-        Form: string;
-        Price: number;
+        id: number;
+        serviceDesc: string;
+        form: string;
+        price: number;
         PaidAmount: number;
-        Created: any;
-        Finished: any
-        UserCreated: string;
-        PersonId: number;
-        ServiceId: number;
+        created: any;
+        finished: any
+        userCreated: string;
+        personId: number;
+        serviceId: number;
     }
   
 }

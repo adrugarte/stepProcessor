@@ -11,6 +11,8 @@ var Directive;
                 element.replaceWith(newElem);
                 return function (scope, element, attrs) {
                     var processChange = function () {
+                        if (!element.datepicker("getDate"))
+                            return;
                         var date = new Date(element.datepicker("getDate").toString());
                         scope.$apply(function (scope) {
                             // Change bound variable
@@ -39,6 +41,8 @@ var Directive;
                     //    alert("has changed" + newval + Oldval);
                     //})
                     scope.$watch(modelAccessor, function (val) {
+                        if (!val)
+                            return;
                         var date = new Date(val);
                         element.datepicker("setDate", date);
                     });

@@ -19,8 +19,12 @@ var Admin;
                 controller: 'customerCtrl',
                 templateUrl: '/App/View/customerList.html'
             };
+            var servicesRoute = {
+                controller: 'servicesCtrl',
+                templateUrl: '/App/View/services.html'
+            };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/services', servicesRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -45,15 +49,18 @@ var Admin;
             this.app.directive('mbDatePicker', ['$parse', function ($parse) {
                 return new Directive.spDatetimePicker($parse);
             }]);
-            this.app.directive('customerList', ['Callback', '$location', function (Callback, $location) {
-                return new Directive.customerList(Callback, $location);
+            this.app.directive('customerList', ['Callback', '$compile', function (Callback, $compile) {
+                return new Directive.customerList(Callback, $compile);
             }]);
             this.app.directive('phoneNumber', ['$filter', '$browser', function ($filter, $browser) {
                 return new Directive.phoneInput($filter, $browser);
             }]);
+            this.app.directive('personServiceList', ['Callback', '$window', function (Callback, window) {
+                return new Directive.personServiceList(Callback, window);
+            }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
-            this.app.controller('customerCtrl', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); });
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); }]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
         }
         return AppBuilder;
