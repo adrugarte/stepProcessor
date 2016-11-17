@@ -1,7 +1,7 @@
 var Controller;
 (function (Controller) {
     var customer = (function () {
-        function customer(scope, Callback, Utils, $routeParams) {
+        function customer(scope, Callback, Utils, $routeParams, $window) {
             var self = this;
             var CustomerId = parseInt($routeParams["id"]);
             self.scope = scope;
@@ -68,15 +68,16 @@ var Controller;
             self.scope.saveCustomer = function () {
                 setContacts();
                 if (self.scope.person.id) {
-                    Callback.Person.update(self.scope.person, function (Response) {
-                        alert('Datos guardados');
+                    Callback.Person.update(self.scope.person, function (person) {
+                        alert("Datos Guardados ");
                     }, function (Error) {
                         alert('Han ocurrido errores al guardar los datos');
                     });
                 }
                 else {
-                    Callback.Person.save(self.scope.person, function (Response) {
-                        alert('Datos guardados');
+                    Callback.Person.save(self.scope.person, function (result) {
+                        self.scope.person = result;
+                        alert("Datos Guardados ");
                     }, function (Error) {
                         alert('Han ocurrido errores al guardar los datos');
                     });

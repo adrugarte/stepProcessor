@@ -1,0 +1,35 @@
+﻿<h3>New service</h3>
+
+<div class="col-md-12" style="background-color:#f9f9f9; padding:10px 10px 10px 10px;">
+    <div class="servicio">
+        <div>
+            <label>Customer:</label>
+            <input class="form-control no-inline" type="text" ng-model="service.personName" />
+        </div>
+        <div>
+            <label>Service:</label>
+            <select class="form-control no-inline" ng-model="service.Id" ng-change="setPrice()" ng-options=" s.id as s.serviceDesc for s in services" />
+        </div>
+        <div>
+             <label>Process Fee:</label>
+            <input class="form-control no-inline" type="text" ng-model="service.fee" />
+        </div>
+        <div>
+            <label>Price:</label>
+            <input class="form-control no-inline" type="text" ng-model="service.price" />
+        </div>
+        <div>
+            <label>Total Charge:</label>
+            <input class="form-control no-inline" type="text" ng-model="service.charge" />
+        </div>
+        <div>
+            <label>Paid</label>
+            <input class="form-control no-inline" type="text" ng-model="service.paidAmount" />
+        </div>
+
+        <button class="btn btn-default" ng-click="save();">Save</button>
+    </div>
+
+</div>
+{{service}}
+{{routeParam}}

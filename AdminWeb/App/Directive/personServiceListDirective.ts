@@ -102,9 +102,7 @@
                     getPersonServiceList();
                 }
 
-                scope.search = () => {
-                    getPersonServiceList();
-                }
+
 
                 scope.search();
             }

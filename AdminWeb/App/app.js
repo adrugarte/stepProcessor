@@ -19,12 +19,12 @@ var Admin;
                 controller: 'customerCtrl',
                 templateUrl: '/App/View/customerList.html'
             };
-            var servicesRoute = {
-                controller: 'servicesCtrl',
-                templateUrl: '/App/View/services.html'
+            var serviceRoute = {
+                controller: 'serviceCtrl',
+                templateUrl: '/App/View/serviceview.html'
             };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/services', servicesRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -60,8 +60,9 @@ var Admin;
             }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
-            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); }]);
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams, $window) { return new Controller.customer($scope, Callback, Utils, $routeParams, $window); }]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
+            this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.service($scope, Callback, Utils, $routeParams); }]);
         }
         return AppBuilder;
     })();

@@ -23,16 +23,16 @@
                 templateUrl: '/App/View/customerList.html'
             }
 
-            var servicesRoute: ng.route.IRoute = {
-                controller: 'servicesCtrl',
-                templateUrl: '/App/View/services.html'
+            var serviceRoute: ng.route.IRoute = {
+                controller: 'serviceCtrl',
+                templateUrl: '/App/View/serviceview.html'
             }
 
             var config = ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider) => {
                 $routeProvider.
                     when('/', mainRoute).
                     when('/customer/:id', customerRoute).
-                    when('/services', servicesRoute).
+                    when('/service/:id', serviceRoute).
                     otherwise({ redirectTo: '/' });
 
                 //$httpProvider.interceptors.push('AuthInterceptorService');
@@ -60,8 +60,9 @@
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
 
             ///// Controllers
-            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams',($scope, Callback: Resource.IServerCall, Utils, $routeParams) => new Controller.customer($scope, Callback, Utils, $routeParams)]);
-            this.app.controller('mainCtrl', ['$scope', 'Callback','Utils','$routeParams',($scope: Controller.ImainScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.main($scope, Callback, Utils, $routeParams)]);
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope, Callback: Resource.IServerCall, Utils, $routeParams: ng.route.IRouteParamsService, $window: ng.IWindowService) => new Controller.customer($scope, Callback, Utils, $routeParams, $window)]);
+            this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope: Controller.ImainScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.main($scope, Callback, Utils, $routeParams)]);
+            this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope: Controller.IServiceScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.service($scope, Callback, Utils, $routeParams)]);
         }
     }
 }

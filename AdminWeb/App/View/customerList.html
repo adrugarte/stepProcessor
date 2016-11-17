@@ -40,7 +40,7 @@
         <div ng-show="limit<productCounter" id="row pagingDiv" style="margin:10px 0 10px -15px;">
             <ul class="pagination pagination-sm" style="margin:0;">
                 <li class=""><a href="" ng-click="prev()">«</a></li>
-                <li><a href="">{{(page*top)+1}}-{{(page*top)+limit}} of {{productCounter}}</a></li>
+                <li><a href="">{{(page*top)+1}}-{{(page*top)+limit*1}} of {{productCounter}}</a></li>
                 <li class=""><a href="" ng-click="next()">»</a></li> <!--ng-click="next()"-->
             </ul>
         </div>

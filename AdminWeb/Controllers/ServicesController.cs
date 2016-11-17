@@ -21,7 +21,7 @@ namespace AdminWeb.Controllers
         // GET: api/Services
         public IQueryable<Service> GetServices()
         {
-            return db.Services;
+            return db.Services.OrderBy(s=>s.ServiceDesc);
         }
 
         // GET: api/Services/5

@@ -153,6 +153,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ServiceVM.cs" />
     <Compile Include="Models\user.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <Content Include="App\View\customerview.html" />
     <Content Include="App\View\main.html" />
     <Content Include="App\View\personServiceList.html" />
+    <Content Include="App\View\serviceview.html" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -1025,6 +1027,7 @@
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\Controller\customerCtrl.ts" />
     <TypeScriptCompile Include="App\Controller\mainCtrl.ts" />
+    <TypeScriptCompile Include="App\Controller\serviceCtrl.ts" />
     <TypeScriptCompile Include="App\Directive\commonDirective.ts" />
     <TypeScriptCompile Include="App\Directive\customerListDirective.ts" />
     <TypeScriptCompile Include="App\Directive\mbDatePicker.ts" />

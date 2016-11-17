@@ -14,7 +14,7 @@
 
     export class customer {
         scope: IcustomerScope;
-        constructor(scope: IcustomerScope, Callback: Resource.IServerCall, Utils:Service.Utils, $routeParams:ng.route.IRouteParamsService) {
+        constructor(scope: IcustomerScope, Callback: Resource.IServerCall, Utils:Service.Utils, $routeParams:ng.route.IRouteParamsService, $window:ng.IWindowService) {
             var self = this;
             var CustomerId = parseInt($routeParams["id"]);
             self.scope = scope;
@@ -86,16 +86,17 @@
                 setContacts();
                 if (self.scope.person.id) {
                     Callback.Person.update(self.scope.person,
-                        (Response) => {
-                            alert('Datos guardados');
+                        (person) => {
+                            alert("Datos Guardados ");
                         },
                         (Error) => {
                             alert('Han ocurrido errores al guardar los datos');
                         });
                 } else {
                     Callback.Person.save(self.scope.person,
-                        (Response) => {
-                            alert('Datos guardados');
+                        (result:any) => {
+                            self.scope.person = result;
+                            alert("Datos Guardados ");
                         },
                         (Error) => {
                             alert('Han ocurrido errores al guardar los datos');

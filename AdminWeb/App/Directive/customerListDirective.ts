@@ -59,13 +59,13 @@
 
                 scope.next = function () {
                     if ((scope.page * scope.top) + scope.top < scope.productCounter) {
-                        scope.page = scope.page + 1; //parseInt(scope.query.top);
+                        scope.page = (scope.page*1) + 1;
                         getCustomerList();
                     }
                 };
                 scope.prev = function () {
                     if (scope.page > 0) {
-                        scope.page = scope.page - 1; //parseInt(scope.query.top);
+                        scope.page = (scope.page*1) - 1; //Tuve q multiplicar por uno xq lo estaba trando como cadena y lo concatenaba
                         getCustomerList();
                     }
                 };

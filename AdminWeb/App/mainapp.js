@@ -19,12 +19,12 @@ var Admin;
                 controller: 'customerCtrl',
                 templateUrl: '/App/View/customerList.html'
             };
-            var servicesRoute = {
-                controller: 'servicesCtrl',
-                templateUrl: '/App/View/services.html'
+            var serviceRoute = {
+                controller: 'serviceCtrl',
+                templateUrl: '/App/View/serviceview.html'
             };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/services', servicesRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -60,8 +60,9 @@ var Admin;
             }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
-            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.customer($scope, Callback, Utils, $routeParams); }]);
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams, $window) { return new Controller.customer($scope, Callback, Utils, $routeParams, $window); }]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
+            this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.service($scope, Callback, Utils, $routeParams); }]);
         }
         return AppBuilder;
     })();
@@ -72,7 +73,7 @@ angular.bootstrap($('body'), ['AdminApp']);
 var Controller;
 (function (Controller) {
     var customer = (function () {
-        function customer(scope, Callback, Utils, $routeParams) {
+        function customer(scope, Callback, Utils, $routeParams, $window) {
             var self = this;
             var CustomerId = parseInt($routeParams["id"]);
             self.scope = scope;
@@ -139,15 +140,16 @@ var Controller;
             self.scope.saveCustomer = function () {
                 setContacts();
                 if (self.scope.person.id) {
-                    Callback.Person.update(self.scope.person, function (Response) {
-                        alert('Datos guardados');
+                    Callback.Person.update(self.scope.person, function (person) {
+                        alert("Datos Guardados ");
                     }, function (Error) {
                         alert('Han ocurrido errores al guardar los datos');
                     });
                 }
                 else {
-                    Callback.Person.save(self.scope.person, function (Response) {
-                        alert('Datos guardados');
+                    Callback.Person.save(self.scope.person, function (result) {
+                        self.scope.person = result;
+                        alert("Datos Guardados ");
                     }, function (Error) {
                         alert('Han ocurrido errores al guardar los datos');
                     });
@@ -182,6 +184,49 @@ var Controller;
         return main;
     })();
     Controller.main = main;
+})(Controller || (Controller = {}));
+var Controller;
+(function (Controller) {
+    var service = (function () {
+        function service(scope, Callback, Utils, $routeParams) {
+            var self = this;
+            self.scope = scope;
+            self.scope.service = {};
+            self.scope.routeParam = $routeParams;
+            if (self.scope.routeParam.id && self.scope.routeParam.id > 0) {
+                Callback.PersonService.get({ id: self.scope.routeParam.id }).$promise.then(function (service) {
+                    self.scope.service = service;
+                });
+            }
+            else if (self.scope.routeParam.customer) {
+                Callback.Person.get({ id: self.scope.routeParam.customer }).$promise.then(function (customer) {
+                    self.scope.service.personId = parseInt(customer.person.id);
+                    self.scope.service.personName = customer.person.lastName + ", " + customer.person.firstName;
+                }, function (error) {
+                });
+            }
+            self.scope.services = Callback.Service.query();
+            self.scope.save = function () {
+                Callback.PersonService.save(self.scope.service).$promise.then(function (response) {
+                    alert("Data Saved");
+                }, function (error) {
+                    alert("Data Error");
+                });
+            };
+            self.scope.setPrice = function () {
+                scope.service['Price'] = getService(self.scope.service['Id']).price;
+            };
+            var getService = function (id) {
+                for (var i = 0; i < scope.services.length; ++i) {
+                    if (scope.services[i]['id'] == id)
+                        return scope.services[i];
+                }
+                return null;
+            };
+        }
+        return service;
+    })();
+    Controller.service = service;
 })(Controller || (Controller = {}));
 var Directive;
 (function (Directive) {
@@ -268,13 +313,13 @@ var Directive;
                 };
                 scope.next = function () {
                     if ((scope.page * scope.top) + scope.top < scope.productCounter) {
-                        scope.page = scope.page + 1; //parseInt(scope.query.top);
+                        scope.page = (scope.page * 1) + 1;
                         getCustomerList();
                     }
                 };
                 scope.prev = function () {
                     if (scope.page > 0) {
-                        scope.page = scope.page - 1; //parseInt(scope.query.top);
+                        scope.page = (scope.page * 1) - 1; //Tuve q multiplicar por uno xq lo estaba trando como cadena y lo concatenaba
                         getCustomerList();
                     }
                 };
@@ -426,9 +471,6 @@ var Directive;
                     Callback.PersonService.query({ PersonId: scope.personId }).$promise.then(function (response) {
                         scope.personServiceList = response;
                     });
-                };
-                scope.search = function () {
-                    getPersonServiceList();
                 };
                 scope.search = function () {
                     getPersonServiceList();

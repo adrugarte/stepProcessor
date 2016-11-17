@@ -46,11 +46,13 @@
         serviceDesc: string;
         form: string;
         price: number;
+        fee: number;
         PaidAmount: number;
         created: any;
         finished: any
         userCreated: string;
         personId: number;
+        personName: string;
         serviceId: number;
     }
   

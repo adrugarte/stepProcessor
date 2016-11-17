@@ -77,9 +77,6 @@ var Directive;
                 scope.search = function () {
                     getPersonServiceList();
                 };
-                scope.search = function () {
-                    getPersonServiceList();
-                };
                 scope.search();
             };
         }
