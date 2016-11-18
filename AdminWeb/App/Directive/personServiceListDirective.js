@@ -4,7 +4,7 @@ var Directive;
         function personServiceList(Callback, window) {
             var _this = this;
             this.replace = true;
-            this.scope = { personId: '@' };
+            this.scope = { personId: '=' };
             this.templateUrl = "App/view/personServiceList.html";
             this.link = function (scope, elm) {
                 var self = _this;

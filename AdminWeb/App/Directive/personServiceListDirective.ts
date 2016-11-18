@@ -17,7 +17,7 @@
     export class personServiceList implements ng.IDirective {
         public link: ng.IDirectiveLinkFn;
         public replace = true;
-        public scope = { personId: '@' };
+        public scope = { personId: '=' };
         public templateUrl = "App/view/personServiceList.html";
         constructor(Callback: Resource.IServerCall, window:ng.IWindowService) {
 

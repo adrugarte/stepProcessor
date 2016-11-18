@@ -60,7 +60,7 @@
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
 
             ///// Controllers
-            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope, Callback: Resource.IServerCall, Utils, $routeParams: ng.route.IRouteParamsService, $window: ng.IWindowService) => new Controller.customer($scope, Callback, Utils, $routeParams, $window)]);
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams','$location', ($scope, Callback: Resource.IServerCall, Utils, $routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService) => new Controller.customer($scope, Callback, Utils, $routeParams, $location)]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope: Controller.ImainScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.main($scope, Callback, Utils, $routeParams)]);
             this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope: Controller.IServiceScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.service($scope, Callback, Utils, $routeParams)]);
         }

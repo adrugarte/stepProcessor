@@ -60,7 +60,7 @@ var Admin;
             }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
-            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams, $window) { return new Controller.customer($scope, Callback, Utils, $routeParams, $window); }]);
+            this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', '$location', function ($scope, Callback, Utils, $routeParams, $location) { return new Controller.customer($scope, Callback, Utils, $routeParams, $location); }]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
             this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.service($scope, Callback, Utils, $routeParams); }]);
         }
@@ -73,10 +73,10 @@ angular.bootstrap($('body'), ['AdminApp']);
 var Controller;
 (function (Controller) {
     var customer = (function () {
-        function customer(scope, Callback, Utils, $routeParams, $window) {
+        function customer(scope, Callback, Utils, $routeParams, $location) {
             var self = this;
-            var CustomerId = parseInt($routeParams["id"]);
             self.scope = scope;
+            self.scope.customerId = parseInt($routeParams["id"]);
             self.scope.person = {};
             self.scope.person.addresses = [];
             self.scope.person.contacts = [];
@@ -87,7 +87,7 @@ var Controller;
             self.scope.personQuery = {};
             self.scope.customerSources = Utils.Sources;
             var getCustomer = function () {
-                Callback.Person.get({ id: CustomerId }, function (response) {
+                Callback.Person.get({ id: self.scope.customerId }, function (response) {
                     self.scope.person = response.person;
                     if (self.scope.person.addresses)
                         self.scope.address = self.scope.person.addresses[0];
@@ -149,13 +149,15 @@ var Controller;
                 else {
                     Callback.Person.save(self.scope.person, function (result) {
                         self.scope.person = result;
+                        self.scope.customerId = result.id;
+                        $location.path("/customer/" + self.scope.customerId);
                         alert("Datos Guardados ");
                     }, function (Error) {
                         alert('Han ocurrido errores al guardar los datos');
                     });
                 }
             };
-            if (CustomerId != 0)
+            if (self.scope.customerId != 0)
                 getCustomer();
         }
         return customer;
@@ -402,7 +404,7 @@ var Directive;
         function personServiceList(Callback, window) {
             var _this = this;
             this.replace = true;
-            this.scope = { personId: '@' };
+            this.scope = { personId: '=' };
             this.templateUrl = "App/view/personServiceList.html";
             this.link = function (scope, elm) {
                 var self = _this;

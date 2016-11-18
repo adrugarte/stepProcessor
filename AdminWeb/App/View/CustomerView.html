@@ -1,5 +1,5 @@
-﻿<div style="text-align:right"><a href="/">Back to Customer List</a></div>
-<div class="row" style="margin-top:15px;">
+﻿<div style="text-align:center;"><a href="/"><< Volver a Lista de Clientes</a></div>
+<div class="row" style="margin-top:25px;">    
     <div class="col-md-6">
         <div class="col-md-4 form-inline"><label for="apellido">Apellidos:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="person.lastName" /></div>
         <div class="col-md-4 form-inline"><label for="name">Name:</label></div><div class="col-md-8"><input id="name" class="form-control" type="text" ng-model="person.firstName" /></div>
@@ -30,9 +30,10 @@
         <div class="col-md-4 form-inline"><label for="apellido">Supo de nosotros?</label></div><div class="col-md-8"><select class="form-control" ng-options="source for source in customerSources" ng-model="person.source" /></div>
     </div>
 </div>
-<hr/>
-<div style="text-align:center;">
-    <button id="btnCreate" type="button" class="btn btn-default" ng-click="saveCustomer();">
-        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>{{person.id?"Save":"Create"}}
+<div style="text-align:center;margin-top:10px;">
+    <button id="btnCreate" type="button" class="btn btn-primary" ng-click="saveCustomer();">
+        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>{{person.id?" Save":" Create"}}
     </button>
 </div>
+<hr />
+<div ng-show="customerId>0"><person-service-list person-id="customerId" /></div>
