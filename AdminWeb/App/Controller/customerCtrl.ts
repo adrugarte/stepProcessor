@@ -1,5 +1,6 @@
 ﻿module Controller {
     export interface IcustomerScope extends ng.IScope {
+        customerId: number;
         customerList: Array<Models.IPerson>;
         person: Models.IPerson;
         address: Models.Address
@@ -9,15 +10,15 @@
         personQuery: any;
         customerSources: Array<string>;
         getCustomerList: () => void;
-        saveCustomer: () => void;
+        saveCustomer: () => void;        
     }
 
     export class customer {
         scope: IcustomerScope;
-        constructor(scope: IcustomerScope, Callback: Resource.IServerCall, Utils:Service.Utils, $routeParams:ng.route.IRouteParamsService, $window:ng.IWindowService) {
+        constructor(scope: IcustomerScope, Callback: Resource.IServerCall, Utils:Service.Utils, $routeParams:ng.route.IRouteParamsService, $location:ng.ILocationService) {
             var self = this;
-            var CustomerId = parseInt($routeParams["id"]);
             self.scope = scope;
+            self.scope.customerId = parseInt($routeParams["id"]);
             self.scope.person = <Models.IPerson>{};
             self.scope.person.addresses = [];
             self.scope.person.contacts = [];
@@ -31,7 +32,7 @@
 
 
             var getCustomer = () => {
-                Callback.Person.get({ id: CustomerId },(response) => {
+                Callback.Person.get({ id: self.scope.customerId },(response) => {
                     self.scope.person = response.person;
                     if (self.scope.person.addresses) self.scope.address = self.scope.person.addresses[0];
                     if (self.scope.person.contacts) {
@@ -96,6 +97,8 @@
                     Callback.Person.save(self.scope.person,
                         (result:any) => {
                             self.scope.person = result;
+                            self.scope.customerId = result.id;
+                            $location.path("/customer/" + self.scope.customerId);
                             alert("Datos Guardados ");
                         },
                         (Error) => {
@@ -104,7 +107,7 @@
                 }
             }
 
-            if (CustomerId != 0) getCustomer();
+            if (self.scope.customerId != 0) getCustomer();
         }
     }
 }  
