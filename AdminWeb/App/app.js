@@ -23,8 +23,12 @@ var Admin;
                 controller: 'serviceCtrl',
                 templateUrl: '/App/View/serviceview.html'
             };
+            var messageRoute = {
+                controller: 'messageCtrl',
+                templateUrl: '/App/View/messageview.html',
+            };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).when('/message', messageRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -58,11 +62,15 @@ var Admin;
             this.app.directive('personServiceList', ['Callback', '$window', function (Callback, window) {
                 return new Directive.personServiceList(Callback, window);
             }]);
+            this.app.directive('message', ['Callback', '$compile', function (Callback, $compile) {
+                return new Directive.message(Callback, $compile);
+            }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
             this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', '$location', function ($scope, Callback, Utils, $routeParams, $location) { return new Controller.customer($scope, Callback, Utils, $routeParams, $location); }]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
             this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.service($scope, Callback, Utils, $routeParams); }]);
+            this.app.controller('messageCtrl', ['$scope', 'Callback', 'Utils', function ($scope, Callback, Utils) { return new Controller.messageCtrl($scope, Callback, Utils); }]);
         }
         return AppBuilder;
     })();

@@ -55,6 +55,9 @@ namespace BravoModel.Model
 
         public List<Contact> Contacts { get; set; }
         public List<Address> Addresses { get; set; }
+        
+        public List<PersonService> Services { get; set; }
+
         //public IEnumerable<Work> Works { get; set; }
         //public IEnumerable<Contact> Contacts { get; set; }
         //public IEnumerable<Address> Addresses { get; set; }

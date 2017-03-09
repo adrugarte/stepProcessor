@@ -1,6 +1,10 @@
 ﻿using BravoModel.Model;
 using System.Linq;
 using BravoRepository.DbContext;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System;
+using System.Data.Entity;
 namespace BravoRepository
 {
 
@@ -30,7 +34,7 @@ namespace BravoRepository
 
         public IQueryable<Person> GetList()
         {
-            return _dbCtx.Persons.Where(p=> p.Active == true).AsQueryable<Person>();//.WhereEquals(p => p.Active, true).AsQueryable<Person>();
+            return _dbCtx.Persons.Include(p=>p.Services).Where(p=> p.Active == true).AsQueryable<Person>();//.WhereEquals(p => p.Active, true).AsQueryable<Person>();
         }
 
         public Person Get(int PersonId)
@@ -40,6 +44,20 @@ namespace BravoRepository
             //person.Contacts = _dbCtx.Contacts.Where(c => c.personId == PersonId).To;
 
             return _dbCtx.Persons.Include("Addresses").Include("Contacts").FirstOrDefault(p=>p.Id==PersonId);
+        }
+
+        public List<PersonService> GetServices(int PersonId)
+        {
+            //var person = _dbCtx.Persons.Find(PersonId);
+            //person.Addresses = _dbCtx.Addresses.Where(a => a.personId == PersonId).ToList();
+            //person.Contacts = _dbCtx.Contacts.Where(c => c.personId == PersonId).To;
+
+            return _dbCtx.PersonServices.Where(p => p.PersonId == PersonId).ToList();
+        }
+
+        public Person Find(Expression<Func<Person, bool>> expression = null)
+        {
+            return _dbCtx.Persons.Include(p=>p.Contacts).FirstOrDefault(expression);
         }
 
         public Person Update(int PersonId, Person person)

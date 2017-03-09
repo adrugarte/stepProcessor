@@ -146,6 +146,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ComunicationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Controllers\PersonServicesController.cs" />
@@ -153,6 +154,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Comunication.cs" />
+    <Compile Include="Models\personVM.cs" />
     <Compile Include="Models\ServiceVM.cs" />
     <Compile Include="Models\user.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -162,6 +165,8 @@
     <Content Include="App\View\customerList.html" />
     <Content Include="App\View\customerview.html" />
     <Content Include="App\View\main.html" />
+    <Content Include="App\View\messageTemplate.html" />
+    <Content Include="App\View\messageView.html" />
     <Content Include="App\View\personServiceList.html" />
     <Content Include="App\View\serviceview.html" />
     <Content Include="Content\bootstrap-theme.css" />
@@ -194,6 +199,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\logoMB.png" />
+    <Content Include="images\wait1.gif" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-aria.js" />
@@ -1027,10 +1033,12 @@
     <TypeScriptCompile Include="App\app.ts" />
     <TypeScriptCompile Include="App\Controller\customerCtrl.ts" />
     <TypeScriptCompile Include="App\Controller\mainCtrl.ts" />
+    <TypeScriptCompile Include="App\Controller\messageCtrl.ts" />
     <TypeScriptCompile Include="App\Controller\serviceCtrl.ts" />
     <TypeScriptCompile Include="App\Directive\commonDirective.ts" />
     <TypeScriptCompile Include="App\Directive\customerListDirective.ts" />
     <TypeScriptCompile Include="App\Directive\mbDatePicker.ts" />
+    <TypeScriptCompile Include="App\Directive\messageDirective.ts" />
     <TypeScriptCompile Include="App\Directive\personServiceListDirective.ts" />
     <TypeScriptCompile Include="App\Filter\phoneFilter.ts" />
     <TypeScriptCompile Include="App\Model\Models.ts" />

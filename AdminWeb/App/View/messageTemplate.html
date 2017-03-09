@@ -1,0 +1,48 @@
+﻿<div class="row">
+    <div class="col-md-6">
+        <div class="row">
+            <label class="col-md-1">Subject</label>
+            <input class=" col-md-11 form-control" type="text" ng-model="subject" style="max-width:800px;" />
+        </div>
+        <div class="row">
+            <label class="col-md-1">Message</label>
+            <textarea class="col-md-11  form-control" ng-model="message" id="msgArea" draggable="false" rows="10" cols="400" style="max-width:800px;"></textarea>
+        </div>
+        <div class="col-md-12"><button class="btn btn-primary" style="margin-top:10px;" ng-disabled="subject.length==0||message.length==0" ng-click="send()">Send Message</button></div>
+    </div>
+    <div class="col-md-6">
+
+        <div class="col-md-12">
+            <label class="col-md-5" style="padding-top:15px;">Customer</label><input class="form-control col-md-7" type="text" ng-model="custsearch" placeholder="search... "></span>
+        </div>
+
+          <div class="row customer-list">
+            <div class="row" style="border-bottom:1px thick gray">
+                  <div class="col-md-1" style="text-align: center;">
+                      <input type="checkbox" ng-click="selectall($event)" >
+                   </div>
+                <div class="col-md-11" style="text-align: left;">
+                    <label>Select All</label>
+                </div>
+            </div>
+              <hr style="margin-bottom:3px;margin-top:5px;"/>
+            <div class="row" ng-repeat="cust in customerList | filter: custsearch ">
+                <div class="col-md-1" style="text-align:center;">
+                    <input type="checkbox" value="" ng-model="cust.selected">
+                </div>
+                <div class="col-md-6">{{cust.name}}</div>
+                <div class="col-md-5">{{cust.email}}</div>
+
+                <!--<div class="col-md-1"><a href="" ng-click="move($index);"><span class="glyphicon glyphicon-arrow-right"></span></a></div>-->
+            </div>
+            <!--<div class="col-md-6">
+                <div class="row" ng-repeat="selectedCust in selectedCustomerList">
+                    <div class="col-md-6">{{selectedCust.name}}</div>
+                    <div class="col-md-5">{{selectedCust.email}}</div>
+                    <div class="col-md-1"><a href="" ng-click="remove($index);"><span class="glyphicon glyphicon-remove"></span></a></div>
+                </div>
+            </div>-->
+        </div>
+    </div>
+
+</div>

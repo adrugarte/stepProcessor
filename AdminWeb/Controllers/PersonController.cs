@@ -20,6 +20,19 @@ namespace AdminWeb.Controllers
             Repo = new SQLRepository();
 
         }
+
+        public IHttpActionResult Get()
+        {
+            return Ok(Repo.person.GetList().OrderBy(p=>p.LastName).Select(p =>
+                new
+                {
+                    Id = p.Id,
+                    Name = p.LastName + ", " + p.FirstName,
+                    Celular = p.Contacts.Any(c => c.Type == ContactType.Cellular)?p.Contacts.FirstOrDefault(c => c.Type == ContactType.Cellular).value:"",
+                    Email = p.Contacts.Any(c => c.Type == ContactType.email)?p.Contacts.FirstOrDefault(c => c.Type == ContactType.email).value:"",
+                }));
+        }
+
         // GET: api/Person
         public IHttpActionResult Get(string query, int top, int offset=0, string sort="" )
         {
@@ -55,7 +68,7 @@ namespace AdminWeb.Controllers
                     PersonLisT = PersonLisT.OrderBy(p => p.LastName);
                     break;
             }
-            if (offset > 0) PersonLisT = PersonLisT.Skip(offset);
+            if (offset > 0 && offset < _counter) PersonLisT = PersonLisT.Skip(offset);
             if (top > 0) PersonLisT = PersonLisT.Take(top);
 
             var persons = PersonLisT.Select(p => 
@@ -66,6 +79,7 @@ namespace AdminWeb.Controllers
                     Phone = p.Contacts.Where(c=>c.Type== ContactType.Phone).Select(c=>c.value).FirstOrDefault(),
                     Celular = p.Contacts.Where(c => c.Type == ContactType.Cellular).Select(c => c.value).FirstOrDefault(),
                     Email = p.Contacts.Where(c => c.Type == ContactType.email).Select(c => c.value).FirstOrDefault(),
+                    pendingPayment = p.Services.Any(pa=>pa.PaidAmount < pa.Price)
                 });
 
             return Ok(new { counter = _counter, Persons = persons.ToList() });
@@ -88,6 +102,21 @@ namespace AdminWeb.Controllers
                 return BadRequest(ModelState);
 
             }
+
+            string phone = person.Contacts.Any(c => c.Type == ContactType.Cellular)?person.Contacts.FirstOrDefault(c => c.Type == ContactType.Cellular).value:"";
+            string email = person.Contacts.Any(c => c.Type == ContactType.email)?person.Contacts.FirstOrDefault(c => c.Type == ContactType.email).value:"";
+
+            //if (!string.IsNullOrEmpty(phone) || !string.IsNullOrEmpty(email))
+            //{
+            //    if (Repo.person.Find(p => p.Contacts.Any(c => (c.value == phone && c.Type == ContactType.Cellular) || (c.value == email && c.Type == ContactType.email))) != null)
+            //    {
+            //        var response = new HttpResponseMessage(HttpStatusCode.PreconditionFailed);
+            //        response.Content = new StringContent("This phone or/and email already exists in the Database");
+            //        return response; 
+
+            //    }
+            //}
+
             person = Repo.person.Create(person);
             return Ok(person);
         }

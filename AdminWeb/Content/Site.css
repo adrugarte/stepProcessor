@@ -125,6 +125,14 @@ input[type="checkbox"].input-validation-error {
     text-align:center;
 
 }
+.red-background{
+    background-color:#eba3a3;
+}
 
-
-
+.customer-list{
+    border: 1px solid gray;
+    overflow-y: scroll;
+    overflow-x:hidden;
+    max-height:300px;
+    margin:5px 5px 5px 5px;
+}

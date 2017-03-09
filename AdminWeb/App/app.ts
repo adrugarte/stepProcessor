@@ -28,11 +28,18 @@
                 templateUrl: '/App/View/serviceview.html'
             }
 
+            var messageRoute: ng.route.IRoute = {
+                controller: 'messageCtrl',
+                templateUrl: '/App/View/messageview.html',
+                 
+            }
+
             var config = ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider) => {
                 $routeProvider.
                     when('/', mainRoute).
                     when('/customer/:id', customerRoute).
                     when('/service/:id', serviceRoute).
+                    when('/message', messageRoute).
                     otherwise({ redirectTo: '/' });
 
                 //$httpProvider.interceptors.push('AuthInterceptorService');
@@ -56,13 +63,15 @@
             this.app.directive('mbDatePicker', ['$parse', ($parse: ng.IParseService) => { return new Directive.spDatetimePicker($parse); }]);
             this.app.directive('customerList', ['Callback', '$compile', (Callback: Resource.IServerCall, $compile: ng.ICompileService) => { return new Directive.customerList(Callback, $compile); }]);
             this.app.directive('phoneNumber', ['$filter', '$browser', ($filter: ng.IFilterService, $browser: ng.IBrowserService) => { return new Directive.phoneInput($filter, $browser); }]);
-            this.app.directive('personServiceList', ['Callback','$window', (Callback: Resource.IServerCall,window:ng.IWindowService) => { return new Directive.personServiceList(Callback,window); }]);
+            this.app.directive('personServiceList', ['Callback', '$window', (Callback: Resource.IServerCall, window: ng.IWindowService) => { return new Directive.personServiceList(Callback, window); }]);
+            this.app.directive('message', ['Callback', '$compile', (Callback: Resource.IServerCall, $compile: ng.ICompileService) => { return new Directive.message(Callback, $compile); }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
 
             ///// Controllers
             this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams','$location', ($scope, Callback: Resource.IServerCall, Utils, $routeParams: ng.route.IRouteParamsService, $location: ng.ILocationService) => new Controller.customer($scope, Callback, Utils, $routeParams, $location)]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope: Controller.ImainScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.main($scope, Callback, Utils, $routeParams)]);
             this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', ($scope: Controller.IServiceScope, Callback: Resource.IServerCall, Utils: Service.Utils, $routeParams: ng.route.IRouteParamsService) => new Controller.service($scope, Callback, Utils, $routeParams)]);
+            this.app.controller('messageCtrl', ['$scope', 'Callback', 'Utils', ($scope: Controller.IServiceScope, Callback: Resource.IServerCall, Utils: Service.Utils) => new Controller.messageCtrl($scope, Callback, Utils)]);
         }
     }
 }

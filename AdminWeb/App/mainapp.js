@@ -23,8 +23,12 @@ var Admin;
                 controller: 'serviceCtrl',
                 templateUrl: '/App/View/serviceview.html'
             };
+            var messageRoute = {
+                controller: 'messageCtrl',
+                templateUrl: '/App/View/messageview.html',
+            };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).when('/message', messageRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -58,11 +62,15 @@ var Admin;
             this.app.directive('personServiceList', ['Callback', '$window', function (Callback, window) {
                 return new Directive.personServiceList(Callback, window);
             }]);
+            this.app.directive('message', ['Callback', '$compile', function (Callback, $compile) {
+                return new Directive.message(Callback, $compile);
+            }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
             this.app.controller('customerCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', '$location', function ($scope, Callback, Utils, $routeParams, $location) { return new Controller.customer($scope, Callback, Utils, $routeParams, $location); }]);
             this.app.controller('mainCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.main($scope, Callback, Utils, $routeParams); }]);
             this.app.controller('serviceCtrl', ['$scope', 'Callback', 'Utils', '$routeParams', function ($scope, Callback, Utils, $routeParams) { return new Controller.service($scope, Callback, Utils, $routeParams); }]);
+            this.app.controller('messageCtrl', ['$scope', 'Callback', 'Utils', function ($scope, Callback, Utils) { return new Controller.messageCtrl($scope, Callback, Utils); }]);
         }
         return AppBuilder;
     })();
@@ -186,6 +194,15 @@ var Controller;
         return main;
     })();
     Controller.main = main;
+})(Controller || (Controller = {}));
+var Controller;
+(function (Controller) {
+    var messageCtrl = (function () {
+        function messageCtrl(scope, Callback, Utils) {
+        }
+        return messageCtrl;
+    })();
+    Controller.messageCtrl = messageCtrl;
 })(Controller || (Controller = {}));
 var Controller;
 (function (Controller) {
@@ -400,6 +417,77 @@ var Directive;
 })(Directive || (Directive = {}));
 var Directive;
 (function (Directive) {
+    var message = (function () {
+        function message(Callback, $compile) {
+            var _this = this;
+            this.replace = true;
+            this.templateUrl = "App/view/messageTemplate.html";
+            this.link = function (scope, elm, attr) {
+                var self = _this;
+                scope.message = "";
+                scope.customerList = Callback.Person.query();
+                //scope.move = (index, elm) => {
+                //    if (elm.target.checked) {
+                //        if (IsInSelectedCustomers(scope.customerList[index].id) < 0) scope.selectedCustomerList.push(scope.customerList[index]);
+                //    } else {
+                //        var selectedIdx = IsInSelectedCustomers(scope.customerList[index].id);
+                //        scope.remove(selectedIdx);
+                //    }
+                //}
+                //scope.remove = (index) => {
+                //    scope.selectedCustomerList.splice(index, 1);
+                //}
+                scope.selectall = function (event) {
+                    for (var i = 0; i < scope.customerList.length; i++) {
+                        scope.customerList[i].selected = event.target.checked;
+                    }
+                };
+                scope.send = function () {
+                    if (scope.message.length > 0) {
+                        var message = {};
+                        message.subject = scope.subject;
+                        message.text = scope.message;
+                        message.customers = [];
+                        for (var i = 0; i < scope.customerList.length; i++) {
+                            if (scope.customerList[i].selected)
+                                message.customers.push(scope.customerList[i]);
+                        }
+                        //message.customers = ;
+                        if (message.customers.length == 0)
+                            alert("Customer should be selected from the list");
+                        else {
+                            $("#loaderDiv").show();
+                            Callback.Communication.save(message, function (data) {
+                                $("#loaderDiv").hide();
+                                alert("Message Sent");
+                                CleanCustomerList();
+                            }, function () {
+                                $("#loaderDiv").hide();
+                            });
+                        }
+                    }
+                };
+                //var IsInSelectedCustomers = (id) => {
+                //    if (typeof scope.selectedCustomerList != 'undefined'){
+                //        for (var i = 0, len = scope.selectedCustomerList.length; i < len; i++) {
+                //            if (scope.selectedCustomerList[i].id == id) return i;
+                //        }
+                //    }
+                //    return -1;
+                //}
+                var CleanCustomerList = function () {
+                    for (var i = 0; i < scope.customerList.length; i++) {
+                        scope.customerList[i].selected = false;
+                    }
+                };
+            };
+        }
+        return message;
+    })();
+    Directive.message = message;
+})(Directive || (Directive = {}));
+var Directive;
+(function (Directive) {
     var personServiceList = (function () {
         function personServiceList(Callback, window) {
             var _this = this;
@@ -561,6 +649,7 @@ var Resource;
             this.Account = $resource('/api/account/:id', { id: '@id' });
             this.PersonService = $resource('/api/personservices/:id', { id: '@id' });
             this.Service = $resource('/api/services/:id', { id: '@id' });
+            this.Communication = $resource('/api/comunication/:id', { id: '@id' });
         }
         return ServerCall;
     })();
