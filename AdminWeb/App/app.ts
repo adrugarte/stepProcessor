@@ -64,7 +64,7 @@
             this.app.directive('customerList', ['Callback', '$compile', (Callback: Resource.IServerCall, $compile: ng.ICompileService) => { return new Directive.customerList(Callback, $compile); }]);
             this.app.directive('phoneNumber', ['$filter', '$browser', ($filter: ng.IFilterService, $browser: ng.IBrowserService) => { return new Directive.phoneInput($filter, $browser); }]);
             this.app.directive('personServiceList', ['Callback', '$window', (Callback: Resource.IServerCall, window: ng.IWindowService) => { return new Directive.personServiceList(Callback, window); }]);
-            this.app.directive('message', ['Callback', '$compile', (Callback: Resource.IServerCall, $compile: ng.ICompileService) => { return new Directive.message(Callback, $compile); }]);
+            this.app.directive('message', ['Callback', '$compile','$http', (Callback: Resource.IServerCall, $compile: ng.ICompileService,$http:ng.IHttpService) => { return new Directive.message(Callback, $compile,$http); }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
 
             ///// Controllers

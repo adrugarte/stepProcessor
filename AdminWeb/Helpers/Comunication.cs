@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -41,29 +42,24 @@ namespace AdminWeb.Helpers
 
                 MailMessage.From = new MailAddress(MailMessage.From.ToString(), ConfigurationManager.AppSettings["EmailfromName"]??"MB Immigration Services"); //only overwrite if not specified on web.config smtp (from)
                 
-
-                //if (string.IsNullOrEmpty(MailMessage.From.ToString())) //if webconfig smtp from is setup use that one else use hardcoded from ubs setup
-                //{
-                //    MailMessage.From = new MailAddress(EmailFrom, EmailFrom); //only overwrite if not specified on web.config smtp (from)
-                //}
-                //else
-                //{
-                //    EmailFrom = MailMessage.From.ToString();
-                //}
-
                 MailMessage.Subject = EmailSubject;
 
                 //string signature = ConfigurationManager.AppSettings["EmailSignature"]!=null?ConfigurationManager.AppSettings["EmailSignature"].ToString().Replace('|', '\n'):"";
-                string signature = "";
-                if (ConfigurationManager.AppSettings["EmailSignature"] != null){
-                    string[] st= ConfigurationManager.AppSettings["EmailSignature"].ToString().Split('|');
-                    signature = "<p><strong style='color:#0d52f8;'>" + st[0] + "</strong>";
-                    signature = signature + "<br><b>Office:</b>" + st[1];
-                    signature = signature + "<br><b>email:</b>" + st[2] + "</p>"; 
-                }
+                ////string signature = "";
+                ////if (ConfigurationManager.AppSettings["EmailSignature"] != null){
+                ////    string[] st= ConfigurationManager.AppSettings["EmailSignature"].ToString().Split('|');
+                ////    signature = "<p><strong style='color:#0d52f8;'>" + st[0] + "</strong>";
+                ////    signature = signature + "<br><b>Office:</b>" + st[1];
+                ////    signature = signature + "<br><b>email:</b>" + st[2] + "</p>"; 
+                ////}
 
-                MailMessage.Body = EmailBody + Environment.NewLine + Environment.NewLine + signature;
+                ////MailMessage.Body = EmailBody + Environment.NewLine + Environment.NewLine + signature;
+                ////MailMessage.IsBodyHtml = true;
+
+
+                MailMessage.Body = EmailBody;
                 MailMessage.IsBodyHtml = true;
+
 
                 // Adding the EmailTo Addresses
                 string to = "";

@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+<body>
+
+    <style>
+        @-webkit-keyframes flames {
+            0% {
+                height: 2.2em;
+                -webkit-transform: rotate(0.5deg);
+                transform: rotate(0.5deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                height: 2.5em;
+                -webkit-transform: rotate(-0.5deg);
+                transform: rotate(-0.5deg);
+                border-radius: 50% / 30%;
+                border-top-right-radius: 50% 60%;
+                border-top-left-radius: 50% 60%;
+                opacity: 1;
+            }
+        }
+
+        @keyframes flames {
+            0% {
+                height: 2.2em;
+                -webkit-transform: rotate(0.5deg);
+                transform: rotate(0.5deg);
+                opacity: 0.8;
+            }
+
+            100% {
+                height: 2.5em;
+                -webkit-transform: rotate(-0.5deg);
+                transform: rotate(-0.5deg);
+                border-radius: 50% / 30%;
+                border-top-right-radius: 50% 60%;
+                border-top-left-radius: 50% 60%;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes candles {
+            0% {
+                height: 10em;
+                border-radius: 50% / 5%;
+            }
+
+            100% {
+                height: 2em;
+                border-radius: 50% / 25%;
+            }
+        }
+
+        @keyframes candles {
+            0% {
+                height: 10em;
+                border-radius: 50% / 5%;
+            }
+
+            100% {
+                height: 2em;
+                border-radius: 50% / 25%;
+            }
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        body {
+            /*background: #ffe0e5;*/
+            color: #864313;
+            font-size: 12px;
+        }
+
+        p {
+            text-align: center;
+            padding: 0.2em;
+            font-size: 16px;
+        }
+
+        a {
+            color: inherit;
+            background: #ffffcc;
+            text-decoration: none;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+        }
+
+        .cake {
+            height: 20em;
+            width: 20em;
+            margin: 10em auto 10em;
+            position: relative;
+            border-radius: 100% / 50%;
+            background: #7b3d11;
+            border-bottom: 0.25em solid #2d1606;
+        }
+
+            .cake::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 12em;
+                border-radius: 50%;
+                background: #7b3d11;
+                border-bottom: 0.5em solid #221105;
+                z-index: 10;
+            }
+
+            .cake::after {
+                content: '';
+                position: absolute;
+                top: 5em;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 12em;
+                border-radius: 50%;
+                border-top-right-radius: 25%;
+                border-top-left-radius: 25%;
+                background: #864313;
+                box-shadow: 0 5em 0 #ffffcc, 0 10em 0 #864313;
+            }
+
+        .candles {
+            z-index: 20;
+            position: absolute;
+            padding: 0;
+            margin: 0;
+            height: 10em;
+            width: 2.5em;
+            position: absolute;
+            bottom: 12.5em;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            border-radius: 50% / 5%;
+            -webkit-animation: candles 10s 2s 2 alternate;
+            animation: candles 10s 2s 2 alternate;
+            background: #ffcc00;
+            box-shadow: -3.5em 3.5em 0 0 #77DD77, 3.5em 3.5em 0 0 #FF6961, -7em -2.5em 0 -3px #FFB347, 7em -2.5em 0 -3px #779ECB;
+        }
+
+            .candles::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 10px;
+                border-radius: 50%;
+                background: #cca300;
+                box-shadow: -3.5em 3.5em 0 0 #4ed34e, 3.5em 3.5em 0 0 #ff392e, -7em -2.5em 0 -3px #ff9e14, 7em -2.5em 0 -3px #5284bd;
+            }
+
+            .candles::after {
+                content: '';
+                position: absolute;
+                top: -2em;
+                right: 0;
+                left: 0;
+                margin: auto;
+                border-radius: 50% / 40%;
+                border-top-right-radius: 50% 60%;
+                border-top-left-radius: 50% 60%;
+                background: #E29822;
+                height: 2.5em;
+                width: 1.5em;
+                -webkit-animation: flames 0.75s infinite alternate;
+                animation: flames 0.75s infinite alternate;
+                box-shadow: 0 0 0 1px #e8ad4f, -3.5em 3.5em 1px 0 #E29822, 3.5em 3.5em 1px 0 #E29822, -7em -2.5em 1px 0 #E29822, 7em -2.5em 1px 0 #E29822;
+            }
+    </style>
+        <br>
+        <p>Estimado [customer]</p>
+
+        <h1 class='title'>Happy birthday!</h1>
+        <div class='cake'>
+            <div class='candles'></div>
+        </div>
+
+        <p>
+            <strong style='color:#0d52f8;'>[company]</strong>
+            <br><b>Office:</b>[phone]
+            <br><b>email:</b>[email]
+        </p>
+
+</body>
+</html>

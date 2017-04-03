@@ -60,6 +60,12 @@ namespace BravoRepository
             return _dbCtx.Persons.Include(p=>p.Contacts).FirstOrDefault(expression);
         }
 
+
+        public IQueryable<Person> GetFiltered(Expression<Func<Person, bool>> expression = null)
+        {
+            return _dbCtx.Persons.Include(p => p.Contacts).Where(expression);
+        }
+
         public Person Update(int PersonId, Person person)
         {
             if (person.Contacts != null) { 

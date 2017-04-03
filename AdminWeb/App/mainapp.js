@@ -62,8 +62,8 @@ var Admin;
             this.app.directive('personServiceList', ['Callback', '$window', function (Callback, window) {
                 return new Directive.personServiceList(Callback, window);
             }]);
-            this.app.directive('message', ['Callback', '$compile', function (Callback, $compile) {
-                return new Directive.message(Callback, $compile);
+            this.app.directive('message', ['Callback', '$compile', '$http', function (Callback, $compile, $http) {
+                return new Directive.message(Callback, $compile, $http);
             }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers
@@ -418,7 +418,7 @@ var Directive;
 var Directive;
 (function (Directive) {
     var message = (function () {
-        function message(Callback, $compile) {
+        function message(Callback, $compile, $http) {
             var _this = this;
             this.replace = true;
             this.templateUrl = "App/view/messageTemplate.html";
@@ -426,23 +426,37 @@ var Directive;
                 var self = _this;
                 scope.message = "";
                 scope.customerList = Callback.Person.query();
-                //scope.move = (index, elm) => {
-                //    if (elm.target.checked) {
-                //        if (IsInSelectedCustomers(scope.customerList[index].id) < 0) scope.selectedCustomerList.push(scope.customerList[index]);
-                //    } else {
-                //        var selectedIdx = IsInSelectedCustomers(scope.customerList[index].id);
-                //        scope.remove(selectedIdx);
-                //    }
-                //}
-                //scope.remove = (index) => {
-                //    scope.selectedCustomerList.splice(index, 1);
-                //}
                 scope.selectall = function (event) {
                     for (var i = 0; i < scope.customerList.length; i++) {
                         scope.customerList[i].selected = event.target.checked;
                     }
                 };
+                scope.birthday = function () {
+                    $http.get("api/birthdaygreeting");
+                };
                 scope.send = function () {
+                    //if (scope.message.length > 0) {
+                    //    var message: FormData = new FormData();
+                    //    message.append("subject", scope.subject);
+                    //    message.append("text",scope.message);
+                    //    var customers = [];
+                    //    for (var i = 0; i < scope.customerList.length; i++) {
+                    //        if (scope.customerList[i].selected) customers.push(scope.customerList[i]);
+                    //    }
+                    //    //message.customers = ;
+                    //    if (customers.length == 0)
+                    //        alert("Customer should be selected from the list");
+                    //    else {
+                    //        message.append("customers", customers);
+                    //        message.append("attachment", scope.attachment.files[0]);
+                    //        $("#loaderDiv").show();
+                    //        Callback.Communication.sendfile(message,(data) => {
+                    //            $("#loaderDiv").hide();
+                    //            alert("Message Sent");
+                    //            CleanCustomerList();
+                    //        },() => { $("#loaderDiv").hide(); });
+                    //    }
+                    //}
                     if (scope.message.length > 0) {
                         var message = {};
                         message.subject = scope.subject;
@@ -645,11 +659,16 @@ var Resource;
     var ServerCall = (function () {
         function ServerCall($resource) {
             var updateDescriptor = { method: "PUT" };
+            var sendfileDescriptor = {
+                method: "POST",
+                headers: { 'Content-Type': "application/x-www-form-urlencoded" },
+                transformRequest: []
+            };
             this.Person = $resource('/api/person/:id', { id: '@id' }, { update: updateDescriptor });
             this.Account = $resource('/api/account/:id', { id: '@id' });
             this.PersonService = $resource('/api/personservices/:id', { id: '@id' });
             this.Service = $resource('/api/services/:id', { id: '@id' });
-            this.Communication = $resource('/api/comunication/:id', { id: '@id' });
+            this.Communication = $resource('/api/comunication/:id', { id: '@id' }, { sendfile: sendfileDescriptor });
         }
         return ServerCall;
     })();

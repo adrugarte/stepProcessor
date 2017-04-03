@@ -8,11 +8,16 @@
             <label class="col-md-1">Message</label>
             <textarea class="col-md-11  form-control" ng-model="message" id="msgArea" draggable="false" rows="10" cols="400" style="max-width:800px;"></textarea>
         </div>
+        <div class="row">
+            <br />
+            <input type="file" id="userfile" size="20" ng-model="attachment"/>
+            <br />
+        </div>
         <div class="col-md-12"><button class="btn btn-primary" style="margin-top:10px;" ng-disabled="subject.length==0||message.length==0" ng-click="send()">Send Message</button></div>
     </div>
     <div class="col-md-6">
 
-        <div class="col-md-12">
+        <div class="col-md-12"><!--  -->
             <label class="col-md-5" style="padding-top:15px;">Customer</label><input class="form-control col-md-7" type="text" ng-model="custsearch" placeholder="search... "></span>
         </div>
 
@@ -35,6 +40,7 @@
 
                 <!--<div class="col-md-1"><a href="" ng-click="move($index);"><span class="glyphicon glyphicon-arrow-right"></span></a></div>-->
             </div>
+
             <!--<div class="col-md-6">
                 <div class="row" ng-repeat="selectedCust in selectedCustomerList">
                     <div class="col-md-6">{{selectedCust.name}}</div>
@@ -43,6 +49,7 @@
                 </div>
             </div>-->
         </div>
+        <div class="row"><button class="btn btn-primary" style="margin-top:10px;" ng-click="birthday()">Happy birthday!!</button></div>
     </div>
 
 </div>
