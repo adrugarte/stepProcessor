@@ -5,6 +5,7 @@
     export interface IMessageScope extends ng.IScope {
         message: string;
         subject: string;
+        via: string;
         customerList: Array<ImessageRecipient>;
         attachment: any;
         send: () => void;
@@ -14,6 +15,7 @@
 
     export class message implements ng.IDirective {
         public link: ng.IDirectiveLinkFn;
+        public scope: { [key: string]: string } = {via:'@'};
         public replace = true;
         public templateUrl = "App/view/messageTemplate.html";
         constructor(Callback: Resource.IServerCall, $compile: ng.ICompileService,$http:ng.IHttpService ) {
@@ -63,7 +65,9 @@
                         var message: any = {};
                         message.subject = scope.subject;
                         message.text = scope.message;
+                        message.via = scope.via;
                         message.customers = [];
+
                         for (var i = 0; i < scope.customerList.length; i++){
                             if (scope.customerList[i].selected) message.customers.push(scope.customerList[i]);
                         }

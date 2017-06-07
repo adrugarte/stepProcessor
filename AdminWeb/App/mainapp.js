@@ -27,8 +27,12 @@ var Admin;
                 controller: 'messageCtrl',
                 templateUrl: '/App/View/messageview.html',
             };
+            var textRoute = {
+                controller: 'messageCtrl',
+                templateUrl: '/App/View/textview.html',
+            };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).when('/message', messageRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).when('/message', messageRoute).when('/textmessage', textRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -420,6 +424,7 @@ var Directive;
     var message = (function () {
         function message(Callback, $compile, $http) {
             var _this = this;
+            this.scope = { via: '@' };
             this.replace = true;
             this.templateUrl = "App/view/messageTemplate.html";
             this.link = function (scope, elm, attr) {
@@ -461,6 +466,7 @@ var Directive;
                         var message = {};
                         message.subject = scope.subject;
                         message.text = scope.message;
+                        message.via = scope.via;
                         message.customers = [];
                         for (var i = 0; i < scope.customerList.length; i++) {
                             if (scope.customerList[i].selected)

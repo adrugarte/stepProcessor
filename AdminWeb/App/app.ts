@@ -34,12 +34,18 @@
                  
             }
 
+            var textRoute: ng.route.IRoute = {
+                controller: 'messageCtrl',
+                templateUrl: '/App/View/textview.html',
+            }
+
             var config = ($routeProvider: ng.route.IRouteProvider, $locationProvider: ng.ILocationProvider, $httpProvider: ng.IHttpProvider) => {
                 $routeProvider.
                     when('/', mainRoute).
                     when('/customer/:id', customerRoute).
                     when('/service/:id', serviceRoute).
                     when('/message', messageRoute).
+                    when('/textmessage',textRoute).
                     otherwise({ redirectTo: '/' });
 
                 //$httpProvider.interceptors.push('AuthInterceptorService');

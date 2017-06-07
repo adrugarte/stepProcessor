@@ -21,6 +21,30 @@ namespace AdminWeb.Controllers
     {
         public IHttpActionResult PostComm([FromBody] messageVM msg)
         {
+            if (msg.via == "email") sendEmail(msg);
+            if (msg.via == "text") sendText(msg);
+            return Ok();
+        }
+        private void sendText(messageVM msg)
+        {
+            Comunication commClass = new Comunication();
+            foreach (recipientVM cust in msg.customers)
+            {
+                if (!string.IsNullOrEmpty(cust.Email))
+                {
+                    commClass = new Comunication();
+                    //string message = string.Format("Estimado {0}", cust.Name) + Environment.NewLine + msg.text;
+                    //commClass.EmailSubject = msg.subject;
+                    commClass.EmailTo[0] = cust.Celular;
+                    commClass.EmailBody = msg.text ;
+                    commClass.sendTextMessage();
+                }
+            }
+            commClass = null;
+        }
+
+        private void sendEmail(messageVM msg)
+        {
 
             string signature = "";
             if (ConfigurationManager.AppSettings["EmailSignature"] != null){
@@ -33,20 +57,27 @@ namespace AdminWeb.Controllers
             ////MailMessage.Body = EmailBody + Environment.NewLine + Environment.NewLine + signature;
 
             Comunication commClass = new Comunication();
-            foreach (recipientVM cust in msg.customers)
-            {
-                if (!string.IsNullOrEmpty(cust.Email)) { 
-                    commClass = new Comunication();
-                    //string message = string.Format("Estimado {0}", cust.Name) + Environment.NewLine + msg.text;
-                    commClass.EmailSubject = msg.subject;
-                    commClass.EmailTo[0] = cust.Email;
-                    commClass.EmailBody = msg.text + Environment.NewLine + Environment.NewLine + signature; ;
-                    commClass.SendMail(commClass);
-                }
-            }
+            //foreach (recipientVM cust in msg.customers)
+            //{
+            //    if (!string.IsNullOrEmpty(cust.Email)) { 
+            //        commClass = new Comunication();
+            //        //string message = string.Format("Estimado {0}", cust.Name) + Environment.NewLine + msg.text;
+            //        commClass.EmailSubject = msg.subject;
+            //        commClass.EmailTo[0] = cust.Email;
+            //        commClass.EmailBody = msg.text + Environment.NewLine + Environment.NewLine + signature; ;
+            //        commClass.SendMail(commClass);
+            //    }
+            //}
+            commClass.EmailSubject = msg.subject;
+            commClass.EmailTo[0] = "contact@martellbravo.us";
+            commClass.EmailBcc = msg.customers.Select(c=>c.Email).ToArray();
+            commClass.EmailBody = msg.text + Environment.NewLine + Environment.NewLine + signature; ;
+            commClass.SendMail(commClass);
+
             commClass = null;
-            return Ok();
+
         }
+
         [Route("api/birthdaygreeting")]
         public IHttpActionResult GetBirthday()
         {
@@ -148,6 +179,7 @@ namespace AdminWeb.Controllers
 
 public class messageVM
 {
+    public string via { get; set; }
     public string subject { get; set; }
     public string text { get; set; }
     public List<recipientVM> customers { get; set; }

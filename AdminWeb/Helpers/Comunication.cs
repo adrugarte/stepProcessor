@@ -29,6 +29,57 @@ namespace AdminWeb.Helpers
         public string EmailSubject { get; set; }
         public string EmailBody { get; set; }
 
+        public void sendTextMessage()
+        {
+
+            string errorMessage = "";
+            try
+            {
+                MailMessage MailMessage = new MailMessage();
+                MailMessage.From = new MailAddress(MailMessage.From.ToString(), ConfigurationManager.AppSettings["EmailfromName"] ?? "MB Immigration Services"); //only overwrite if not specified on web.config smtp (from)
+                MailMessage.Subject = EmailSubject;
+
+
+                MailMessage.Body = EmailBody;
+
+                // Adding the EmailTo Addresses
+                string to = "";
+                if (EmailTo != null)
+                {
+                    for (int i = 0; i < EmailTo.Length; i++)
+                    {
+                        if (!string.IsNullOrEmpty(EmailTo[i]))
+                        {
+                            string[] strEmail = Regex.Split(EmailTo[i], ";");
+                            for (int t = 0; t < strEmail.Length; t++)
+                            {
+                                if (!string.IsNullOrEmpty(strEmail[t].Trim()) &&
+                                    !to.ToLower().Contains(strEmail[t].Trim().ToLower()))
+                                {
+                                    // Control TO
+                                    to += strEmail[t].Trim();
+                                    // TO
+                                    foreach(carrier carrier in Carriers.List){
+                                        MailMessage.To.Add(new MailAddress(strEmail[t].Trim() + carrier.smsroute ));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                SmtpClient smtps = new SmtpClient();
+                smtps.Send(MailMessage);
+
+            }
+            catch (Exception e)
+            {
+                errorMessage = e.Message;
+            }
+
+        }
+
+
         /// <summary>
         /// Following function prepare email message and sends.
         /// </summary>
@@ -41,7 +92,6 @@ namespace AdminWeb.Helpers
                 MailMessage MailMessage = new MailMessage();
 
                 MailMessage.From = new MailAddress(MailMessage.From.ToString(), ConfigurationManager.AppSettings["EmailfromName"]??"MB Immigration Services"); //only overwrite if not specified on web.config smtp (from)
-                
                 MailMessage.Subject = EmailSubject;
 
                 //string signature = ConfigurationManager.AppSettings["EmailSignature"]!=null?ConfigurationManager.AppSettings["EmailSignature"].ToString().Replace('|', '\n'):"";
@@ -148,5 +198,43 @@ namespace AdminWeb.Helpers
         }
 
 
+
+        protected static class Carriers
+        {
+            private static List<carrier> list { get; set; }
+            public static List<carrier> List
+            {
+                get
+                {
+                    if (list == null) loadList(); return list;
+                }
+            }
+
+            private static void loadList()
+            {
+                list = new List<carrier>();
+                list.Add(new carrier { name = "Altel", smsroute = "@sms.alltelwireless.com", mmsroute = "@mms.alltelwireless.com" });
+                list.Add(new carrier { name = "AT&T", smsroute = "@txt.att.net", mmsroute = "@mms.att.net" });
+                list.Add(new carrier { name = "Boost Mobile", smsroute = "@sms.myboostmobile.com", mmsroute = "@myboostmobile.com" });
+                list.Add(new carrier { name = "Sprint", smsroute = "@messaging.sprintpcs.com", mmsroute = "@pm.sprint.com" });
+                list.Add(new carrier { name = "T-Mobile", smsroute = "@tmomail.net", mmsroute = "@tmomail.net" });
+                list.Add(new carrier { name = "U.S. Cellular", smsroute = "@email.uscc.net", mmsroute = "@mms.uscc.net" });
+                list.Add(new carrier { name = "Verizon", smsroute = "@vtext.com", mmsroute = "@vzwpix.com" });
+                list.Add(new carrier { name = "Virgin Mobile", smsroute = "@vmobl.com", mmsroute = "@vmpix.com" });
+            }
+
+
+
+        }
+        protected class carrier
+        {
+            public string name { get; set; }
+            public string smsroute { get; set; }
+            public string mmsroute { get; set; }
+        }
+
+
    }
+
+
 }
