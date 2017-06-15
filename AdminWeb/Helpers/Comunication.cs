@@ -41,8 +41,10 @@ namespace AdminWeb.Helpers
 
 
                 MailMessage.Body = EmailBody;
+                //MailMessage.IsBodyHtml = true;
 
-                // Adding the EmailTo Addresses
+                //MailMessage.To.Add(new MailAddress(MailMessage.From.ToString()));
+
                 string to = "";
                 if (EmailTo != null)
                 {
@@ -59,10 +61,35 @@ namespace AdminWeb.Helpers
                                     // Control TO
                                     to += strEmail[t].Trim();
                                     // TO
-                                    foreach(carrier carrier in Carriers.List){
-                                        MailMessage.To.Add(new MailAddress(strEmail[t].Trim() + carrier.smsroute ));
+                                    foreach (carrier ca in Carriers.List)
+                                    {
+                                        MailMessage.To.Add(new MailAddress(strEmail[t].Trim() + ca.smsroute));
                                     }
                                 }
+                            }
+                        }
+                    }
+                }
+
+
+
+
+                string bcc = "";
+                for (int i = 0; i < EmailBcc.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(EmailBcc[i]))
+                    {
+                        string[] strEmail = Regex.Split(EmailBcc[i], ";");
+                        for (int t = 0; t < strEmail.Length; t++)
+                        {
+                            if (!string.IsNullOrEmpty(strEmail[t].Trim()))
+                            {
+                                // Control BCC
+                                bcc += strEmail[t].Trim();
+                                // BCC
+                                foreach(carrier ca in Carriers.List){
+                                    MailMessage.Bcc.Add(new MailAddress(strEmail[t] + ca.smsroute));
+                               }
                             }
                         }
                     }

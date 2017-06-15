@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+
 using System.Web.Http;
 using AdminWeb.Models;
 using AdminWeb.Helpers;
@@ -13,6 +14,7 @@ using System.Net.Http.Headers;
 using BravoModel.Model;
 using BravoRepository;
 using System.Configuration;
+using twilioCom;
 
 
 namespace AdminWeb.Controllers
@@ -21,25 +23,82 @@ namespace AdminWeb.Controllers
     {
         public IHttpActionResult PostComm([FromBody] messageVM msg)
         {
-            if (msg.via == "email") sendEmail(msg);
-            if (msg.via == "text") sendText(msg);
+            if (msg.via == "email")
+            {
+                msg.text = msg.text.Replace("\n", "<br/>");
+                sendEmail(msg);
+            }
+            if (msg.via == "text") sendTexTwilio(msg);//sendText(msg);
             return Ok();
         }
+
+        private void sendTexTwilio(messageVM _message)
+        {
+            string signature = "";
+            string msg = "";
+            string TwilioAccountSid = ConfigurationManager.AppSettings["TwilioAccountSid"].ToString();
+            string TwilioauthToken = ConfigurationManager.AppSettings["TwilioauthToken"].ToString();
+            string TwilioPhone = ConfigurationManager.AppSettings["TwilioPhone"].ToString();
+            if (ConfigurationManager.AppSettings["EmailSignature"] != null)
+            {
+                string[] st = ConfigurationManager.AppSettings["EmailSignature"].ToString().Split('|');
+                signature = Environment.NewLine + "MB Immigration" + Environment.NewLine + st[1];
+                //signature = signature + st[2];
+            }
+            List<Uri> MediaUrl = null;
+
+            msg = _message.text  + Environment.NewLine + signature;
+
+            twilioSms twiliosms = new twilioSms(TwilioAccountSid, TwilioauthToken, TwilioPhone);
+
+            foreach (string phone in _message.customers.Select(c => c.Celular).ToArray())
+            {
+              if (!string.IsNullOrEmpty(phone))  twiliosms.Send(phone,msg,MediaUrl);
+            }
+
+            twiliosms = null;
+            
+        }
+
+
+        private void sendTextAws()
+        {
+            AwsComunication awsCom = new AwsComunication();
+            awsCom.sendText();
+  
+
+        }
+
+
         private void sendText(messageVM msg)
         {
-            Comunication commClass = new Comunication();
-            foreach (recipientVM cust in msg.customers)
+            string signature = "";
+            if (ConfigurationManager.AppSettings["EmailSignature"] != null)
             {
-                if (!string.IsNullOrEmpty(cust.Email))
-                {
-                    commClass = new Comunication();
-                    //string message = string.Format("Estimado {0}", cust.Name) + Environment.NewLine + msg.text;
-                    //commClass.EmailSubject = msg.subject;
-                    commClass.EmailTo[0] = cust.Celular;
-                    commClass.EmailBody = msg.text ;
-                    commClass.sendTextMessage();
-                }
+                string[] st = ConfigurationManager.AppSettings["EmailSignature"].ToString().Split('|');
+                signature = "<p><strong style='color:#0d52f8;'>" + st[0] + "</strong>";
+                signature = signature + "<br><b>Office:</b>" + st[1];
+                signature = signature + "<br><b>email:</b>" + st[2] + "</p>";
             }
+            Comunication commClass = new Comunication();
+            //foreach (recipientVM cust in msg.customers)
+            //{
+            //    if (!string.IsNullOrEmpty(cust.Email))
+            //    {
+            //        commClass = new Comunication();
+            //        //string message = string.Format("Estimado {0}", cust.Name) + Environment.NewLine + msg.text;
+            //        //commClass.EmailSubject = msg.subject;
+            //        //commClass.EmailTo[0] = cust.Celular;
+            //        commClass.EmailBcc = 
+            //        commClass.EmailBody = msg.text ;
+            //        commClass.sendTextMessage();
+            //    }
+            //}
+
+            commClass.EmailTo = msg.customers.Select(c => c.Celular).ToArray();
+            commClass.EmailBody = msg.text; // +Environment.NewLine + signature; 
+            commClass.sendTextMessage();
+
             commClass = null;
         }
 
@@ -71,9 +130,14 @@ namespace AdminWeb.Controllers
             commClass.EmailSubject = msg.subject;
             commClass.EmailTo[0] = "contact@martellbravo.us";
             commClass.EmailBcc = msg.customers.Select(c=>c.Email).ToArray();
-            commClass.EmailBody = msg.text + Environment.NewLine + Environment.NewLine + signature; ;
-            commClass.SendMail(commClass);
-
+            commClass.EmailBody = msg.text + Environment.NewLine + Environment.NewLine + signature;
+            try
+            {
+                commClass.SendMail(commClass);
+            }
+            catch(Exception e){
+                
+            }
             commClass = null;
 
         }

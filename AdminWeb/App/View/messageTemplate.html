@@ -6,14 +6,17 @@
         </div>
         <div class="row">
             <label class="col-md-1">Message</label>
-            <textarea class="col-md-11  form-control" ng-model="message" id="msgArea" draggable="false" rows="10" cols="400" style="max-width:800px;"></textarea>
+            <textarea ng-hide="via=='text'" class="col-md-11  form-control" ng-model="message" id="msgArea" draggable="false" rows="10" cols="400" style="max-width:800px;"></textarea>
+            <textarea ng-show="via=='text'" class="col-md-11  form-control" maxlength="166" ng-model="message" id="msgArea" draggable="false" rows="5" cols="400" style="max-width:800px;"></textarea>
+            
         </div>
-        <div ng-hide="via=='text'" class="row">
+        <div ng-show="via=='text'" style="float:right;" >{{message.length}} characters of 166</div>
+        <!--<div ng-hide="via=='text'" class="row">
             <br />
             <input type="file" id="userfile" size="20" ng-model="attachment" />
             <br />
-        </div>
-        <div class="col-md-12"><button class="btn btn-primary" style="margin-top:10px;" ng-disabled="subject.length==0||message.length==0" ng-click="send()">Send Message</button></div>
+        </div>-->
+        <div class="col-md-12"><button class="btn btn-primary col-md-6" style="margin-top:10px;" ng-disabled="subject.length==0||message.length==0" ng-click="send()">Send Message</button></div>
     </div>
     <div class="col-md-6">
 
@@ -49,7 +52,7 @@
                 </div>
             </div>-->
         </div>
-        <div ng-hide="via=='text'" class="row"><button class="btn btn-primary" style="margin-top:10px;" ng-click="birthday()">Happy birthday!!</button></div>
+        <!--<div ng-hide="via=='text'" class="row"><button class="btn btn-primary" style="margin-top:10px;" ng-click="birthday()">Happy birthday!!</button></div>-->
     </div>
     
 </div>
