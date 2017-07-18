@@ -8,9 +8,16 @@
             <label class="col-md-1">Message</label>
             <textarea ng-hide="via=='text'" class="col-md-11  form-control" ng-model="message" id="msgArea" draggable="false" rows="10" cols="400" style="max-width:800px;"></textarea>
             <textarea ng-show="via=='text'" class="col-md-11  form-control" maxlength="166" ng-model="message" id="msgArea" draggable="false" rows="5" cols="400" style="max-width:800px;"></textarea>
-            
         </div>
         <div ng-show="via=='text'" style="float:right;" >{{message.length}} characters of 166</div>
+        <div ng-show="via=='text'" class="row" style="border-bottom:1px thick gray">
+            <!--<div class="col-md-5" style="text-align: center;">-->
+            <span><input type="checkbox" ng-model="includeVcard"> Include MB Contact Card</span>
+            <!--</div>-->
+            <!--<div class="col-md-5" style="text-align: left;">
+            <label>Include MB Contact Card</label>
+        </div>-->
+        </div>
         <!--<div ng-hide="via=='text'" class="row">
             <br />
             <input type="file" id="userfile" size="20" ng-model="attachment" />

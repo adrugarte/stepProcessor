@@ -214,9 +214,11 @@ namespace AdminWeb.Helpers
                     }
                 }
 
-                SmtpClient smtps = new SmtpClient();
-                smtps.Send(MailMessage);
-
+                //SmtpClient smtps = new SmtpClient();
+                using (var smtps = new System.Net.Mail.SmtpClient())
+                {
+                    smtps.Send(MailMessage);
+                }
             }
             catch (Exception e)
             {

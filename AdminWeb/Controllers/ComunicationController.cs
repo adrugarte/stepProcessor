@@ -15,6 +15,8 @@ using BravoModel.Model;
 using BravoRepository;
 using System.Configuration;
 using twilioCom;
+using System.Net.Mail;
+using System.Text;
 
 
 namespace AdminWeb.Controllers
@@ -23,18 +25,21 @@ namespace AdminWeb.Controllers
     {
         public IHttpActionResult PostComm([FromBody] messageVM msg)
         {
+            string errormessage="";
             if (msg.via == "email")
             {
                 msg.text = msg.text.Replace("\n", "<br/>");
                 sendEmail(msg);
             }
-            if (msg.via == "text") sendTexTwilio(msg);//sendText(msg);
-            return Ok();
+            if (msg.via == "text") errormessage = sendTexTwilio(msg);//sendText(msg);
+
+            return Ok(new { errormessage = errormessage});
         }
 
-        private void sendTexTwilio(messageVM _message)
+        private string sendTexTwilio(messageVM _message)
         {
             string signature = "";
+            string error = "";
             string msg = "";
             string TwilioAccountSid = ConfigurationManager.AppSettings["TwilioAccountSid"].ToString();
             string TwilioauthToken = ConfigurationManager.AppSettings["TwilioauthToken"].ToString();
@@ -45,7 +50,14 @@ namespace AdminWeb.Controllers
                 signature = Environment.NewLine + "MB Immigration" + Environment.NewLine + st[1];
                 //signature = signature + st[2];
             }
+
             List<Uri> MediaUrl = null;
+
+            if (_message.includeVcard) {
+                if (MediaUrl == null) MediaUrl = new List<Uri>();
+                //var fileInfo = new FileInfo(@"..\files\soniamartell.vcf");
+                MediaUrl.Add(new Uri(@"http://mbadminweb.us-east-1.elasticbeanstalk.com/files/soniamartell.vcf"));
+            }
 
             msg = _message.text  + Environment.NewLine + signature;
 
@@ -53,11 +65,18 @@ namespace AdminWeb.Controllers
 
             foreach (string phone in _message.customers.Select(c => c.Celular).ToArray())
             {
-              if (!string.IsNullOrEmpty(phone))  twiliosms.Send(phone,msg,MediaUrl);
+                if (!string.IsNullOrEmpty(phone) && !(phone.Length < 10)) {
+                    try { 
+                        twiliosms.Send(phone, msg, MediaUrl); 
+                    }
+                    catch(Exception e){
+                        error = error + Environment.NewLine + e.Message;
+                    }
+                }
             }
 
             twiliosms = null;
-            
+            return error;
         }
 
 
@@ -102,6 +121,20 @@ namespace AdminWeb.Controllers
             commClass = null;
         }
 
+
+        public bool IsValidEmail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
+
         private void sendEmail(messageVM msg)
         {
 
@@ -129,11 +162,26 @@ namespace AdminWeb.Controllers
             //}
             commClass.EmailSubject = msg.subject;
             commClass.EmailTo[0] = "contact@martellbravo.us";
-            commClass.EmailBcc = msg.customers.Select(c=>c.Email).ToArray();
+
+            
             commClass.EmailBody = msg.text + Environment.NewLine + Environment.NewLine + signature;
             try
             {
-                commClass.SendMail(commClass);
+                int totalacct = msg.customers.Count();
+                int sentacct = 0;
+                int take = 49;
+                while (sentacct < totalacct)
+                {
+                    if (totalacct - sentacct < take) take = totalacct - sentacct; 
+                    if (sentacct > 0)
+                        commClass.EmailBcc = msg.customers.Skip(sentacct).Take(take).ToList().Where(c => !string.IsNullOrEmpty(c.Email) && IsValidEmail(c.Email)).Select(c => c.Email).ToArray();
+                    else
+                        commClass.EmailBcc = msg.customers.Take(take).ToList().Where(c => !string.IsNullOrEmpty(c.Email) && IsValidEmail(c.Email)).Select(c => c.Email).ToArray();
+
+                    commClass.SendMail(commClass);
+                    sentacct += take;
+                }
+                
             }
             catch(Exception e){
                 
@@ -245,7 +293,8 @@ public class messageVM
 {
     public string via { get; set; }
     public string subject { get; set; }
-    public string text { get; set; }
+    public string text { get; set;}
+    public bool includeVcard { get; set; }
     public List<recipientVM> customers { get; set; }
 }
 

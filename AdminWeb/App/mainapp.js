@@ -467,6 +467,7 @@ var Directive;
                         message.subject = scope.subject;
                         message.text = scope.message;
                         message.via = scope.via;
+                        message.includeVcard = scope.includeVcard;
                         message.customers = [];
                         for (var i = 0; i < scope.customerList.length; i++) {
                             if (scope.customerList[i].selected)
@@ -479,10 +480,14 @@ var Directive;
                             $("#loaderDiv").show();
                             Callback.Communication.save(message, function (data) {
                                 $("#loaderDiv").hide();
-                                alert("Message Sent");
-                                CleanCustomerList();
+                                if (typeof data.errormessage != 'undefined' && data.errormessage.length > 0)
+                                    alert("The message was sent. Some issues happened." + data.errormessage);
+                                else
+                                    alert("Message sent.");
+                                //CleanCustomerList();
                             }, function () {
                                 $("#loaderDiv").hide();
+                                alert("Error while sent message");
                             });
                         }
                     }

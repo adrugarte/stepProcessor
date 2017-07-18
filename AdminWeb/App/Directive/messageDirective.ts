@@ -6,6 +6,7 @@
         message: string;
         subject: string;
         via: string;
+        includeVcard: boolean;
         customerList: Array<ImessageRecipient>;
         attachment: any;
         send: () => void;
@@ -66,6 +67,7 @@
                         message.subject = scope.subject;
                         message.text = scope.message;
                         message.via = scope.via;
+                        message.includeVcard = scope.includeVcard;
                         message.customers = [];
 
                         for (var i = 0; i < scope.customerList.length; i++){
@@ -79,9 +81,15 @@
                             $("#loaderDiv").show();
                             Callback.Communication.save(message,(data) => {
                                 $("#loaderDiv").hide();
-                                alert("Message Sent");
-                                CleanCustomerList();
-                            },() => {$("#loaderDiv").hide();});
+                                if (typeof data.errormessage != 'undefined' && data.errormessage.length > 0)
+                                    alert("The message was sent. Some issues happened." + data.errormessage);
+                                else
+                                    alert("Message sent.");
+                                //CleanCustomerList();
+                            },() => {
+                                    $("#loaderDiv").hide();
+                                    alert("Error while sent message");
+                                });
                         }
                     }
                 };
