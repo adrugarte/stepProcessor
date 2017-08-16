@@ -53,7 +53,7 @@ namespace AdminWeb.Controllers
                 {
                     PersonLisT = PersonLisT.Where(p =>
                         p.Addresses.Any(a=> a.Address1.Contains(query) || a.Address2.Contains(query)) ||
-                        p.FirstName.Contains(query) || p.LastName.Contains(query)
+                        p.FirstName.Contains(query) || p.LastName.Contains(query) || p.Source.Contains(query) 
                         );
                 }
                 //PersonLisT = PersonLisT.Where(p => p.Addresses.Any(a => a.Address1.Contains(query.Address) || a.Address2.Contains(query.Address)));
