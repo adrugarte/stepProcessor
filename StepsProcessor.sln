@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWeb", "AdminWeb\AdminWeb.csproj", "{C34D1DD0-80AA-4E75-BE3D-DF642157D377}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoModel", "BravoModel\BravoModel.csproj", "{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoRepository", "BravoRepository\BravoRepository.csproj", "{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoTemp", "BravoTemp\BravoTemp.csproj", "{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoWeb", "BravoWeb\BravoWeb.csproj", "{692AE2D3-EAE1-4F3B-A3B4-54672AC1E46B}"
@@ -17,24 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twilioCom", "twilioCom\twilioCom.csproj", "{32CF646A-0110-4845-B076-C5FE3E974F24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWeb", "AdminWeb\AdminWeb.csproj", "{C34D1DD0-80AA-4E75-BE3D-DF642157D377}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,6 +35,10 @@ Global
 		{32CF646A-0110-4845-B076-C5FE3E974F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32CF646A-0110-4845-B076-C5FE3E974F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32CF646A-0110-4845-B076-C5FE3E974F24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

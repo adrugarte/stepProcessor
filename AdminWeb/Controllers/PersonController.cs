@@ -34,7 +34,7 @@ namespace AdminWeb.Controllers
         }
 
         // GET: api/Person
-        public IHttpActionResult Get(string query, int top, int offset=0, string sort="" )
+        public IHttpActionResult Get(string query, int top, int offset=0, string sort="", bool pendingpayment=false )
         {
             IQueryable<Person> PersonLisT = Repo.person.GetList();
             if (query != null)
@@ -56,8 +56,11 @@ namespace AdminWeb.Controllers
                         p.FirstName.Contains(query) || p.LastName.Contains(query) || p.Source.Contains(query) 
                         );
                 }
+
                 //PersonLisT = PersonLisT.Where(p => p.Addresses.Any(a => a.Address1.Contains(query.Address) || a.Address2.Contains(query.Address)));
             }
+            if (pendingpayment) PersonLisT = PersonLisT.Where(p => p.Services.Any(pa => pa.PaidAmount < pa.Price));
+
             var _counter = PersonLisT.Count();
             switch (sort)
             {

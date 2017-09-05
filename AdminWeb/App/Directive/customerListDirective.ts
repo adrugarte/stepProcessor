@@ -1,6 +1,7 @@
 ﻿module Directive {
     export interface IcustomerListScope extends ng.IScope{ 
         personQuery: any;
+        pendingPayment: any;
         customerList: Array<Models.IPerson>;
         page: number;
         top: number;
@@ -26,10 +27,11 @@
                 var self = this;
                 //self.scope = scope;
                 scope.personQuery = ""
+                scope.pendingPayment = false;
 
 
                 var getCustomerList = () => {
-                    Callback.Person.get({ query: scope.personQuery, top: scope.top, offset: (scope.page*scope.top)}).$promise.
+                    Callback.Person.get({ query: scope.personQuery, top: scope.top, offset: (scope.page*scope.top),pendingpayment:scope.pendingPayment}).$promise.
                         then((response) => {
                         scope.productCounter = response.counter;
                         scope.customerList = response.persons;
@@ -69,6 +71,10 @@
                         getCustomerList();
                     }
                 };
+
+                scope.$watch('pendingPayment', function () {
+                    scope.search();
+                });
 
                 scope.search();
             }

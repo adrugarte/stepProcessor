@@ -1,10 +1,18 @@
 ﻿<div>
     <div class="customerlist-search row">
-        <div class="col-md-6">
+        <div class="col-md-4">
             <span class="list-title">Customer List</span>
         </div>
 
-        
+        <div class="col-md-3">
+        <div class="checkbox" style="float:right;">
+            <label>
+                <input type="checkbox" ng-model="pendingPayment">
+                <span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+                With Pending Payment
+            </label>
+        </div>
+    </div>
         <div class="input-group" style="max-width:400px;float:right">
             <input type="text" class="form-control" aria-label="..." ng-model="personQuery" placeholder="Search for...">
             <div class="input-group-btn">
