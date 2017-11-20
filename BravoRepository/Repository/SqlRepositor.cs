@@ -16,11 +16,12 @@ namespace BravoRepository
         {
 
             person = new PersonCls(dbCtx);
+            payment = new PaymentCls(dbCtx);
 
         }
 
         public PersonCls person { get; private set; }
-
+        public PaymentCls payment { get; private set; } 
 
     }
 
@@ -102,5 +103,27 @@ namespace BravoRepository
             _dbCtx.SaveChanges();
             return person;
         }
+    }
+
+    public class PaymentCls{
+
+        private SpSqlDbContext _dbCtx;
+        public PaymentCls(SpSqlDbContext dbCtx)
+        {
+            _dbCtx = dbCtx;
+        }
+
+        public IQueryable<Payment> GetList()
+        {
+            return _dbCtx.Payments.Include(p=>p.PersonService).Where(p=> p.Active == true).AsQueryable<Payment>();//.WhereEquals(p => p.Active, true).AsQueryable<Person>();
+        }
+
+        public Payment  Add(Payment payment){
+            _dbCtx.Payments.Add(payment);
+            _dbCtx.SaveChanges();
+            return payment;
+        }
+
+
     }
 }

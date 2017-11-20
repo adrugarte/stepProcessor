@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twilioCom", "twilioCom\twil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminWeb", "AdminWeb\AdminWeb.csproj", "{C34D1DD0-80AA-4E75-BE3D-DF642157D377}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoModel", "BravoModel\BravoModel.csproj", "{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoRepository", "BravoRepository\BravoRepository.csproj", "{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C34D1DD0-80AA-4E75-BE3D-DF642157D377}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

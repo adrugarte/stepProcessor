@@ -31,7 +31,7 @@ namespace AdminWeb.Controllers
                 msg.text = msg.text.Replace("\n", "<br/>");
                 sendEmail(msg);
             }
-            if (msg.via == "text") errormessage = sendTexTwilio(msg);//sendText(msg);
+            if (msg.via == "text") sendTextAws();//errormessage = sendTexTwilio(msg);//sendText(msg);
 
             return Ok(new { errormessage = errormessage});
         }

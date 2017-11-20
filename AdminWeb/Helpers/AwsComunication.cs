@@ -32,7 +32,6 @@ namespace AdminWeb.Helpers
 
             Amazon.Runtime.AWSCredentials credentials = new Utils.Credentials(Config.AccessKeyId, Config.AccessSecretkey);
 
-
             using (client = new AmazonSimpleNotificationServiceClient(credentials, Utils.EndPointGet(Config.RegionEndPoint)))
             {
                 Dictionary<String, MessageAttributeValue> smsAttributes =  new Dictionary<String, MessageAttributeValue>();
@@ -40,11 +39,19 @@ namespace AdminWeb.Helpers
                 smsAttributes.Add("AWS.SNS.SMS.MaxPrice", new MessageAttributeValue()  { StringValue = "0.50", DataType = "Number" });
                 smsAttributes.Add("AWS.SNS.SMS.SMSType", new MessageAttributeValue() { StringValue = "Transactional", DataType = "String" });
 
+                //PublishRequest req = new PublishRequest();
+                //req.PhoneNumber = "+17864137596";
+                //req.Message = "This is a test";
+                //req.MessageAttributes = smsAttributes;
+                //PublishResponse response = client.Publish(req);
+
                 PublishRequest req = new PublishRequest();
-                req.PhoneNumber = "+17864137596";
+                req.TopicArn = "arn:aws:sns:us-east-1:705657756232:ClientesBravo";
                 req.Message = "This is a test";
                 req.MessageAttributes = smsAttributes;
                 PublishResponse response = client.Publish(req);
+
+
                 if (response.HttpStatusCode != System.Net.HttpStatusCode.OK) s = "error";
             }
 
