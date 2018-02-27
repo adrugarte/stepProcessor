@@ -26,6 +26,12 @@ namespace AdminWeb.Controllers
 
         public IHttpActionResult post(Payment payment)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //payment.CreateTime = DateTime.Now;
+            payment.PaidBy = "smartell";
             return Ok(Repo.payment.Add(payment));
         }
 

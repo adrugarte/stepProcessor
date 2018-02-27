@@ -48,6 +48,7 @@
         price: number;
         fee: number;
         PaidAmount: number;
+        newPayment: string;
         created: any;
         finished: any
         userCreated: string;

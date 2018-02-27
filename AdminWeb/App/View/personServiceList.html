@@ -12,15 +12,26 @@
         </div>
         <div ng-repeat="pService in personServiceList">
             <div ng-hide="editing" class="col-md-12" style="background-color:antiquewhite;margin-bottom:1px;color:{{pService.finished?'ihnerit':'#433ce5'}};">
-                <div class="col-md-1">
+                <div class="col-md-1" style="padding:0;">
                     <a href="" ng-hide="pService.finished" ng-click="editing=true;" title="Edit Service"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                    <a href="" ng-hide="pService.finished" ng-click="paying==true?paying=false:paying=true;" title="Pay"><span class=" glyphicon glyphicon-usd " aria-hidden="true"></span></a>
                     <a href="" ng-hide="pService.finished"  ng-click="Close($index);" title="Complete Service"><span class=" glyphicon glyphicon-folder-close" aria-hidden="true"></span></a>
                     <a href="" ng-hide="pService.finished"  ng-click="Delete($index);" title="Delete Service"><span class=" glyphicon glyphicon-trash" aria-hidden="true"></span></a>
                 </div>
                 <div class="col-md-3">{{pService.serviceDesc}}</div>
                 <div class="col-md-1">{{pService.price| currency:"$":2}}</div>
                 <div class="col-md-2">{{pService.form}}</div>
-                <div class="col-md-1">{{pService.paidAmount| currency:"$":2}}</div>
+                <div ng-hide="paying" class="col-md-1">{{pService.paidAmount| currency:"$":2}}</div>
+                <div ng-show="paying" class="col-md-1" style="padding:2px 2px 0 0;">
+                    <div class="input-group">
+                        <input class="pservice-edit form-control" type="text" ng-model="pService.newPayment">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="paying=false;SavePayment($index);" style="padding:2px 4px;">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true" />
+                            </button>
+                        </span>
+                    </div>
+                </div>
                 <div class="col-md-2">{{pService.created | date:'MM/dd/yyyy h:mma'}}</div>
                 <div class="col-md-2">{{pService.finished| date:'MM/dd/yyyy h:mma'}}</div>
             </div>
@@ -32,7 +43,7 @@
                 <div class="col-md-3">{{pService.serviceDesc}}</div>
                 <div class="col-md-1"><input class="pservice-edit form-control" type="text" ng-model="pService.price" /></div>
                 <div class="col-md-2">{{pService.form}}</div>
-                <div class="col-md-1"><input class="pservice-edit form-control" type="text" ng-model="pService.paidAmount" /></div>
+                <div class="col-md-1">{{pService.paidAmount| currency:"$":2}}</div>
                 <div class="col-md-2">{{pService.created | date:'MM/dd/yyyy h:mma'}}</div>
                 <div class="col-md-2">{{pService.finished| date:'MM/dd/yyyy h:mma'}}</div>
             </div>

@@ -92,6 +92,10 @@
     <Compile Include="Migrations\201603291853274_NullableCustBirthDate.Designer.cs">
       <DependentUpon>201603291853274_NullableCustBirthDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802232056367_Payments.cs" />
+    <Compile Include="Migrations\201802232056367_Payments.Designer.cs">
+      <DependentUpon>201802232056367_Payments.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Repository.cs" />
@@ -109,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603291853274_NullableCustBirthDate.resx">
       <DependentUpon>201603291853274_NullableCustBirthDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802232056367_Payments.resx">
+      <DependentUpon>201802232056367_Payments.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

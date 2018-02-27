@@ -8,6 +8,7 @@
         Person: IServerCallResource<any>;
         Account: ng.resource.IResourceClass<any>;
         PersonService: ng.resource.IResourceClass<any>;
+        Payment: ng.resource.IResourceClass<any>;
         Service: ng.resource.IResourceClass<any>;
         Communication: IServerCallResource<any>;
     }
@@ -15,6 +16,7 @@
         public Person: IServerCallResource<any>;
         public Account: ng.resource.IResourceClass<any>;
         public PersonService: ng.resource.IResourceClass<any>;
+        public Payment: ng.resource.IResourceClass<any>;
         public Service: ng.resource.IResourceClass<any>;
         public Communication: IServerCallResource<any>;
         constructor($resource: ng.resource.IResourceService) {
@@ -29,6 +31,7 @@
             this.Account = $resource('/api/account/:id', { id: '@id' });
             this.PersonService = $resource('/api/personservices/:id', { id: '@id' });
             this.Service = $resource('/api/services/:id', { id: '@id' });
+            this.Payment = $resource('/api/payment/:id', { id: '@id' });
             this.Communication = <IServerCallResource<any>>$resource('/api/comunication/:id', { id: '@id' }, { sendfile: sendfileDescriptor });
         }
     }

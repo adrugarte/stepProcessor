@@ -2,11 +2,13 @@
     export interface IpersonServiceListScope extends ng.IScope {
         personId: number; 
         editing: boolean;
+        paying: boolean;
         services: Array<any>;
         personServiceList: Array<Models.PersonService>;
         newservice: {};
         Delete: (idx: number) => void;
         Save: (idx: number) => void;
+        SavePayment: (idx: number) => void;
         search: () => void;
         Add: () => void;
         Close: (idx: number) => void;
@@ -25,6 +27,7 @@
                 var self = this;
                 scope.personServiceList = [];
                 //self.scope = scope;
+                scope.paying = false;
                 scope.services =  Callback.Service.query();
 
                 var getServicePrice = (id: number): number => {
@@ -46,6 +49,16 @@
                     if (window.confirm("Are you sure to delete this service?")) {
                         Callback.PersonService.delete({ id: scope.personServiceList[idx]['id'] }).$promise.then(function (response) {
                             scope.personServiceList.splice(idx, 1);
+                        })
+                    }
+                };
+
+                scope.SavePayment = (idx: number) => {
+                    if (parseFloat(scope.personServiceList[idx]['newPayment'])) {
+                        var total = scope.personServiceList[idx]['paidAmount'] + parseFloat(scope.personServiceList[idx]['newPayment']);
+                        Callback.Payment.save({ ServiceId: scope.personServiceList[idx]['id'], PaidAmmount: scope.personServiceList[idx].newPayment }).$promise.then(function (response) {
+                            scope.personServiceList[idx]['paidAmount'] = total;
+                            scope.personServiceList[idx]['newPayment'] = "";
                         })
                     }
                 };

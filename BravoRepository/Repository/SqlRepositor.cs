@@ -119,6 +119,8 @@ namespace BravoRepository
         }
 
         public Payment  Add(Payment payment){
+            PersonService ps = _dbCtx.PersonServices.Find(payment.ServiceId);
+            ps.PaidAmount = ps.PaidAmount + (float)payment.PaidAmmount; 
             _dbCtx.Payments.Add(payment);
             _dbCtx.SaveChanges();
             return payment;
