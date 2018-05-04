@@ -27,8 +27,12 @@ var Admin;
                 controller: 'messageCtrl',
                 templateUrl: '/App/View/messageview.html',
             };
+            var textRoute = {
+                controller: 'messageCtrl',
+                templateUrl: '/App/View/textview.html',
+            };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).when('/message', messageRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.when('/', mainRoute).when('/customer/:id', customerRoute).when('/service/:id', serviceRoute).when('/message', messageRoute).when('/textmessage', textRoute).otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
@@ -62,8 +66,8 @@ var Admin;
             this.app.directive('personServiceList', ['Callback', '$window', function (Callback, window) {
                 return new Directive.personServiceList(Callback, window);
             }]);
-            this.app.directive('message', ['Callback', '$compile', function (Callback, $compile) {
-                return new Directive.message(Callback, $compile);
+            this.app.directive('message', ['Callback', '$compile', '$http', function (Callback, $compile, $http) {
+                return new Directive.message(Callback, $compile, $http);
             }]);
             //this.app.directive('onlyNumber', [() => { return new Directive.OnlyNumber(); }]);
             ///// Controllers

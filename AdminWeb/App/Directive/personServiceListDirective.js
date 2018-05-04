@@ -10,6 +10,7 @@ var Directive;
                 var self = _this;
                 scope.personServiceList = [];
                 //self.scope = scope;
+                scope.paying = false;
                 scope.services = Callback.Service.query();
                 var getServicePrice = function (id) {
                     var price = 0;
@@ -30,6 +31,15 @@ var Directive;
                     if (window.confirm("Are you sure to delete this service?")) {
                         Callback.PersonService.delete({ id: scope.personServiceList[idx]['id'] }).$promise.then(function (response) {
                             scope.personServiceList.splice(idx, 1);
+                        });
+                    }
+                };
+                scope.SavePayment = function (idx) {
+                    if (parseFloat(scope.personServiceList[idx]['newPayment'])) {
+                        var total = scope.personServiceList[idx]['paidAmount'] + parseFloat(scope.personServiceList[idx]['newPayment']);
+                        Callback.Payment.save({ ServiceId: scope.personServiceList[idx]['id'], PaidAmmount: scope.personServiceList[idx].newPayment }).$promise.then(function (response) {
+                            scope.personServiceList[idx]['paidAmount'] = total;
+                            scope.personServiceList[idx]['newPayment'] = "";
                         });
                     }
                 };

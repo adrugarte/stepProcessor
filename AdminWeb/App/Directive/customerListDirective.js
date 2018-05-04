@@ -11,8 +11,9 @@ var Directive;
                 var self = _this;
                 //self.scope = scope;
                 scope.personQuery = "";
+                scope.pendingPayment = false;
                 var getCustomerList = function () {
-                    Callback.Person.get({ query: scope.personQuery, top: scope.top, offset: (scope.page * scope.top) }).$promise.then(function (response) {
+                    Callback.Person.get({ query: scope.personQuery, top: scope.top, offset: (scope.page * scope.top), pendingpayment: scope.pendingPayment }).$promise.then(function (response) {
                         scope.productCounter = response.counter;
                         scope.customerList = response.persons;
                         scope.limit = ((scope.page * scope.top) + scope.top) > response.counter ? response.counter - (scope.page * scope.top) : scope.top;
@@ -47,6 +48,9 @@ var Directive;
                         getCustomerList();
                     }
                 };
+                scope.$watch('pendingPayment', function () {
+                    scope.search();
+                });
                 scope.search();
             };
         }

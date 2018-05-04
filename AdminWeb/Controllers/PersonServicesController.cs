@@ -83,7 +83,16 @@ namespace AdminWeb.Controllers
             if (personService.Id > 0)
                 db.Entry<PersonService>(personService).State = EntityState.Modified;
             else
+            { 
+                Payment _payment = new Payment();
                 db.PersonServices.Add(personService);
+                _payment.ServiceId = personService.Id;
+                _payment.PaidAmmount = (decimal)personService.PaidAmount;
+                _payment.PaidBy = "sbravo";
+                _payment.CreateTime = DateTime.Now;
+                db.Payments.Add(_payment);
+            }
+                
                 
             await db.SaveChangesAsync();
 
