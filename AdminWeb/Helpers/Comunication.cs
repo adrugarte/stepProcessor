@@ -213,6 +213,9 @@ namespace AdminWeb.Helpers
                         }
                     }
                 }
+                //Attachment att = new Attachment(@"G:\Ale\MARTELL BRAVO Paquete entrevista en GUYANA.pdf");
+
+                //MailMessage.Attachments.Add(att);
 
                 //SmtpClient smtps = new SmtpClient();
                 using (var smtps = new System.Net.Mail.SmtpClient())

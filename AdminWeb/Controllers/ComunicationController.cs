@@ -31,7 +31,7 @@ namespace AdminWeb.Controllers
                 msg.text = msg.text.Replace("\n", "<br/>");
                 sendEmail(msg);
             }
-            if (msg.via == "text") sendTextAws();//errormessage = sendTexTwilio(msg);//sendText(msg);
+            if (msg.via == "text") errormessage = sendTexTwilio(msg); //sendText(msg);sendTextAws();
 
             return Ok(new { errormessage = errormessage});
         }
@@ -47,7 +47,7 @@ namespace AdminWeb.Controllers
             if (ConfigurationManager.AppSettings["EmailSignature"] != null)
             {
                 string[] st = ConfigurationManager.AppSettings["EmailSignature"].ToString().Split('|');
-                signature = Environment.NewLine + "MB Immigration" + Environment.NewLine + st[1];
+                signature = Environment.NewLine + "MB IMMIGRATION SERVICES" + Environment.NewLine + st[1];
                 //signature = signature + st[2];
             }
 
@@ -143,7 +143,7 @@ namespace AdminWeb.Controllers
                 string[] st= ConfigurationManager.AppSettings["EmailSignature"].ToString().Split('|');
                 signature = "<p><strong style='color:#0d52f8;'>" + st[0] + "</strong>";
                 signature = signature + "<br><b>Office:</b>" + st[1];
-                signature = signature + "<br><b>email:</b>" + st[2] + "</p>"; 
+                signature = signature + "<br><b>email:</b>" + st[2] + "</p>";
             }
 
             ////MailMessage.Body = EmailBody + Environment.NewLine + Environment.NewLine + signature;
@@ -177,7 +177,7 @@ namespace AdminWeb.Controllers
                         commClass.EmailBcc = msg.customers.Skip(sentacct).Take(take).ToList().Where(c => !string.IsNullOrEmpty(c.Email) && IsValidEmail(c.Email)).Select(c => c.Email).ToArray();
                     else
                         commClass.EmailBcc = msg.customers.Take(take).ToList().Where(c => !string.IsNullOrEmpty(c.Email) && IsValidEmail(c.Email)).Select(c => c.Email).ToArray();
-
+                        
                     commClass.SendMail(commClass);
                     sentacct += take;
                 }
