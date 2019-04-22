@@ -11,6 +11,7 @@
         customerSources: Array<string>;
         getCustomerList: () => void;
         saveCustomer: () => void;        
+        printCustomer: () => void;
     }
 
     export class customer {
@@ -29,6 +30,10 @@
             self.scope.email = <Models.Contact>{};
             self.scope.personQuery = {};
             self.scope.customerSources = Utils.Sources;
+
+            self.scope.printCustomer = () => {
+                window.print();
+            }
 
 
             var getCustomer = () => {
@@ -82,6 +87,9 @@
 
                 return <Models.Contact>{};
             }
+
+ 
+
 
             self.scope.saveCustomer = () => {
                 setContacts();

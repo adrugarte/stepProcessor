@@ -195,3 +195,32 @@ input[type="checkbox"].input-validation-error {
 .radio label input[type="radio"]:disabled + .cr {
     opacity: .5;
 }
+
+
+
+@media screen {
+    #printSection {
+        display: none;
+    }
+}
+
+@media print {
+    body * {
+        visibility:hidden;
+    }
+
+    #printSection, #printSection * {
+        visibility:visible;
+    }
+    #printSection {
+        position:absolute;
+        left:0;
+        top:0;
+    }
+
+    #custCard{
+        display: none;
+    }
+
+
+}

@@ -14,6 +14,9 @@ var Controller;
             self.scope.email = {};
             self.scope.personQuery = {};
             self.scope.customerSources = Utils.Sources;
+            self.scope.printCustomer = function () {
+                alert("Hello there");
+            };
             var getCustomer = function () {
                 Callback.Person.get({ id: self.scope.customerId }, function (response) {
                     self.scope.person = response.person;

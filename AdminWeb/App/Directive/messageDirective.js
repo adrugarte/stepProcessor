@@ -59,6 +59,7 @@ var Directive;
                             $("#loaderDiv").show();
                             Callback.Communication.save(message, function (data) {
                                 $("#loaderDiv").hide();
+                                console.log("it's here");
                                 if (typeof data.errormessage != 'undefined' && data.errormessage.length > 0)
                                     alert("The message was sent. Some issues happened." + data.errormessage);
                                 else

@@ -35,10 +35,12 @@ var BravoWeb;
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             //// Services
-            //this.app.service('Resolver', ['$q', ($q: ng.IQService) => { return new Service.Resolver($q); }])
+            this.app.service('CallbackSrv', ['$resource', function ($resource) {
+                return new Service.ServerCall($resource);
+            }]);
             ///// Directives
             ///// Controllers
-            this.app.controller('contactCtrl', ['$scope', function ($scope) { return new Controller.formCtrl($scope); }]);
+            this.app.controller('contactCtrl', ['$scope', 'CallbackSrv', function ($scope, CallbackSrv) { return new Controller.formCtrl($scope, CallbackSrv); }]);
         }
         return AppBuilder;
     })();

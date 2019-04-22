@@ -1,39 +1,63 @@
-﻿<div style="text-align:center;"><a href="/"><< Volver a Lista de Clientes</a></div>
-<div class="row" style="margin-top:25px;">    
-    <div class="col-md-6">
-        <div class="col-md-4 form-inline"><label for="apellido">Apellidos:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="person.lastName" /></div>
-        <div class="col-md-4 form-inline"><label for="name">Name:</label></div><div class="col-md-8"><input id="name" class="form-control" type="text" ng-model="person.firstName" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Sexo:</label></div>
-        <div class="col-md-8">
-            <label>
-                <input type="radio" ng-model="person.gender" value="1">
-                Male
-            </label>
-            <label>
-                <input type="radio" ng-model="person.gender" value="2">
-                Female
-            </label>
+﻿<div id="custCard">
+    <div style="text-align:center;"><a href="/"><< Volver a Lista de Clientes</a></div>
+    <div class="row" style="margin-top:25px;">
+        <div class="col-md-6">
+            <div class="col-md-4 form-inline"><label for="apellido">Apellidos:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="person.lastName" /></div>
+            <div class="col-md-4 form-inline"><label for="name">Name:</label></div><div class="col-md-8"><input id="name" class="form-control" type="text" ng-model="person.firstName" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Sexo:</label></div>
+            <div class="col-md-8">
+                <label>
+                    <input type="radio" ng-model="person.gender" value="1">
+                    Male
+                </label>
+                <label>
+                    <input type="radio" ng-model="person.gender" value="2">
+                    Female
+                </label>
+            </div>
+            <div class="col-md-4 form-inline"><label for="apellido">Fecha de Nacimiento:</label></div><div class="col-md-8"><mb-date-picker ng-model="person.birthDate" max-date="" year-range="1900:2025" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Ciudad Nacimiento:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="person.birthCity" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Pais Nacimiento:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="person.birthCountry" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Celular: </label></div><div class="col-md-8"><input class="form-control" type="text" phone-number ng-model="celular.value" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Telefono:</label></div><div class="col-md-8"><input class="form-control" type="text" phone-number ng-model="phone.value" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Email:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="email.value" /></div>
         </div>
-        <div class="col-md-4 form-inline"><label for="apellido">Fecha de Nacimiento:</label></div><div class="col-md-8"><mb-date-picker ng-model="person.birthDate" max-date="" year-range="1900:2025" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Ciudad Nacimiento:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="person.birthCity"/></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Pais Nacimiento:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="person.birthCountry"/></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Celular: </label></div><div class="col-md-8"><input class="form-control" type="text" phone-number ng-model="celular.value" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Telefono:</label></div><div class="col-md-8"><input class="form-control" type="text" phone-number ng-model="phone.value" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Email:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="email.value" /></div>
+        <div class="col-md-6">
+            <div class="col-md-4 form-inline"><label for="apellido">Direccion:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.address1" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Direccion1: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.address2" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Ciudad: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.city" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Estado: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.state" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Zip: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.zipCode" /></div>
+            <div class="col-md-4 form-inline"><label for="apellido">Supo de nosotros?</label></div><div class="col-md-8"><select class="form-control" ng-options="source for source in customerSources" ng-model="person.source" /></div>
+        </div>
     </div>
-    <div class="col-md-6">
-        <div class="col-md-4 form-inline"><label for="apellido">Direccion:</label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.address1" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Direccion1: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.address2" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Ciudad: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.city" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Estado: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.state" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Zip: </label></div><div class="col-md-8"><input class="form-control" type="text" ng-model="address.zipCode" /></div>
-        <div class="col-md-4 form-inline"><label for="apellido">Supo de nosotros?</label></div><div class="col-md-8"><select class="form-control" ng-options="source for source in customerSources" ng-model="person.source" /></div>
+    <div style="text-align:center;margin-top:10px;">
+        <button id="btnCreate" type="button" class="btn btn-primary" ng-click="saveCustomer();">
+            <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>{{person.id?" Save":" Create"}}
+        </button>
+        <button id="btnPrint" type="button" class="btn btn-primary" ng-click="printCustomer();">
+            <span class="glyphicon glyphicon-print" aria-hidden="true"></span>Print
+        </button>
     </div>
+    <hr />
+    <!--<div ng-show="customerId>0"><person-service-list person-id="customerId" /></div>-->
 </div>
-<div style="text-align:center;margin-top:10px;">
-    <button id="btnCreate" type="button" class="btn btn-primary" ng-click="saveCustomer();">
-        <span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span>{{person.id?" Save":" Create"}}
-    </button>
+
+<div id="printSection">
+<h3>Datos del Cliente</h3>
+<div><label>Apellidos: </label> {{person.lastName}}</div>
+<div><label>Name: </label> {{person.firstName}}</div>
+<div><label>Sexo: </label> {{person.gender==1?"Male":"Female"}}</div>
+<div><label>Fecha de Nacimiento:</label> {{person.birthDate|date:'MM/dd/yyyy' }}</div>
+<div><label>Ciudad Nacimiento:</label> {{person.birthCity}}</div>
+<div><label>Pais Nacimiento:</label> {{person.birthCountry}}</div>
+<div><label>Celular: </label> {{celular.value | phonenumber}}</div>
+<div><label>Telefono:</label> {{phone.value| phonenumber}}</div>
+<div><label>Email:</label> {{email.value}}</div>
+<div><label>Direccion:</label> {{address.address1}}</div>
+<div><label>Direccion1: </label> {{address.address2}}</div>
+<div><label>Ciudad: </label> {{address.city}}</div>
+<div><label>Estado: </label> {{address.state}}</div>
+<div><label>Zip: </label> {{address.zipCode}}</div>
+<div><label>Supo de nosotros?</label> {{person.source}}</div>
 </div>
-<hr />
-<div ng-show="customerId>0"><person-service-list person-id="customerId" /></div>
