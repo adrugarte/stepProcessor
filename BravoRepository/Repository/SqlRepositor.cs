@@ -33,6 +33,11 @@ namespace BravoRepository
             _dbCtx = dbCtx;
         }
 
+        public IQueryable<Person> GetListNoServices()
+        {
+            return _dbCtx.Persons.Where(p => p.Active == true).AsQueryable<Person>();//.WhereEquals(p => p.Active, true).AsQueryable<Person>();
+        }
+
         public IQueryable<Person> GetList()
         {
             return _dbCtx.Persons.Include(p=>p.Services).Where(p=> p.Active == true).AsQueryable<Person>();//.WhereEquals(p => p.Active, true).AsQueryable<Person>();

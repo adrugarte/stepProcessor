@@ -23,14 +23,17 @@ namespace AdminWeb.Controllers
 
         public IHttpActionResult Get()
         {
-            return Ok(Repo.person.GetList().OrderBy(p=>p.LastName).Select(p =>
+            var personList = Repo.person.GetListNoServices().Select(p =>
                 new
                 {
                     Id = p.Id,
                     Name = p.LastName + ", " + p.FirstName,
-                    Celular = p.Contacts.Any(c => c.Type == ContactType.Cellular)?p.Contacts.FirstOrDefault(c => c.Type == ContactType.Cellular).value:"",
-                    Email = p.Contacts.Any(c => c.Type == ContactType.email)?p.Contacts.FirstOrDefault(c => c.Type == ContactType.email).value:"",
-                }));
+                    Celular = p.Contacts.Any(c => c.Type == ContactType.Cellular) ? p.Contacts.FirstOrDefault(c => c.Type == ContactType.Cellular).value : "",
+                    Email = p.Contacts.Any(c => c.Type == ContactType.email) ? p.Contacts.FirstOrDefault(c => c.Type == ContactType.email).value : "",
+                }).ToList();
+
+            return Ok(personList.OrderBy(p=>p.Name));
+
         }
 
         // GET: api/Person

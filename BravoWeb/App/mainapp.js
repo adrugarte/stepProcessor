@@ -4,9 +4,9 @@ var BravoWeb;
     var AppBuilder = (function () {
         function AppBuilder(name) {
             this.app = angular.module(name, [
+                // Angular modules 
                 "ngRoute",
-                "ngResource"
-            ]);
+                "ngResource"]);
             var loadtemplates = function ($q, $http, $templateCache) {
                 var call = $q.defer();
                 var dptemplate = $http.get('App/templates/dptemplate.html');
@@ -15,9 +15,7 @@ var BravoWeb;
                     $templateCache.put("datetimepicker.html", templates[0]);
                     //$templateCache.put("radio.html", templates[1].data);
                     call.resolve();
-                }, function () {
-                    call.reject();
-                });
+                }, function () { call.reject(); });
                 return call.promise;
             };
             var mainRoute = {
@@ -28,22 +26,23 @@ var BravoWeb;
                 templateUrl: '/App/Views/ContactView.html'
             };
             var config = function ($routeProvider, $locationProvider, $httpProvider) {
-                $routeProvider.when('/', mainRoute).when('/contact', contactRoute).otherwise({ redirectTo: '/' });
+                $routeProvider.
+                    when('/', mainRoute).
+                    when('/contact', contactRoute).
+                    otherwise({ redirectTo: '/' });
                 //$httpProvider.interceptors.push('AuthInterceptorService');
                 $locationProvider.html5Mode(true);
             };
             //// Config
             this.app.config(['$routeProvider', '$locationProvider', '$httpProvider', config]);
             //// Services
-            this.app.service('CallbackSrv', ['$resource', function ($resource) {
-                return new Service.ServerCall($resource);
-            }]);
+            this.app.service('CallbackSrv', ['$resource', function ($resource) { return new Service.ServerCall($resource); }]);
             ///// Directives
             ///// Controllers
             this.app.controller('contactCtrl', ['$scope', 'CallbackSrv', function ($scope, CallbackSrv) { return new Controller.formCtrl($scope, CallbackSrv); }]);
         }
         return AppBuilder;
-    })();
+    }());
     BravoWeb.AppBuilder = AppBuilder;
 })(BravoWeb || (BravoWeb = {}));
 var Controller;
@@ -60,7 +59,7 @@ var Controller;
             };
         }
         return formCtrl;
-    })();
+    }());
     Controller.formCtrl = formCtrl;
 })(Controller || (Controller = {}));
 var Service;
@@ -70,7 +69,7 @@ var Service;
             this.contact = $resource('/api/contact/:id', { id: '@id' });
         }
         return ServerCall;
-    })();
+    }());
     Service.ServerCall = ServerCall;
 })(Service || (Service = {}));
 /// <reference path="app.ts" />

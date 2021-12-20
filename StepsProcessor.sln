@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoTemp", "BravoTemp\BravoTemp.csproj", "{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoWeb", "BravoWeb\BravoWeb.csproj", "{692AE2D3-EAE1-4F3B-A3B4-54672AC1E46B}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{646BBFF5-E724-486E-9173-6641F9F190C4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "twilioCom", "twilioCom\twilioCom.csproj", "{32CF646A-0110-4845-B076-C5FE3E974F24}"
@@ -16,6 +14,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoModel", "BravoModel\BravoModel.csproj", "{0DEDA1B8-A0E7-40A6-A29F-0A3FB56ADEEA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BravoRepository", "BravoRepository\BravoRepository.csproj", "{7C72E2B2-A4E0-41F1-A41B-0F9D6A4ACCA7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F8748BF6-A9A1-40ED-B72B-D55A58411194}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +30,6 @@ Global
 		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0F4EEA9-71B4-41AE-B8D8-6A375B8B585A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{692AE2D3-EAE1-4F3B-A3B4-54672AC1E46B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{692AE2D3-EAE1-4F3B-A3B4-54672AC1E46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{692AE2D3-EAE1-4F3B-A3B4-54672AC1E46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{692AE2D3-EAE1-4F3B-A3B4-54672AC1E46B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{646BBFF5-E724-486E-9173-6641F9F190C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{646BBFF5-E724-486E-9173-6641F9F190C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{646BBFF5-E724-486E-9173-6641F9F190C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
